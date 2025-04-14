@@ -53,5 +53,5 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-#VisualStudio user settings
+# Visual Studio user-specific files
 .vs/
