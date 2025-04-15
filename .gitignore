@@ -55,3 +55,13 @@ nunit-*.xml
 
 # Visual Studio user-specific files
 .vs/
+*.csproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.rsuser
+
+# Configuration files
+appsettings.json
