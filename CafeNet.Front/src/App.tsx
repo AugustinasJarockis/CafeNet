@@ -1,12 +1,12 @@
 // src/App.tsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import About from './pages/about';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Welcome from "./pages/welcome";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<About />} />
+        <Route path="/" element={<Welcome />} />
       </Routes>
     </Router>
   );
