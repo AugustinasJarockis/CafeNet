@@ -4,7 +4,7 @@
     {
         public long Id { get; set; }
         public string Code { get; set; }
-        public short? Percent { get; set; }
-        public double? Amount { get; set; }
+        public byte? Percent { get; set; }
+        public decimal? Amount { get; set; }
     }
 }
