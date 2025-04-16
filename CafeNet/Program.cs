@@ -1,7 +1,9 @@
-using CafeNet.Data;
+using CafeNet.Data.Database;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
 
@@ -10,8 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<CafeNetDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value,
+    new MySqlServerVersion(new Version(5, 5, 62)))
+    );
 
 builder.Services.AddCors(options =>
 {
