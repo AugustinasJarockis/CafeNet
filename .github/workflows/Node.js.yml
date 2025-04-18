@@ -24,14 +24,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - run: cd ./CafeNetFront
+    - run: dir
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: dir
     - run: cd ./CafeNetFront
+    - run: dir
     - run: cd ./CafeNetFront & npm ci
+    - run: dir
     - run: cd ./CafeNetFront & npm run build --if-present
+    - run: dir
     - run: cd ./CafeNetFront & npm test
 
   lint:
