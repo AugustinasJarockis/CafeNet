@@ -17,17 +17,12 @@ jobs:
         
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 22.x
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 22.x
         cache: 'npm'
         cache-dependency-path: 'CafeNet.Front/package-lock.json'
     - run: npm ci
@@ -42,17 +37,12 @@ jobs:
         
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 22.x
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 22.x
         cache: 'npm'
         cache-dependency-path: 'CafeNet.Front/package-lock.json'
     - run: npm ci
