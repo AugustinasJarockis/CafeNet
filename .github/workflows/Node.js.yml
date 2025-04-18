@@ -13,7 +13,7 @@ jobs:
   build:
     defaults:
       run:
-        working-directory: ./CafeNet.Front
+        working-directory: ./CafeNetFront
         
     runs-on: ubuntu-latest
 
@@ -37,7 +37,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./CafeNet.Front
+        working-directory: ./CafeNetFront
         
     runs-on: ubuntu-latest
 
