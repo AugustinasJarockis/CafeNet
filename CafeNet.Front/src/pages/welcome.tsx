@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function App() {
+function WelcomePage() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -11,7 +11,7 @@ function App() {
         setMessage(data.message);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage('Failed to load message.');
         setLoading(false);
       });
@@ -24,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default WelcomePage;

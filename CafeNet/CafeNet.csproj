@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Business Management\DTOs\" />
     <Folder Include="Business Management\Validators\" />
     <Folder Include="Business Management\Services\" />
     <Folder Include="Data\Mappings\" />
