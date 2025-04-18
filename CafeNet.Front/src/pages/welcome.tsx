@@ -11,7 +11,7 @@ function App() {
         setMessage(data.message);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage('Failed to load message.');
         setLoading(false);
       });
