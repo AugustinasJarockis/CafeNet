@@ -31,7 +31,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        dependency-path: 'CafeNetFront/package.json'
+        cache-dependency-path: 'CafeNetFront/package-lock.json'
     - run: dir
     - run: cd ./CafeNetFront
     - run: dir
