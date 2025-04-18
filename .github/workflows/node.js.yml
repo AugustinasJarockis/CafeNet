@@ -26,8 +26,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - working-directory: ../CafeNet.Front
     - run: npm ci
+    - working-directory: ../CafeNet.Front
     - run: npm run build --if-present
+    - working-directory: ../CafeNet.Front
     - run: npm test
   
   lint:
@@ -46,5 +49,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - working-directory: ../CafeNet.Front
     - run: npm ci
+    - working-directory: ../CafeNet.Front
     - run: npm run lint
