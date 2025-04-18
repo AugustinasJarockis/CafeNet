@@ -35,6 +35,6 @@ jobs:
     - name: dir
       run: dir
     - name: Install modules
-      run: npm i
+      run: npm --prefix /../CafeNet.Front i
     - name: Run ESLint
       run: eslint . --ext .js,.jsx,.ts,.tsx
