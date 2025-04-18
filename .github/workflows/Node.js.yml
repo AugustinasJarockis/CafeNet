@@ -13,7 +13,7 @@ jobs:
   build:
     defaults:
       run:
-        working-directory: ./CafeNetFront
+        working-directory: ./CafeNet.Front
         
     runs-on: ubuntu-latest
 
@@ -29,7 +29,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: 'CafeNetFront/package-lock.json'
+        cache-dependency-path: 'CafeNet.Front/package-lock.json'
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
@@ -38,7 +38,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./CafeNetFront
+        working-directory: ./CafeNet.Front
         
     runs-on: ubuntu-latest
 
@@ -54,6 +54,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: 'CafeNetFront/package-lock.json'
+        cache-dependency-path: 'CafeNet.Front/package-lock.json'
     - run: npm ci
     - run: npm run lint
