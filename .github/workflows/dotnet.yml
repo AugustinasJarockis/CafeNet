@@ -31,7 +31,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Navigate to frontend directory
-      run: cd ..
+      run: cd .. & cd CafeNet.Front
     - name: dir
       run: dir
     - name: Install modules
