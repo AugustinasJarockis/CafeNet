@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
+import { fetchWelcomeMessage } from '@/services/welcomeService';
 
-function App() {
+function WelcomePage() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://localhost:7153/api/welcome') // Use http://localhost:5119
-      .then((res) => res.json())
+    fetchWelcomeMessage()
       .then((data) => {
         setMessage(data.message);
         setLoading(false);
@@ -24,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default WelcomePage;
