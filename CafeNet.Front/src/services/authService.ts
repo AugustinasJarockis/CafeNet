@@ -1,4 +1,4 @@
-﻿import axios from 'axios';
+﻿import authClient from '@/api/authClient';
 
 export interface LoginRequest {
   Email: string;
@@ -13,11 +13,15 @@ export interface LoginResponse {
 
 const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
   try {
-    console.log('logging in...');
-    const response = await axios.post('/api/auth/login', loginRequest);
-    console.log('RESPONSE: ' + response);
+    const response = await authClient.post<LoginResponse>(
+      '/login',
+      loginRequest,
+      { withCredentials: true }
+    );
 
-    if (response.status === 200) {
+    if (response.status === 200 && response.data.Token) {
+      localStorage.setItem('token', response.data.Token);
+
       return {
         IsSuccess: true,
         Message: response.data.Message,

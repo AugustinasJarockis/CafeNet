@@ -11,17 +11,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  server: {
-    port: 5173, // Vite dev server port
-    strictPort: true,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:7153', // Backend server URL
-        changeOrigin: true,
-        secure: false, // Set to true if using HTTPS with valid certificates
-        // Remove the rewrite to maintain the '/api' prefix
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  },
 });

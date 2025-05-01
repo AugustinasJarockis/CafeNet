@@ -11,41 +11,39 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { login, LoginRequest } from '@/services/authService';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleLogin = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError(null);
 
-    const form = e.currentTarget;
-    const formElements = form.elements as typeof form.elements & {
-      email: { value: string };
-      password: { value: string };
-    };
-
-    const loginRequest: LoginRequest = {
-      Email: formElements.email.value,
-      Password: formElements.password.value,
-    };
-
     try {
+      const loginRequest: LoginRequest = {
+        Email: username,
+        Password: password,
+      };
+
       const response = await login(loginRequest);
-      if (response.IsSuccess && response.Token != null) {
-        //setAuthToken(response.Token);
-        //onLoginSuccess();
-      } else {
+      if (!response.IsSuccess) {
         setError(response.Message);
+        return;
       }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'An unexpected error occurred.'
       );
     }
+
+    navigate('/');
   };
 
   return (
@@ -59,6 +57,7 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
@@ -66,6 +65,7 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  onChange={(event) => setUsername(event.target.value)}
                   required
                 />
               </div>
@@ -79,7 +79,12 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">
