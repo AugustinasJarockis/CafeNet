@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: cafenet-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+    ports:
+      - "7153:8080"
+
+volumes:
+  pgdata:
