@@ -13,8 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CafeNetDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value,
-    new MySqlServerVersion(new Version(5, 5, 62)))
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
 builder.Services.AddCors(options =>
@@ -30,6 +30,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CafeNetDbContext>();
+    db.Database.Migrate(); // applies any pending migrations
+}
+
 app.UseCors();
 
 
@@ -42,6 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
