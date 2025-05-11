@@ -36,7 +36,7 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginRequest request)
     {
-        var user = await _userService.GetByUsernameAsync(request.Email);
+        var user = await _userService.GetByUsernameAsync(request.Username);
 
         if (user == null || user.Password != request.Password)
         {

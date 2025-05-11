@@ -28,13 +28,13 @@ export function LoginForm({
 
     try {
       const loginRequest: LoginRequest = {
-        Email: username,
-        Password: password,
+        username: username,
+        password: password,
       };
 
       const response = await login(loginRequest);
-      if (!response.IsSuccess) {
-        setError(response.Message);
+      if (!response.isSuccess) {
+        setError(response.message);
         return;
       }
     } catch (err) {
@@ -43,7 +43,7 @@ export function LoginForm({
       );
     }
 
-    navigate('/');
+    navigate('/Welcome');
   };
 
   return (
@@ -52,7 +52,7 @@ export function LoginForm({
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your username and password below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -60,11 +60,11 @@ export function LoginForm({
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
+                  id="username"
+                  type="text"
+                  placeholder="your_username"
                   onChange={(event) => setUsername(event.target.value)}
                   required
                 />

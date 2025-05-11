@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CafeNet.Controllers;
 
@@ -6,6 +7,7 @@ namespace CafeNet.Controllers;
 [Route("api/[controller]")]
 public class WelcomeController : ControllerBase
 {
+    [Authorize(Roles = "CLIENT,BARISTA,ADMIN")]
     [HttpGet]
     public IActionResult Get()
     {

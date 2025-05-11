@@ -1,14 +1,14 @@
 ﻿import authClient from '@/api/authClient';
 
 export interface LoginRequest {
-  Email: string;
-  Password: string;
+  username: string;
+  password: string;
 }
 
 export interface LoginResponse {
-  IsSuccess: boolean;
-  Message: string;
-  Token?: string;
+  isSuccess: boolean;
+  message: string;
+  token?: string;
 }
 
 const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
@@ -19,21 +19,21 @@ const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
       { withCredentials: true }
     );
 
-    if (response.status === 200 && response.data.Token) {
-      localStorage.setItem('token', response.data.Token);
+    if (response.status === 200 && response.data.token) {
+      localStorage.setItem('token', response.data.token);
 
       return {
-        IsSuccess: true,
-        Message: response.data.Message,
-        Token: response.data.Token,
+        isSuccess: true,
+        message: response.data.message,
+        token: response.data.token,
       };
     } else {
-      return { IsSuccess: false, Message: response.data.Message };
+      return { isSuccess: false, message: response.data.message };
     }
   } catch (error) {
     return {
-      IsSuccess: false,
-      Message:
+      isSuccess: false,
+      message:
         error instanceof Error
           ? error.message
           : 'An unexpected error occurred.',
