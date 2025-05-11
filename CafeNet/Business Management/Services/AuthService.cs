@@ -16,7 +16,7 @@ public class AuthService : IAuthService
 
     public async Task<User> RegisterAsync(RegisterUserRequest request)
     {
-        if (await _userService.UsernameExistsAsync(request.Email))
+        if (await _userService.UsernameExistsAsync(request.Username))
         {
             throw new InvalidOperationException("Username already exists.");
         }
@@ -24,7 +24,7 @@ public class AuthService : IAuthService
         var newUser = new User
         {
             Name = request.Name,
-            Username = request.Email,
+            Username = request.Username,
             Password = request.Password,
             Role = CafeNet.Data.Enums.UserRoles.CLIENT,
             LocationId = request.LocationId
