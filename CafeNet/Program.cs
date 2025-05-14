@@ -103,6 +103,7 @@ using (var scope = app.Services.CreateScope())
     if (app.Environment.IsDevelopment())
     {
         DbSeeder.SeedAdminUser(context, config);
+        DbSeeder.SeedBaristaUser(context, config);
     }
 }
 
@@ -115,6 +116,15 @@ var adminUser = new
     Email = adminSection["Email"],
     Password = adminSection["Password"],
     Role = adminSection["Role"]
+};
+
+var baristaSection = builder.Configuration.GetSection("SeedData:BaristaUser");
+var baristaUser = new
+{
+    Username = baristaSection["Username"],
+    Email = baristaSection["Email"], 
+    Password = baristaSection["Password"],
+    Role = baristaSection["Role"]
 };
 
 // Configure the HTTP request pipeline.

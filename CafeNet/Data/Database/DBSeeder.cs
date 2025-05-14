@@ -38,5 +38,40 @@ public static class DbSeeder
             context.SaveChanges();
         }
     }
+
+    public static void SeedBaristaUser(CafeNetDbContext context, IConfiguration config)
+    {
+        var baristaSection = config.GetSection("SeedData:BaristaUser");
+
+        var name = baristaSection["Name"];
+        var username = baristaSection["Username"];
+        var password = baristaSection["Password"];
+        var role = baristaSection["Role"];
+        var locationAddress = baristaSection.GetSection("Location")["Address"];
+
+        var location = context.Locations.FirstOrDefault(l => l.Address == locationAddress);
+        if (location == null)
+        {
+            location = new Location { Address = locationAddress };
+            context.Locations.Add(location);
+            context.SaveChanges();
+        }
+
+        if (!context.Users.Any(u => u.Username == username))
+        {
+            var baristaUser = new User
+            {
+                Name = name,
+                Username = username,
+                Password = password,
+                Role = Enum.Parse<UserRoles>(role),
+                LocationId = location.Id
+            };
+
+            context.Users.Add(baristaUser);
+            context.SaveChanges();
+        }
+    }
+
 }
 
