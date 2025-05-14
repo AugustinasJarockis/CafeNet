@@ -13,15 +13,5 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  app:
-    build:
-      context: .
-    depends_on:
-      - db
-    environment:
-      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
-    ports:
-      - "7153:8080"
-
 volumes:
   pgdata:

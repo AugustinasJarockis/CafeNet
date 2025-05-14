@@ -4,10 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>50462f7c-42fd-4bce-97cf-1a90a9895e48</UserSecretsId>
+    <UserSecretsId>30a7ce15-ee91-401c-8f4c-235c93aec629</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Business Management\DTOs\" />
     <Folder Include="Business Management\Validators\" />
     <Folder Include="Data\Mappings\" />
     <Folder Include="Data\Repositories\" />

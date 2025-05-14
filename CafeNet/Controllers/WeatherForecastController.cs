@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeNet.Controllers
@@ -18,6 +19,7 @@ namespace CafeNet.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
