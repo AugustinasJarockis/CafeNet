@@ -12,6 +12,8 @@ import { Label } from '@/components/ui/label';
 import { login, LoginRequest } from '@/services/authService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from '@/services/authService';
 
 export function LoginForm({
   className,
@@ -23,31 +25,39 @@ export function LoginForm({
   const navigate = useNavigate();
 
   const handleLogin = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
+  event.preventDefault();
+  setError(null);
 
-    try {
-      const loginRequest: LoginRequest = {
-        username: username,
-        password: password,
-      };
+  try {
+    const loginRequest: LoginRequest = {
+      username: username,
+      password: password,
+    };
 
-      const response = await login(loginRequest);
-      if (!response.isSuccess) {
-        setError(response.message);
-        return;
-      }
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred.'
-      );
+    const response = await login(loginRequest);
+    if (!response.isSuccess || !response.token) {
+      setError(response.message);
+      return;
     }
 
-    navigate('/Welcome');
-  };
+    const decoded = jwtDecode<DecodedToken>(response.token);
+    const role = decoded.role;
+
+    if (role === 'ADMIN') {
+      navigate('/menu-admin');
+    } else {
+      navigate('/Welcome');
+    }
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : 'An unexpected error occurred.'
+    );
+  }
+};
+
 
   const handleNavigateToRegister = () => {
-    navigate('/register'); // Adjust path based on your routing setup
+    navigate('/register');
   };
 
   return (

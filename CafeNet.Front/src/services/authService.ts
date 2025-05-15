@@ -87,4 +87,12 @@ const register = async (
   }
 };
 
+export interface DecodedToken {
+  nameid: string;
+  unique_name: string;
+  role: 'ADMIN' | 'BARISTA' | 'CLIENT';
+  exp: number;
+  iss: string;
+}
+
 export { login, register };
