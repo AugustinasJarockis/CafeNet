@@ -12,15 +12,8 @@ import { Label } from '@/components/ui/label';
 import { login, LoginRequest } from '@/services/authService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
-
-interface DecodedToken {
-  nameid: string;
-  unique_name: string;
-  role: 'ADMIN' | 'BARISTA' | 'CLIENT';
-  exp: number;
-  iss: string;
-}
+import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from '@/services/authService';
 
 export function LoginForm({
   className,
