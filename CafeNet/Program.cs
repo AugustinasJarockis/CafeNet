@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 
+builder.Configuration.AddJsonFile("demo-data.json", optional: false, reloadOnChange: true);
+
 builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
