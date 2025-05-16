@@ -1,0 +1,22 @@
+﻿{
+  "SeedData": {
+    "AdminUser": {
+      "Name": "Admin User",
+      "Username": "admin",
+      "Password": "admin123",
+      "Role": "ADMIN",
+      "Location": {
+        "Address": "123 Dev St"
+      }
+    },
+    "BaristaUser": {
+      "Name": "Barista User",
+      "Username": "barista",
+      "Password": "barista123",
+      "Role": "BARISTA",
+      "Location": {
+        "Address": "456 Coffee St"
+      }
+    }
+  }
+}
