@@ -1,61 +1,84 @@
-﻿using CafeNet.Business_Management.Interfaces;
+﻿using CafeNet.Business_Management.Exceptions;
+using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Validators;
 using CafeNet.Data.Database;
 using CafeNet.Data.Models;
+using CafeNet.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services;
 
 public class UserService : IUserService
 {
-    private readonly CafeNetDbContext _context;
+    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserService(CafeNetDbContext context)
+    public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
+    // This method uses a transaction.
+    // Transaction is not actually needed in this case. It's an example of how to use it.
     public async Task<User> CreateAsync(User user)
     {
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-        return user;
+        UserValidator.ValidateCreateUserRequest(user);
+        ValidateUserSignUpConflicts(user);
+
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            _userRepository.Add(user);
+
+            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommitTransactionAsync();
+
+            return user;
+        }
+        catch
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 
     public async Task DeleteAsync(long id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user != null)
-        {
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-        }
+        await _userRepository.DeleteAsync(id);
     }
 
     public async Task<User> GetByIdAsync(long id)
     {
-        return await _context.Users
-            .Include(u => u.Location)
-            .Include(u => u.Credit)
-            .FirstOrDefaultAsync(u => u.Id == id);
+        return await _userRepository.GetByIdAsync(id);
     }
 
     public async Task<User> GetByUsernameAsync(string username)
     {
-        return await _context.Users
-            .Include(u => u.Location)
-            .Include(u => u.Credit)
-            .FirstOrDefaultAsync(u => u.Username == username);
+        return await _userRepository.GetByUsernameAsync(username);
     }
 
     public async Task<User> UpdateAsync(User user)
     {
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
-        return user;
+        try
+        {
+            return await _userRepository.UpdateAsync(user);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConflictException("User was modified by another process.");
+        }
     }
-
-    public async Task<bool> UsernameExistsAsync(string username)
+    private void ValidateUserSignUpConflicts(User createUserRequest)
     {
-        return await _context.Users.AnyAsync(u => u.Username == username);
+
+        if (IsUsernameUsed(createUserRequest.Username))
+        {
+            throw new ConflictException("This username is already in use.");
+        }
+    }
+    private bool IsUsernameUsed(string username)
+    {
+        return _userRepository.AnyUserUsernameDuplicate(username);
     }
 }

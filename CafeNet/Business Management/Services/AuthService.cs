@@ -1,8 +1,12 @@
 ﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Utility;
+using CafeNet.Business_Management.Validators;
+using CafeNet.Data.Mappings;
 using CafeNet.Data.Models;
 
+namespace CafeNet.Business_Management.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
@@ -16,19 +20,7 @@ public class AuthService : IAuthService
 
     public async Task<User> RegisterAsync(RegisterUserRequest request)
     {
-        if (await _userService.UsernameExistsAsync(request.Username))
-        {
-            throw new InvalidOperationException("Username already exists.");
-        }
-
-        var newUser = new User
-        {
-            Name = request.Name,
-            Username = request.Username,
-            Password = request.Password,
-            Role = CafeNet.Data.Enums.UserRoles.CLIENT,
-            LocationId = request.LocationId
-        };
+        var newUser = UserMapper.ToUser(request);
 
         var createdUser = await _userService.CreateAsync(newUser);
         return createdUser;
@@ -38,9 +30,13 @@ public class AuthService : IAuthService
     {
         var user = await _userService.GetByUsernameAsync(request.Username);
 
-        if (user == null || user.Password != request.Password)
+        AuthValidator.ValidateLoginRequest(request);
+
+        var passwordVarify = BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.Password);
+
+        if (!passwordVarify)
         {
-            throw new UnauthorizedAccessException("Invalid credentials.");
+            throw new BadRequestException("Password is incorrect");
         }
 
         var token = TokenGenerator.GenerateJwtToken(user, _configuration);

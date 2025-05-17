@@ -1,4 +1,5 @@
-﻿using CafeNet.Data.Enums;
+﻿using Azure.Core;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 
 namespace CafeNet.Data.Database;
@@ -29,7 +30,7 @@ public static class DbSeeder
             {
                 Name = name,
                 Username = username,
-                Password = password,
+                Password = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13),
                 Role = Enum.Parse<UserRoles>(role),
                 LocationId = location.Id
             };
@@ -63,7 +64,7 @@ public static class DbSeeder
             {
                 Name = name,
                 Username = username,
-                Password = password,
+                Password = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13),
                 Role = Enum.Parse<UserRoles>(role),
                 LocationId = location.Id
             };

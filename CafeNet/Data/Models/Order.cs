@@ -1,4 +1,5 @@
 ﻿using CafeNet.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CafeNet.Data.Models
@@ -19,5 +20,9 @@ namespace CafeNet.Data.Models
         public Discount Discount { get; set; }
         public Location Location { get; set; }
         public User User { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

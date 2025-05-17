@@ -1,4 +1,6 @@
-﻿namespace CafeNet.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CafeNet.Data.Models
 {
     public class OrderItem
     {
@@ -11,5 +13,9 @@
         // for foreign keys
         public Order Order { get; set; }
         public MenuItem MenuItem { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

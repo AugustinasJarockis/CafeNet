@@ -1,6 +1,8 @@
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Middleware;
 using CafeNet.Business_Management.Services;
 using CafeNet.Data.Database;
+using CafeNet.Data.Repositories;
 using CafeNet.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -90,6 +92,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
@@ -137,6 +142,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
