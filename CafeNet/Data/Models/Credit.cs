@@ -1,4 +1,6 @@
-﻿namespace CafeNet.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CafeNet.Data.Models
 {
     public class Credit
     {
@@ -8,5 +10,9 @@
 
         // for foreign keys
         public User User { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

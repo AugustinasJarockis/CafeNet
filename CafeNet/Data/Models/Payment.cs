@@ -1,4 +1,5 @@
 ﻿using CafeNet.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CafeNet.Data.Models
@@ -20,5 +21,9 @@ namespace CafeNet.Data.Models
         [ForeignKey("OrderId")]
         [InverseProperty("Payment")]
         public Order Order { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

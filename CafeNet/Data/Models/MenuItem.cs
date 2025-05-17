@@ -1,4 +1,6 @@
-﻿namespace CafeNet.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CafeNet.Data.Models
 {
     public class MenuItem
     {
@@ -13,5 +15,9 @@
 
         // for foreign keys
         public Tax Tax { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }
