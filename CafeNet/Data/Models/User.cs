@@ -1,4 +1,5 @@
 ﻿using CafeNet.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace CafeNet.Data.Models
 {
@@ -16,5 +17,9 @@ namespace CafeNet.Data.Models
         // for foreign keys
         public Location Location { get; set; }
         public Credit Credit { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

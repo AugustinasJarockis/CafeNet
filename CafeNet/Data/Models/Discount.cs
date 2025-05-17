@@ -1,4 +1,6 @@
-﻿namespace CafeNet.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CafeNet.Data.Models
 {
     public class Discount
     {
@@ -6,5 +8,9 @@
         public string Code { get; set; }
         public byte? Percent { get; set; }
         public decimal? Amount { get; set; }
+
+        // Optimistic concurrency token
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

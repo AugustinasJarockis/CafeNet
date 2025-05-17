@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.15">
       <PrivateAssets>all</PrivateAssets>
@@ -27,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Business Management\Validators\" />
-    <Folder Include="Data\Repositories\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
