@@ -29,18 +29,6 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "CafeNet Cafe 1",
-      logo: Command,
-      plan: "Kalvariju g.",
-    },
-    {
-      name: "CafeNet Cafe 2",
-      logo: Command,
-      plan: "Didlaukio g.",
-    },
-  ],
   navMain: [
     {
       title: "Manage employees",
