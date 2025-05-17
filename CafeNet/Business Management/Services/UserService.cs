@@ -45,17 +45,34 @@ public class UserService : IUserService
 
     public async Task DeleteAsync(long id)
     {
-        await _userRepository.DeleteAsync(id);
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+            _userRepository.Delete(user);
+
+            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommitTransactionAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 
     public async Task<User> GetByIdAsync(long id)
     {
-        return await _userRepository.GetByIdAsync(id);
+        var user = await _userRepository.GetByIdAsync(id);
+
+        return user ?? throw new NotFoundException();
     }
 
     public async Task<User> GetByUsernameAsync(string username)
     {
-        return await _userRepository.GetByUsernameAsync(username);
+        var user = await _userRepository.GetByUsernameAsync(username);
+
+        return user ?? throw new NotFoundException();
     }
 
     public async Task<User> UpdateAsync(User user)

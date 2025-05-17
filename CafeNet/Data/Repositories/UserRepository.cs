@@ -16,14 +16,9 @@ namespace CafeNet.Data.Repositories
             _context.Users.Add(user);
         }
 
-        public async Task DeleteAsync(long id)
+        public void Delete(User user)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
-            {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
-            }
+            _context.Users.Remove(user);
         }
         public async Task<User> GetByIdAsync(long id)
         {
