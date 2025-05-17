@@ -1,11 +1,12 @@
-﻿using CafeNet.Business_Management.Exceptions;
+﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Data.Models;
 
 namespace CafeNet.Business_Management.Validators
 {
     public static class UserValidator
     {
-        public static void ValidateCreateUserRequest(User createUserRequest)
+        public static void ValidateCreateUserRequest(RegisterUserRequest createUserRequest)
         {
             if (createUserRequest == null)
                 throw new BadRequestException("Bad request");

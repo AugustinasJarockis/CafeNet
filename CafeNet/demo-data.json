@@ -17,6 +17,14 @@
       "Location": {
         "Address": "456 Coffee St"
       }
-    }
+    },
+    "Locations": [
+      {
+        "Address": "Vinco Kudirkos g. 15, Vilnius"
+      },
+      {
+        "Address": "Konstitucijos pr. 29, Vilnius"
+      }
+    ]
   }
 }

@@ -97,6 +97,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 var app = builder.Build();
 
@@ -109,6 +111,7 @@ using (var scope = app.Services.CreateScope())
 
     if (app.Environment.IsDevelopment())
     {
+        DbSeeder.SeedLocations(context, config);
         DbSeeder.SeedAdminUser(context, config);
         DbSeeder.SeedBaristaUser(context, config);
     }

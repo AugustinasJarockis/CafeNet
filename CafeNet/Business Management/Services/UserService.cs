@@ -23,7 +23,6 @@ public class UserService : IUserService
     // Transaction is not actually needed in this case. It's an example of how to use it.
     public async Task<User> CreateAsync(User user)
     {
-        UserValidator.ValidateCreateUserRequest(user);
         ValidateUserSignUpConflicts(user);
 
         await _unitOfWork.BeginTransactionAsync();
