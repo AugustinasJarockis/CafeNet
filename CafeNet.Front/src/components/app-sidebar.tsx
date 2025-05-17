@@ -63,7 +63,7 @@ const data = {
       items: [
         {
           title: "Add a new location",
-          url: "#",
+          url: "/create-location",
         },
         {
           title: "See the locations list",

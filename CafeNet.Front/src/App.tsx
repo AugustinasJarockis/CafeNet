@@ -4,6 +4,7 @@ import WelcomePage from './pages/welcome';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import AdminMenu from './pages/menu-admin';
+import CreateLocationPage from './pages/create-location';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/menu-admin" element={<AdminMenu />} />
+        <Route path="/create-location" element={<CreateLocationPage />} />
       </Routes>
     </Router>
   );
