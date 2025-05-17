@@ -4,16 +4,6 @@ namespace CafeNet.Business_Management.Validators
 {
     public static class StringFormatValidatorUtils
     {
-        public static bool IsValidPhone(this string str)
-        {
-            if (str == null || str.Length == 0 || str.Length > 40)
-                return false;
-            Regex validatePhoneRegex = new Regex(@"^(\+?[0-9 -]+)$");
-            if (validatePhoneRegex.IsMatch(str))
-                return true;
-            return false;
-        }
-
         public static bool IsValidName(this string str)
         {
             if (str == null || str.Length == 0 || str.Length > 150)
@@ -40,16 +30,6 @@ namespace CafeNet.Business_Management.Validators
                 return false;
             Regex validatePasswordRegex = new Regex("^[a-zA-Z0-9](?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\\W]*$");
             if (validatePasswordRegex.IsMatch(str))
-                return true;
-            return false;
-        }
-
-        public static bool IsValidCurrency(this string str)
-        {
-            if (str == null || str.Length != 3)
-                return false;
-            Regex validateCurrencyRegex = new Regex("^[A-Z]{3}$");
-            if (validateCurrencyRegex.IsMatch(str))
                 return true;
             return false;
         }
