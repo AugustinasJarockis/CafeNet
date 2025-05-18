@@ -19,6 +19,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useQuery } from '@tanstack/react-query';
+import { getLocations } from '@/services/locationService';
 
 // This is sample data.
 const data = {
@@ -27,18 +29,6 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "CafeNet Cafe 1",
-      logo: Command,
-      plan: "Kalvariju g.",
-    },
-    {
-      name: "CafeNet Cafe 2",
-      logo: Command,
-      plan: "Didlaukio g.",
-    },
-  ],
   navMain: [
     {
       title: "Manage employees",
@@ -48,7 +38,7 @@ const data = {
       items: [
         {
           title: "Add employee",
-          url: "#",
+          url: "/employees/create",
         },
         {
           title: "See the employee list",
@@ -117,10 +107,35 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const {
+    data: locations,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['locations'],
+    queryFn: getLocations,
+  });
+
+  const teams = locations?.map((loc) => ({
+    name: loc.address,
+    logo: Command,
+    plan: loc.address,
+  })) ?? [];
+  
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        {teams.length > 0 ? (
+          <TeamSwitcher teams={teams} />
+        ) : (
+          <div className="px-4 py-2 text-sm text-muted-foreground">
+            {isLoading
+              ? "Loading locations..."
+              : isError
+              ? "Failed to load locations"
+              : "No locations found"}
+          </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

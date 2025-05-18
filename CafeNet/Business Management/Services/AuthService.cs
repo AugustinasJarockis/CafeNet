@@ -20,6 +20,7 @@ public class AuthService : IAuthService
 
     public async Task<User> RegisterAsync(RegisterUserRequest request)
     {
+        UserValidator.ValidateCreateUserRequest(request);
         var newUser = UserMapper.ToUser(request);
 
         var createdUser = await _userService.CreateAsync(newUser);
