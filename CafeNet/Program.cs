@@ -109,7 +109,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddInterceptedService<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddInterceptedService<IAuthService, AuthService>();
 builder.Services.AddInterceptedService<IUserService, UserService>();
 builder.Services.AddInterceptedService<ILocationRepository, LocationRepository>();
