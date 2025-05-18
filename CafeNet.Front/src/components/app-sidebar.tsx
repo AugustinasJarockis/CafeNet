@@ -53,7 +53,7 @@ const data = {
       items: [
         {
           title: "Add a new location",
-          url: "#",
+          url: "/locations/create",
         },
         {
           title: "See the locations list",
@@ -116,7 +116,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     queryFn: getLocations,
   });
 
-  const teams = locations?.map((loc) => ({
+  const mapped_locations = locations?.map((loc) => ({
     name: loc.address,
     logo: Command,
     plan: loc.address,
@@ -125,8 +125,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        {teams.length > 0 ? (
-          <TeamSwitcher teams={teams} />
+        {mapped_locations.length > 0 ? (
+          <TeamSwitcher teams={mapped_locations} />
         ) : (
           <div className="px-4 py-2 text-sm text-muted-foreground">
             {isLoading

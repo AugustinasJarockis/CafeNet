@@ -1,5 +1,3 @@
-// src/pages/CreateEmployeePage.tsx or similar
-
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AddEmployeeForm } from "@/components/manage employees/add-employee-form"
