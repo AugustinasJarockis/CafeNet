@@ -1,4 +1,5 @@
 ﻿using CafeNet.Business_Management.Exceptions;
+using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Validators;
 using CafeNet.Data.Database;
@@ -21,6 +22,7 @@ public class UserService : IUserService
 
     // This method uses a transaction.
     // Transaction is not actually needed in this case. It's an example of how to use it.
+    [Loggable]
     public async Task<User> CreateAsync(User user)
     {
         ValidateUserSignUpConflicts(user);
@@ -42,6 +44,7 @@ public class UserService : IUserService
         }
     }
 
+    [Loggable]
     public async Task DeleteAsync(long id)
     {
         await _unitOfWork.BeginTransactionAsync();
@@ -60,6 +63,7 @@ public class UserService : IUserService
         }
     }
 
+    [Loggable]
     public async Task<User> GetByIdAsync(long id)
     {
         var user = await _userRepository.GetByIdAsync(id);
@@ -67,6 +71,7 @@ public class UserService : IUserService
         return user ?? throw new NotFoundException();
     }
 
+    [Loggable]
     public async Task<User> GetByUsernameAsync(string username)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
@@ -74,6 +79,7 @@ public class UserService : IUserService
         return user ?? throw new NotFoundException();
     }
 
+    [Loggable]
     public async Task<User> UpdateAsync(User user)
     {
         try
@@ -85,6 +91,8 @@ public class UserService : IUserService
             throw new ConflictException("User was modified by another process.");
         }
     }
+
+    [Loggable]
     private void ValidateUserSignUpConflicts(User createUserRequest)
     {
 
@@ -93,6 +101,8 @@ public class UserService : IUserService
             throw new ConflictException("This username is already in use.");
         }
     }
+
+    [Loggable]
     private bool IsUsernameUsed(string username)
     {
         return _userRepository.AnyUserUsernameDuplicate(username);
