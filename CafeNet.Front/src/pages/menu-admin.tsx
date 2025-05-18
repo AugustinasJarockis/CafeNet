@@ -13,9 +13,13 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+
+import { useState } from 'react';
 import CreateLocationPage from "./create-location"
 
 export default function AdminMenu() {
+  const [displayComponent, setDisplayComponent] = useState();
+
   return (
     <SidebarProvider>
       <AppSidebar />

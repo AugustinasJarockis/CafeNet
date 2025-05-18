@@ -1,26 +1,24 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Data.Database;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
+using CafeNet.Data.Repositories;
 
 namespace CafeNet.Business_Management.Services
 {
     public class LocationService: ILocationService
     {
-        private readonly CafeNetDbContext _context;
+        private readonly ILocationRepository _locationRepository;
 
-        public LocationService(CafeNetDbContext context) {
-            _context = context;
+        public LocationService(ILocationRepository locationRepository) {
+            _locationRepository = locationRepository;
         }
         public async Task<Location> CreateAsync(CreateLocationRequest request) {
             var location = request.ToLocation();
-            if (_context.Locations.Select(location => location.Address).Contains(location.Address))
-                throw new ConflictException("A location with this address already exists"); 
-            _context.Locations.Add(location);
-            await _context.SaveChangesAsync();
-            return location;
+            if (_locationRepository.AddressAlreadyRegistered(location.Address))
+                throw new ConflictException("A location with this address already exists");
+            return await _locationRepository.CreateAsync(location);
         }
     }
 }
