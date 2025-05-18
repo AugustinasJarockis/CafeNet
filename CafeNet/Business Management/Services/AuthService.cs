@@ -36,9 +36,9 @@ public class AuthService : IAuthService
 
         AuthValidator.ValidateLoginRequest(request);
 
-        var passwordVarify = BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.Password);
+        var passwordVerify = BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.Password);
 
-        if (!passwordVarify)
+        if (!passwordVerify)
         {
             throw new BadRequestException("Password is incorrect");
         }
