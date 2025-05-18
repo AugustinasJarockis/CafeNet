@@ -1,12 +1,14 @@
+﻿using CafeNet.Business_Management.Interceptors;
+using CafeNet.Business_Management.Interfaces;
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Exceptions;
-using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
 
 namespace CafeNet.Business_Management.Services
 {
+    [Loggable]
     public class LocationService(ILocationRepository locationRepository) : ILocationService
     {
         private readonly ILocationRepository _locationRepository = locationRepository;

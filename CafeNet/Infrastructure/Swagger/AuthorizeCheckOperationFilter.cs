@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace CafeNet.Swagger;
+namespace CafeNet.Infrastructure.Swagger;
 
 public class AuthorizeCheckOperationFilter : IOperationFilter
 {

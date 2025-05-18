@@ -1,5 +1,6 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Exceptions;
+using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Utility;
 using CafeNet.Business_Management.Validators;
@@ -18,6 +19,7 @@ public class AuthService : IAuthService
         _configuration = configuration;
     }
 
+    [Loggable]
     public async Task<User> RegisterAsync(RegisterUserRequest request)
     {
         UserValidator.ValidateCreateUserRequest(request);
@@ -27,6 +29,7 @@ public class AuthService : IAuthService
         return createdUser;
     }
 
+    [Loggable]
     public async Task<string> LoginAsync(LoginRequest request)
     {
         var user = await _userService.GetByUsernameAsync(request.Username);
