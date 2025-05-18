@@ -94,10 +94,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
