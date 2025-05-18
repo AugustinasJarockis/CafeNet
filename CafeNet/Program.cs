@@ -110,9 +110,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+
 builder.Services.AddInterceptedService<IAuthService, AuthService>();
 builder.Services.AddInterceptedService<IUserService, UserService>();
-builder.Services.AddInterceptedService<ILocationRepository, LocationRepository>();
 builder.Services.AddInterceptedService<ILocationService, LocationService>();
 
 var app = builder.Build();
