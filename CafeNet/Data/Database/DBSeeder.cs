@@ -39,6 +39,24 @@ public static class DbSeeder
             context.SaveChanges();
         }
     }
+    public static void SeedLocations(CafeNetDbContext context, IConfiguration config)
+    {
+        var locationsSection = config.GetSection("SeedData:Locations");
+        var locationItems = locationsSection.GetChildren();
+
+        foreach (var locationItem in locationItems)
+        {
+            var address = locationItem["Address"];
+
+            if (!string.IsNullOrWhiteSpace(address) &&
+                !context.Locations.Any(l => l.Address == address))
+            {
+                context.Locations.Add(new Location { Address = address });
+            }
+        }
+
+        context.SaveChanges();
+    }
 
     public static void SeedBaristaUser(CafeNetDbContext context, IConfiguration config)
     {

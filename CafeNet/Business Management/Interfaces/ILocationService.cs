@@ -5,6 +5,7 @@ namespace CafeNet.Business_Management.Interfaces
 {
     public interface ILocationService
     {
+        public List<Location> GetAll();
         public Task<Location> CreateAsync(CreateLocationRequest request);
     }
 }
