@@ -13,7 +13,7 @@ export interface Location {
 
 export const createLocation = async (request: CreateLocationRequest): Promise<Location | string> => {
     try {
-        const response = await apiClient.post<Location | { message: string }>('/location', request);
+        const response = await apiClient.post<Location | { message: string }>('/locations', request);
 
         if (response.status === 201) {
             return response.data as Location;
@@ -31,6 +31,7 @@ export const createLocation = async (request: CreateLocationRequest): Promise<Lo
         }
 
         return message;
+    }
 };
 export async function getLocations(): Promise<Location[]> {
   const response = await apiClient.get<Location[]>('/locations');

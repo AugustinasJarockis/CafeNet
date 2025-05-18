@@ -10,9 +10,9 @@ namespace CafeNet.Data.Repositories
         public LocationRepository(CafeNetDbContext context) {
             _context = context;
         }
-        public List<Location> GetLocations ()
-        {
+        public List<Location> GetLocations() {
             return [.. _context.Locations];
+        }
         public async Task<Location> CreateAsync(Location location) {
             _context.Locations.Add(location);
             await _context.SaveChangesAsync();
