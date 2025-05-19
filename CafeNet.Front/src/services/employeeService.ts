@@ -9,6 +9,22 @@ export type AddEmployeeRequest = {
   locationId: number | null;
 };
 
+export type User = {
+  id: number;
+  name: string;
+  username: string;
+  password: string;
+  role: string;
+  locationId: number | null;
+};
+
+export type PagedResult<T> = {
+  items: T[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+}
+
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
   try {
     const response = await apiClient.post('/users', addEmployeeRequest);
@@ -22,6 +38,17 @@ export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
       message = error.message;
     }
 
-    throw new Error(message)
+    throw new Error(message);
   }
 }
+
+export const getEmployees = async (
+  pageNumber: number = 1,
+  pageSize: number = 10
+): Promise<PagedResult<User>> => {
+  const response = await apiClient.get('/users/employees', {
+    params: { pageNumber, pageSize },
+  });
+
+  return response.data;
+};

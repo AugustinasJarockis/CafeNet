@@ -1,4 +1,5 @@
-﻿using CafeNet.Data.Models;
+﻿using CafeNet.Data.Enums;
+using CafeNet.Data.Models;
 
 namespace CafeNet.Data.Repositories
 {
@@ -9,6 +10,8 @@ namespace CafeNet.Data.Repositories
         public Task<User> GetByIdAsync(long id);
         public Task<User> GetByUsernameAsync(string username);
         public Task<User> UpdateAsync(User user);
+        public Task<IEnumerable<User>> GetByRolesPagedAsync(IEnumerable<UserRoles> roles, int pageNumber, int pageSize);
+        public Task<int> CountByRolesAsync(IEnumerable<UserRoles> roles);
         public Task<bool> UsernameExistsAsync(string username);
         public bool AnyUserUsernameDuplicate(string username);
     }

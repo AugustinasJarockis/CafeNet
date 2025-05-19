@@ -1,4 +1,5 @@
 ﻿using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +41,22 @@ namespace CafeNet.Data.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<IEnumerable<User>> GetByRolesPagedAsync(IEnumerable<UserRoles> roles, int pageNumber, int pageSize)
+        {
+            return await _context.Users
+                                .Where(u => roles.Contains(u.Role))
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToListAsync();
+        }
+
+        public async Task<int> CountByRolesAsync(IEnumerable<UserRoles> roles)
+        {
+            return await _context.Users.CountAsync(u => roles.Contains(u.Role));
+        }
+
+
         public async Task<bool> UsernameExistsAsync(string username)
         {
             return await _context.Users.AnyAsync(u => u.Username == username);

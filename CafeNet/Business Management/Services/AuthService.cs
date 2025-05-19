@@ -4,7 +4,7 @@ using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Utility;
 using CafeNet.Business_Management.Validators;
-using CafeNet.Data.Mappings;
+using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 
 namespace CafeNet.Business_Management.Services;

@@ -2,11 +2,11 @@
 using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 
-namespace CafeNet.Data.Mappings
+namespace CafeNet.Data.Mappers
 {
     public static class UserMapper
     {
-        public static User ToUser (RegisterUserRequest request)
+        public static User ToUser(RegisterUserRequest request)
         {
             return new User
             {

@@ -3,8 +3,10 @@ using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Validators;
 using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
+using CafeNet.Infrastructure.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services;
@@ -77,6 +79,23 @@ public class UserService : IUserService
         var user = await _userRepository.GetByUsernameAsync(username);
 
         return user ?? throw new NotFoundException();
+    }
+
+    [Loggable]
+    public async Task<PagedResult<User>> GetEmployeesAsync(int pageNumber, int pageSize)
+    {
+        var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN };
+
+        var totalCount = await _userRepository.CountByRolesAsync(employeeRoles);
+        var items = await _userRepository.GetByRolesPagedAsync(employeeRoles, pageNumber, pageSize);
+
+        return new PagedResult<User>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
     [Loggable]
