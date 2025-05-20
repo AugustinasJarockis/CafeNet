@@ -2,7 +2,7 @@
 {
     public class CreateTaxRequest
     {
-        public string Type { get; set; }
+        public required string Type { get; set; }
         public byte Percent { get; set; }
     }
 }
