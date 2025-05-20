@@ -45,6 +45,7 @@ namespace CafeNet.Data.Repositories
         public async Task<IEnumerable<User>> GetByRolesPagedAsync(IEnumerable<UserRoles> roles, int pageNumber, int pageSize)
         {
             return await _context.Users
+                                .Include(u => u.Location)
                                 .Where(u => roles.Contains(u.Role))
                                 .Skip((pageNumber - 1) * pageSize)
                                 .Take(pageSize)

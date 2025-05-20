@@ -8,15 +8,17 @@ using CafeNet.Data.Repositories;
 
 namespace CafeNet.Business_Management.Services
 {
-    [Loggable]
     public class LocationService(ILocationRepository locationRepository) : ILocationService
     {
         private readonly ILocationRepository _locationRepository = locationRepository;
 
+        [Loggable]
         public List<Location> GetAll ()
         {
             return _locationRepository.GetLocations();
         }
+
+        [Loggable]
         public async Task<Location> CreateAsync(CreateLocationRequest request) {
             var location = request.ToLocation();
             if (_locationRepository.AddressAlreadyRegistered(location.Address))

@@ -1,9 +1,10 @@
-﻿using CafeNet.Business_Management.Exceptions;
+﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Business_Management.Validators;
 using CafeNet.Data.Database;
 using CafeNet.Data.Enums;
+using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
 using CafeNet.Infrastructure.Pagination;
@@ -82,14 +83,16 @@ public class UserService : IUserService
     }
 
     [Loggable]
-    public async Task<PagedResult<User>> GetEmployeesAsync(int pageNumber, int pageSize)
+    public async Task<PagedResult<UserDto>> GetEmployeesAsync(int pageNumber, int pageSize)
     {
         var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN };
 
         var totalCount = await _userRepository.CountByRolesAsync(employeeRoles);
-        var items = await _userRepository.GetByRolesPagedAsync(employeeRoles, pageNumber, pageSize);
+        var users = await _userRepository.GetByRolesPagedAsync(employeeRoles, pageNumber, pageSize);
 
-        return new PagedResult<User>
+        var items = users.Select(UserMapper.ToUserDto).ToList();
+
+        return new PagedResult<UserDto>
         {
             Items = items,
             TotalCount = totalCount,

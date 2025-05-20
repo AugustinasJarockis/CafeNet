@@ -17,5 +17,19 @@ namespace CafeNet.Data.Mappers
                 LocationId = request.LocationId
             };
         }
+
+        public static UserDto ToUserDto(User user)
+        {
+            return new UserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Username = user.Username,
+                Password = user.Password,
+                Role = user.Role.ToString(),
+                LocationId = user.LocationId,
+                LocationAddress = user.Location?.Address ?? "Unassigned"
+            };
+        }
     }
 }
