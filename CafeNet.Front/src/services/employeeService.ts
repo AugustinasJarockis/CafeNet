@@ -17,6 +17,7 @@ export type User = {
   password: string;
   role: string;
   locationId: number | null;
+  locationAddress: string;
 };
 
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {

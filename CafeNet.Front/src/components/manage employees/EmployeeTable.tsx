@@ -39,6 +39,7 @@ export default function EmployeeTable({
           <TableHead>Name</TableHead>
           <TableHead>Username</TableHead>
           <TableHead>Role</TableHead>
+          <TableHead>Location</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -48,6 +49,7 @@ export default function EmployeeTable({
             <TableCell>{employee.name}</TableCell>
             <TableCell>{employee.username}</TableCell>
             <TableCell>{employee.role}</TableCell>
+            <TableCell>{employee.locationAddress}</TableCell>
             <TableCell className="text-right space-x-2">
               {employee.role !== 'ADMIN' && (
                 <Button
