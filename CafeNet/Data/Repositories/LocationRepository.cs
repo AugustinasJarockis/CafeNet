@@ -1,5 +1,6 @@
 ﻿using CafeNet.Data.Database;
 using CafeNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Data.Repositories
 {
@@ -17,6 +18,11 @@ namespace CafeNet.Data.Repositories
             _context.Locations.Add(location);
             await _context.SaveChangesAsync();
             return location;
+        }
+
+        public async Task<Location> GetByIdAsync(long id)
+        {
+            return await _context.Locations.FirstOrDefaultAsync(location => location.Id == id);
         }
 
         public bool AddressAlreadyRegistered(string address) {

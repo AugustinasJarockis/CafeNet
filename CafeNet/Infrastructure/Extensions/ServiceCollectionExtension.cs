@@ -1,7 +1,7 @@
 ﻿using CafeNet.Business_Management.Interceptors;
 using Castle.DynamicProxy;
 
-namespace CafeNet.Infrastructure.DependencyInjection;
+namespace CafeNet.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {

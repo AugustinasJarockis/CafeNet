@@ -1,7 +1,7 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Business_Management.Services;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +12,14 @@ namespace CafeNet.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public UsersController(IAuthService authService)
+        public UsersController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
+
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType<User>(StatusCodes.Status200OK)]
@@ -25,6 +28,24 @@ namespace CafeNet.Controllers
         {
             var user = await _authService.RegisterAsync(request);
             return Ok(new { message = "User created successfully", user.Id });
+        }
+
+        [HttpGet("employees")]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(PagedResult<User>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetEmployees([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _userService.GetEmployeesAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _userService.DeleteAsync(id);
+
+            return Ok(new { message = "User deleted successfully" });
         }
     }
 }

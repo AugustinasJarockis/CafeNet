@@ -13,7 +13,7 @@ using Serilog;
 using Castle.DynamicProxy;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Infrastructure.Swagger;
-using CafeNet.Infrastructure.DependencyInjection;
+using CafeNet.Infrastructure.Extensions;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -128,8 +128,8 @@ using (var scope = app.Services.CreateScope())
     if (app.Environment.IsDevelopment())
     {
         DbSeeder.SeedLocations(context, config);
-        DbSeeder.SeedAdminUser(context, config);
-        DbSeeder.SeedBaristaUser(context, config);
+        DbSeeder.SeedAdminUsers(context, config);
+        DbSeeder.SeedBaristaUsers(context, config);
     }
 }
 

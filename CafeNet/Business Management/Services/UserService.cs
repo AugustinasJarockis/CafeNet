@@ -1,10 +1,13 @@
-﻿using CafeNet.Business_Management.Exceptions;
+﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Business_Management.Validators;
 using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
+using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
+using CafeNet.Infrastructure.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services;
@@ -51,7 +54,7 @@ public class UserService : IUserService
         try
         {
             var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-            _userRepository.Delete(user);
+            _userRepository.DeleteById(user.Id);
 
             await _unitOfWork.SaveChangesAsync();
             await _unitOfWork.CommitTransactionAsync();
@@ -77,6 +80,25 @@ public class UserService : IUserService
         var user = await _userRepository.GetByUsernameAsync(username);
 
         return user ?? throw new NotFoundException();
+    }
+
+    [Loggable]
+    public async Task<PagedResult<UserDto>> GetEmployeesAsync(int pageNumber, int pageSize)
+    {
+        var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN };
+
+        var totalCount = await _userRepository.CountByRolesAsync(employeeRoles);
+        var users = await _userRepository.GetByRolesPagedAsync(employeeRoles, pageNumber, pageSize);
+
+        var items = users.Select(UserMapper.ToUserDto).ToList();
+
+        return new PagedResult<UserDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
     [Loggable]

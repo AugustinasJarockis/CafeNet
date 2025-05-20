@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +14,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { addEmployee, AddEmployeeRequest } from '@/services/employeeService';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { getLocations, Location } from '@/services/locationService';
 import { useEffect } from 'react';
 

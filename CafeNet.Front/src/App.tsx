@@ -3,8 +3,9 @@ import WelcomePage from './pages/welcome';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import AdminMenu from './pages/menu-admin';
-import CreateEmployeePage from './pages/manage employees/create-employee'
+import CreateEmployeePage from './pages/manage employees/create-employee';
 import CreateLocationPage from './pages/manage locations/create-location';
+import EmployeeListPage from './pages/manage employees/employee-list-page';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/menu-admin" element={<AdminMenu />} />
         <Route path="/locations/create" element={<CreateLocationPage />} />
         <Route path="/employees/create" element={<CreateEmployeePage />} />
+        <Route path="/employees" element={<EmployeeListPage />} />
       </Routes>
     </Router>
   );
