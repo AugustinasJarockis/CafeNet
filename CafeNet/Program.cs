@@ -13,7 +13,7 @@ using Serilog;
 using Castle.DynamicProxy;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Infrastructure.Swagger;
-using CafeNet.Infrastructure.DependencyInjection;
+using CafeNet.Infrastructure.Extensions;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()

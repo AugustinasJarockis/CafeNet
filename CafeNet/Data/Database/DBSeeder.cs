@@ -1,7 +1,10 @@
-﻿using CafeNet.Data.Database;
+﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Data.Enums;
+using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Extensions;
 
+namespace CafeNet.Data.Database;
 public static class DbSeeder
 {
     public static void SeedAdminUsers(CafeNetDbContext context, IConfiguration config)
@@ -10,11 +13,8 @@ public static class DbSeeder
 
         foreach (var adminSection in adminUsers)
         {
-            var name = adminSection["Name"];
-            var username = adminSection["Username"];
-            var password = adminSection["Password"];
-            var role = adminSection["Role"];
-            var locationAddress = adminSection.GetSection("Location")["Address"];
+            var locationAddress = adminSection.GetSection("Location")
+                                              .GetRequiredConfigValue("Address");
 
             var location = context.Locations.FirstOrDefault(l => l.Address == locationAddress);
             if (location == null)
@@ -24,18 +24,20 @@ public static class DbSeeder
                 context.SaveChanges();
             }
 
-            if (!context.Users.Any(u => u.Username == username))
+            var username = adminSection.GetRequiredConfigValue("Username");
+            if (!context.Users.Any(user => user.Username == username))
             {
-                var adminUser = new User
+                var request = new RegisterUserRequest
                 {
-                    Name = name,
+                    Name = adminSection.GetRequiredConfigValue("Name"),
                     Username = username,
-                    Password = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13),
-                    Role = Enum.Parse<UserRoles>(role),
+                    Password = adminSection.GetRequiredConfigValue("Password"),
+                    Role = Enum.Parse<UserRoles>(adminSection.GetRequiredConfigValue("Role")),
                     LocationId = location.Id
                 };
 
-                context.Users.Add(adminUser);
+                var user = UserMapper.ToUser(request);
+                context.Users.Add(user);
                 context.SaveChanges();
             }
         }
@@ -47,11 +49,7 @@ public static class DbSeeder
 
         foreach (var baristaSection in baristaUsers)
         {
-            var name = baristaSection["Name"];
-            var username = baristaSection["Username"];
-            var password = baristaSection["Password"];
-            var role = baristaSection["Role"];
-            var locationAddress = baristaSection.GetSection("Location")["Address"];
+            var locationAddress = baristaSection.GetSection("Location").GetRequiredConfigValue("Address");
 
             var location = context.Locations.FirstOrDefault(l => l.Address == locationAddress);
             if (location == null)
@@ -61,18 +59,21 @@ public static class DbSeeder
                 context.SaveChanges();
             }
 
-            if (!context.Users.Any(u => u.Username == username))
+            var username = baristaSection.GetRequiredConfigValue("Username");
+
+            if (!context.Users.Any(user => user.Username == username))
             {
-                var baristaUser = new User
+                var request = new RegisterUserRequest
                 {
-                    Name = name,
+                    Name = baristaSection.GetRequiredConfigValue("Name"),
                     Username = username,
-                    Password = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13),
-                    Role = Enum.Parse<UserRoles>(role),
+                    Password = baristaSection.GetRequiredConfigValue("Password"),
+                    Role = Enum.Parse<UserRoles>(baristaSection.GetRequiredConfigValue("Role")),
                     LocationId = location.Id
                 };
 
-                context.Users.Add(baristaUser);
+                var user = UserMapper.ToUser(request);
+                context.Users.Add(user);
                 context.SaveChanges();
             }
         }
