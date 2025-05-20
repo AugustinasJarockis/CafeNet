@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Mappings\**" />
+    <Content Remove="Data\Mappings\**" />
+    <EmbeddedResource Remove="Data\Mappings\**" />
+    <None Remove="Data\Mappings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Castle.Core" Version="5.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
@@ -31,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Mappings\" />
     <Folder Include="Logs\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
