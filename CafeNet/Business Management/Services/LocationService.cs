@@ -5,6 +5,8 @@ using CafeNet.Business_Management.Exceptions;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
+using CafeNet.Data.Enums;
+using CafeNet.Infrastructure.Pagination;
 
 namespace CafeNet.Business_Management.Services
 {
@@ -24,6 +26,23 @@ namespace CafeNet.Business_Management.Services
             if (_locationRepository.AddressAlreadyRegistered(location.Address))
                 throw new ConflictException("A location with this address already exists");
             return await _locationRepository.CreateAsync(location);
+        }
+
+        [Loggable]
+        public async Task<PagedResult<UserDto>> GetLocationsAsync(int pageNumber, int pageSize)
+        {
+            var totalCount = await _locationRepository.CountLocations();
+            var locations = await _locationRepository.GetLocations(pageNumber, pageSize);
+
+            var items = users.Select(UserMapper.ToUserDto).ToList();
+
+            return new PagedResult<UserDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
     }
 }

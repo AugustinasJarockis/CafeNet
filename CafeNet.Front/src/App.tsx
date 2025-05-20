@@ -6,6 +6,7 @@ import AdminMenu from './pages/menu-admin';
 import CreateEmployeePage from './pages/manage employees/create-employee';
 import CreateLocationPage from './pages/manage locations/create-location';
 import EmployeeListPage from './pages/manage employees/employee-list-page';
+//import LocationListPage from './pages/manage locations/location-list-page';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/locations/create" element={<CreateLocationPage />} />
         <Route path="/employees/create" element={<CreateEmployeePage />} />
         <Route path="/employees" element={<EmployeeListPage />} />
+        
       </Routes>
     </Router>
   );
