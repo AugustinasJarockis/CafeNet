@@ -1,29 +1,165 @@
 ﻿{
   "SeedData": {
-    "AdminUser": {
-      "Name": "Admin User",
-      "Username": "admin",
-      "Password": "admin123",
-      "Role": "ADMIN",
-      "Location": {
-        "Address": "123 Dev St"
+      "AdminUsers": [
+        {
+          "Name": "Admin User",
+          "Username": "admin",
+          "Password": "admin123",
+          "Role": "ADMIN",
+          "Location": {
+            "Address": "123 Dev St"
+          }
+        },
+        {
+          "Name": "Admin One",
+          "Username": "admin1",
+          "Password": "admin123",
+          "Role": "ADMIN",
+          "Location": {
+            "Address": "123 Dev St"
+          }
+        },
+        {
+          "Name": "Admin Two",
+          "Username": "admin2",
+          "Password": "admin456",
+          "Role": "ADMIN",
+          "Location": {
+            "Address": "456 Dev St"
+          }
+        },
+        {
+          "Name": "Admin Three",
+          "Username": "admin3",
+          "Password": "admin789",
+          "Role": "ADMIN",
+          "Location": {
+            "Address": "789 Admin Rd"
+          }
+        },
+        {
+          "Name": "Admin Four",
+          "Username": "admin4",
+          "Password": "securepass",
+          "Role": "ADMIN",
+          "Location": {
+            "Address": "1010 Admin Plaza"
+          }
+        },
+        {
+          "Name": "Admin Five",
+          "Username": "admin5",
+          "Password": "strongpassword",
+          "Role": "ADMIN",
+          "Location": {
+            "Address": "2020 Control Center"
+          }
+        }
+    ],
+    "BaristaUsers": [
+      {
+        "Name": "Barista User",
+        "Username": "barista",
+        "Password": "barista123",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "456 Coffee St"
+        }
+      },
+      {
+        "Name": "Barista One",
+        "Username": "barista1",
+        "Password": "barista123",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "456 Coffee St"
+        }
+      },
+      {
+        "Name": "Barista Two",
+        "Username": "barista2",
+        "Password": "barista456",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "789 Java Ln"
+        }
+      },
+      {
+        "Name": "Barista Three",
+        "Username": "barista3",
+        "Password": "barista789",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "321 Espresso Blvd"
+        }
+      },
+      {
+        "Name": "Barista Four",
+        "Username": "barista4",
+        "Password": "coffee4all",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "987 Brew Ave"
+        }
+      },
+      {
+        "Name": "Barista Five",
+        "Username": "barista5",
+        "Password": "pourperfect",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "555 Bean Street"
+        }
+      },
+      {
+        "Name": "Barista Six",
+        "Username": "barista6",
+        "Password": "steamitup",
+        "Role": "BARISTA",
+        "Location": {
+          "Address": "888 Roast Road"
+        }
       }
-    },
-    "BaristaUser": {
-      "Name": "Barista User",
-      "Username": "barista",
-      "Password": "barista123",
-      "Role": "BARISTA",
-      "Location": {
-        "Address": "456 Coffee St"
-      }
-    },
+    ],
     "Locations": [
       {
         "Address": "Vinco Kudirkos g. 15, Vilnius"
       },
       {
         "Address": "Konstitucijos pr. 29, Vilnius"
+      },
+      {
+        "Address": "123 Dev St"
+      },
+      {
+        "Address": "456 Dev St"
+      },
+      {
+        "Address": "789 Admin Rd"
+      },
+      {
+        "Address": "1010 Admin Plaza"
+      },
+      {
+        "Address": "2020 Control Center"
+      },
+      {
+        "Address": "456 Coffee St"
+      },
+      {
+        "Address": "789 Java Ln"
+      },
+      {
+        "Address": "321 Espresso Blvd"
+      },
+      {
+        "Address": "987 Brew Ave"
+      },
+      {
+        "Address": "555 Bean Street"
+      },
+      {
+        "Address": "888 Roast Road"
       }
     ]
   }

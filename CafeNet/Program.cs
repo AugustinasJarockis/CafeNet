@@ -128,8 +128,8 @@ using (var scope = app.Services.CreateScope())
     if (app.Environment.IsDevelopment())
     {
         DbSeeder.SeedLocations(context, config);
-        DbSeeder.SeedAdminUser(context, config);
-        DbSeeder.SeedBaristaUser(context, config);
+        DbSeeder.SeedAdminUsers(context, config);
+        DbSeeder.SeedBaristaUsers(context, config);
     }
 }
 

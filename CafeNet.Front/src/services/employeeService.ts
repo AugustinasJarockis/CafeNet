@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import apiClient from '@/api/apiClient';
+import { PagedResult } from '@/types/PagedResult';
 
 export type AddEmployeeRequest = {
   name: string;
@@ -17,13 +18,6 @@ export type User = {
   role: string;
   locationId: number | null;
 };
-
-export type PagedResult<T> = {
-  items: T[];
-  totalCount: number;
-  pageNumber: number;
-  pageSize: number;
-}
 
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
   try {
