@@ -17,9 +17,14 @@ namespace CafeNet.Data.Repositories
             _context.Users.Add(user);
         }
 
-        public void Delete(User user)
+        public void DeleteById(long id)
         {
-            _context.Users.Remove(user);
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+            }
         }
         public async Task<User> GetByIdAsync(long id)
         {

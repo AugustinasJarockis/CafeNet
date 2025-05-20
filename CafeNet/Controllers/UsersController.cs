@@ -19,6 +19,7 @@ namespace CafeNet.Controllers
             _authService = authService;
             _userService = userService;
         }
+
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType<User>(StatusCodes.Status200OK)]
@@ -36,6 +37,15 @@ namespace CafeNet.Controllers
         {
             var result = await _userService.GetEmployeesAsync(pageNumber, pageSize);
             return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _userService.DeleteAsync(id);
+
+            return Ok(new { message = "User deleted successfully" });
         }
     }
 }

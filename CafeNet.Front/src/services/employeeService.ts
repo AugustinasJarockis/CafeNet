@@ -47,3 +47,20 @@ export const getEmployees = async (
 
   return response.data;
 };
+
+export async function deleteEmployee(employeeId: number) {
+  try {
+    const response = await apiClient.delete(`/users/${employeeId}`);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+
+    throw new Error(message);
+  }
+}

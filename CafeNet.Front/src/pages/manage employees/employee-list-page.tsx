@@ -18,7 +18,8 @@ import {
 } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { useEmployees } from '@/hooks/useUser';
+import { useDeleteEmployee } from '@/hooks/useDeleteEmployee';
+import { useEmployees } from '@/hooks/useEmployee';
 import { User } from '@/services/employeeService';
 import { useState } from 'react';
 
@@ -26,9 +27,10 @@ export default function EmployeesPage() {
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const { data, isLoading, error } = useEmployees(page, pageSize);
+  const deleteMutation = useDeleteEmployee();
 
   const handleDelete = async (userId: number) => {
-    console.log('Editing user: ' + userId);
+    deleteMutation.mutate(userId);
   };
 
   const handleEdit = (user: User) => {
@@ -69,7 +71,9 @@ export default function EmployeesPage() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/employees/create">Create</BreadcrumbLink>
+                  <BreadcrumbLink href="/employees/create">
+                    Create
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

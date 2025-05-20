@@ -6,7 +6,7 @@ namespace CafeNet.Data.Repositories
     public interface IUserRepository
     {
         public void Add(User user);
-        public void Delete(User user);
+        public void DeleteById(long id);
         public Task<User> GetByIdAsync(long id);
         public Task<User> GetByUsernameAsync(string username);
         public Task<User> UpdateAsync(User user);

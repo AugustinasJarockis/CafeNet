@@ -54,7 +54,7 @@ public class UserService : IUserService
         try
         {
             var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-            _userRepository.Delete(user);
+            _userRepository.DeleteById(user.Id);
 
             await _unitOfWork.SaveChangesAsync();
             await _unitOfWork.CommitTransactionAsync();
