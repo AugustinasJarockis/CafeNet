@@ -70,7 +70,7 @@ const data = {
         },
         {
           title: 'Add tax',
-          url: '#',
+          url: '/taxes/create',
         },
         {
           title: 'See the tax list',

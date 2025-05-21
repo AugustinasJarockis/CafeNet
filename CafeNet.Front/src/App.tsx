@@ -7,6 +7,7 @@ import ClientMenu from './pages/menu-client';
 import CreateEmployeePage from './pages/manage employees/create-employee';
 import CreateLocationPage from './pages/manage locations/create-location';
 import EmployeeListPage from './pages/manage employees/employee-list-page';
+import CreateTaxPage from './pages/manage taxes/create-tax';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/locations/create" element={<CreateLocationPage />} />
         <Route path="/employees/create" element={<CreateEmployeePage />} />
         <Route path="/employees" element={<EmployeeListPage />} />
+        <Route path="/taxes/create" element={<CreateTaxPage />} />
       </Routes>
     </Router>
   );

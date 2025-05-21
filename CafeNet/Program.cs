@@ -111,10 +111,12 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ITaxRepository, TaxRepository>();
 
 builder.Services.AddInterceptedService<IAuthService, AuthService>();
 builder.Services.AddInterceptedService<IUserService, UserService>();
 builder.Services.AddInterceptedService<ILocationService, LocationService>();
+builder.Services.AddInterceptedService<ITaxService, TaxService>();
 
 var app = builder.Build();
 
