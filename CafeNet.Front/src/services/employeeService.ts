@@ -20,6 +20,21 @@ export type User = {
   locationAddress: string;
 };
 
+export async function getUserById(userId: number): Promise<User> {
+  try {
+    const response = await apiClient.get(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
+  }
+}
+
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
   try {
     const response = await apiClient.post('/users', addEmployeeRequest);
@@ -55,6 +70,29 @@ export const getEmployeesByLocation = async (locationId: number): Promise<User[]
 
   return response.data; 
 };
+
+export async function updateUser(
+  userId: number,
+  data: {
+    name?: string;
+    username?: string;
+    password?: string;
+    locationId?: number;
+  }
+) {
+  try {
+    const response = await apiClient.put(`/users/${userId}`, data);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
+  }
+}
 
 export async function deleteEmployee(employeeId: number) {
   try {
