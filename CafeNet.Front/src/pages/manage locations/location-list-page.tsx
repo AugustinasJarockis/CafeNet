@@ -18,12 +18,9 @@ import {
 } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { useDeleteEmployee } from '@/hooks/useDeleteEmployee';
-import { useEmployees } from '@/hooks/useEmployee';
 import { useDeleteLocation } from '@/hooks/useDeleteLocation';
 import { useLocations } from '@/hooks/useLocations';
 import { Location } from '@/services/locationService';
-import { User } from '@/services/employeeService';
 import { useState } from 'react';
 
 export default function LocationsPage() {
@@ -84,7 +81,7 @@ export default function LocationsPage() {
         </header>
         <div className="p-6">
           {isLoading && <p>Loading...</p>}
-          {error && <p>Error loading employees</p>}
+          {error && <p>Error loading locations</p>}
 
           {data && (
             <>
