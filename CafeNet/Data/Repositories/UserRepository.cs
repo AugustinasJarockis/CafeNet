@@ -61,12 +61,19 @@ namespace CafeNet.Data.Repositories
                                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<User>> GetUsersByLocationIdAsync(long locationId)
+        public async Task<IEnumerable<User>> GetEmployeesByLocationIdAsync(IEnumerable<UserRoles> roles, long locationId)
         {
             return await _context.Users
                 .Include(u => u.Location)
-                .Include(u => u.Credit)
-                .Where(u => u.LocationId == locationId)
+                .Where(u => u.LocationId == locationId && roles.Contains(u.Role))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetByLocationIdAndRolesAsync(IEnumerable<UserRoles> roles, long locationId)
+        {
+            return await _context.Users
+                .Include(u => u.Location)
+                .Where(u => u.LocationId == locationId && roles.Contains(u.Role))
                 .ToListAsync();
         }
 

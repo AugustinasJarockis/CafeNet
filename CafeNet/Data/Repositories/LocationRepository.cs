@@ -27,6 +27,14 @@ namespace CafeNet.Data.Repositories
             return await _context.Locations.FirstOrDefaultAsync(location => location.Id == id);
         }
 
+        public async Task<Location?> GetFirstLocationExceptAsync(long excludedLocationId)
+        {
+            return await _context.Locations
+                .Where(l => l.Id != excludedLocationId)
+                .OrderBy(l => l.Id)
+                .FirstOrDefaultAsync();
+        }
+
         public bool AddressAlreadyRegistered(string address) {
             return _context.Locations.Any(location => location.Address == address);
         }

@@ -10,7 +10,7 @@ namespace CafeNet.Data.Repositories
         public bool AddressAlreadyRegistered(string address);
         public Task<IEnumerable<Location>> GetLocationsPagedAsync(int pageNumber, int pageSize);
         public Task<int> CountLocationsAsync();
-
+        public Task<Location?> GetFirstLocationExceptAsync(long excludedLocationId);
         public void DeleteById(long id);
     }
 }

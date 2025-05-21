@@ -11,10 +11,18 @@ using CafeNet.Data.Database;
 
 namespace CafeNet.Business_Management.Services
 {
-    public class LocationService(ILocationRepository locationRepository, IUnitOfWork unitOfWork) : ILocationService
+    public class LocationService : ILocationService
     {
-        private readonly ILocationRepository _locationRepository = locationRepository;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILocationRepository _locationRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        
+        public LocationService(ILocationRepository locationRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+        {
+            _locationRepository = locationRepository;
+            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
+        }
 
         [Loggable]
         public List<Location> GetAll ()
@@ -54,6 +62,20 @@ namespace CafeNet.Business_Management.Services
             try
             {
                 var location = await _locationRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+
+                var fallbackLocation = await _locationRepository.GetFirstLocationExceptAsync(id);
+
+                if (fallbackLocation == null)
+                    throw new InvalidOperationException("No other location available to reassign clients.");
+
+                var employeeRoles = new[] { UserRoles.CLIENT };
+                var clients = await _userRepository.GetByLocationIdAndRolesAsync(employeeRoles, id);
+
+                foreach (var client in clients)
+                {
+                    client.LocationId = fallbackLocation.Id;
+                }
+
                 _locationRepository.DeleteById(location.Id);
 
                 await _unitOfWork.SaveChangesAsync();

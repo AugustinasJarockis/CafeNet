@@ -75,6 +75,14 @@ public class UserService : IUserService
     }
 
     [Loggable]
+    public async Task<IEnumerable<User>> GetEmployeesByLocation(long id)
+    {
+        var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN };
+
+        return await _userRepository.GetEmployeesByLocationIdAsync(employeeRoles, id);
+    }
+
+    [Loggable]
     public async Task<User> GetByUsernameAsync(string username)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
