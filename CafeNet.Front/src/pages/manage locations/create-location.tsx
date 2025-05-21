@@ -12,6 +12,7 @@ import {
 import { AddLocationForm } from "@/components/manage locations/add-location-form"
 
 export default function CreateLocationPage() {
+
   return (
     <SidebarProvider>
       <AppSidebar />

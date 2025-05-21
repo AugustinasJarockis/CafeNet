@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Command, Settings2, Users, MapPin, Package } from 'lucide-react';
+import { Command, Users, MapPin, Package } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -86,17 +86,21 @@ const data = {
         },
       ],
     },
-    {
-      title: 'Manage account',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'See account information',
-          url: '#',
-        },
-      ],
-    },
+    // {
+    //   title: 'Manage account',
+    //   url: '#',
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: 'See account information',
+    //       url: '/account',
+    //     },
+    //     {
+    //       title: 'Edit account',
+    //       url: '/account/edit',
+    //     },
+    //   ],
+    // },
   ],
 };
 

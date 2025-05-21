@@ -39,15 +39,7 @@ export function LoginForm({
         setError(response.message);
         return;
       }
-
-      const decoded = jwtDecode<DecodedToken>(response.token);
-      const role = decoded.role;
-
-      if (role === 'ADMIN') {
-        navigate('/menu-admin');
-      } else {
-        navigate('/Welcome');
-      }
+      navigate('/menu-admin');
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'An unexpected error occurred.'
