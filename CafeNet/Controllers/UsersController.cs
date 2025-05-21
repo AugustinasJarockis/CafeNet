@@ -1,5 +1,6 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Utility;
 using CafeNet.Data.Models;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
@@ -41,8 +42,14 @@ namespace CafeNet.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(PagedResult<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(long id)
         {
+            if (TokenHandler.GetUserId(HttpContext.Request.Headers.Authorization) == id)
+                return Forbid();
+
             await _userService.DeleteAsync(id);
 
             return Ok(new { message = "User deleted successfully" });
