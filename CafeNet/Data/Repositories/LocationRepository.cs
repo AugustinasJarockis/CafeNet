@@ -1,6 +1,8 @@
 ﻿using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CafeNet.Data.Repositories
 {
@@ -28,5 +30,29 @@ namespace CafeNet.Data.Repositories
         public bool AddressAlreadyRegistered(string address) {
             return _context.Locations.Any(location => location.Address == address);
         }
+
+        public async Task<IEnumerable<Location>> GetLocationsPagedAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Locations
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
+        }
+
+        public async Task<int> CountLocationsAsync()
+        {
+            return await _context.Locations.CountAsync();
+        }
+
+        public void DeleteById(long id)
+        {
+            var location = _context.Locations.FirstOrDefault(u => u.Id == id);
+            if (location != null)
+            {
+                _context.Locations.Remove(location);
+                _context.SaveChanges();
+            }
+        }
+
     }
 }

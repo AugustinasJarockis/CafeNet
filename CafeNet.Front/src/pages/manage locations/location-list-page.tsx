@@ -20,21 +20,24 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useDeleteEmployee } from '@/hooks/useDeleteEmployee';
 import { useEmployees } from '@/hooks/useEmployee';
+import { useDeleteLocation } from '@/hooks/useDeleteLocation';
+import { useLocations } from '@/hooks/useLocations';
+import { Location } from '@/services/locationService';
 import { User } from '@/services/employeeService';
 import { useState } from 'react';
 
 export default function LocationsPage() {
   const [page, setPage] = useState(1);
   const pageSize = 8;
-  const { data, isLoading, error } = useEmployees(page, pageSize);
-  const deleteMutation = useDeleteEmployee();
+  const { data, isLoading, error } = useLocations(page, pageSize);
+  const deleteMutation = useDeleteLocation();
 
-  const handleDelete = async (userId: number) => {
-    deleteMutation.mutate(userId);
+  const handleDelete = async (locationId: number) => {
+    deleteMutation.mutate(locationId);
   };
 
-  const handleEdit = (user: User) => {
-    console.log('Editing location: ' + user);
+  const handleEdit = (location: Location) => {
+    console.log('Editing location: ' + location);
   };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;

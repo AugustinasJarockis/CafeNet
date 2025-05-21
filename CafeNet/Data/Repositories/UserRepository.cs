@@ -12,6 +12,7 @@ namespace CafeNet.Data.Repositories
         {
             _context = context;
         }
+
         public void Add(User user)
         {
             _context.Users.Add(user);
@@ -26,6 +27,7 @@ namespace CafeNet.Data.Repositories
                 _context.SaveChanges();
             }
         }
+
         public async Task<User> GetByIdAsync(long id)
         {
             return await _context.Users
@@ -33,6 +35,7 @@ namespace CafeNet.Data.Repositories
                 .Include(u => u.Credit)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
+
         public async Task<User> GetByUsernameAsync(string username)
         {
             return await _context.Users
@@ -40,6 +43,7 @@ namespace CafeNet.Data.Repositories
                 .Include(u => u.Credit)
                 .FirstOrDefaultAsync(u => u.Username == username);
         }
+
         public async Task<User> UpdateAsync(User user)
         {
             _context.Users.Update(user);
@@ -57,16 +61,25 @@ namespace CafeNet.Data.Repositories
                                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<User>> GetUsersByLocationIdAsync(long locationId)
+        {
+            return await _context.Users
+                .Include(u => u.Location)
+                .Include(u => u.Credit)
+                .Where(u => u.LocationId == locationId)
+                .ToListAsync();
+        }
+
         public async Task<int> CountByRolesAsync(IEnumerable<UserRoles> roles)
         {
             return await _context.Users.CountAsync(u => roles.Contains(u.Role));
         }
 
-
         public async Task<bool> UsernameExistsAsync(string username)
         {
             return await _context.Users.AnyAsync(u => u.Username == username);
         }
+
         public bool AnyUserUsernameDuplicate(string username)
         {
             return _context.Users

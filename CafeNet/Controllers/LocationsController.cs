@@ -45,10 +45,19 @@ namespace CafeNet.Controllers
         [HttpGet("locationsList")]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType(typeof(PagedResult<Location>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetEmployees([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetLocations([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _locationService(pageNumber, pageSize);
+            var result = await _locationService.GetLocationsAsync(pageNumber, pageSize);
             return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _locationService.DeleteAsync(id);
+
+            return Ok(new { message = "Location deleted successfully" });
         }
     }
 }
