@@ -130,6 +130,7 @@ using (var scope = app.Services.CreateScope())
         DbSeeder.SeedLocations(context, config);
         DbSeeder.SeedAdminUsers(context, config);
         DbSeeder.SeedBaristaUsers(context, config);
+        DbSeeder.SeedCustomers(context, config);
     }
 }
 
