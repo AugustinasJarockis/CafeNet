@@ -1,20 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { Command, Settings2, Users, Clock, Package } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { TeamSwitcher } from '@/components/team-switcher';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { useQuery } from '@tanstack/react-query';
-import { getLocations } from '@/services/locationService';
 
 // This is sample data.
 const data = {
