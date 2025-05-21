@@ -2,6 +2,6 @@
 {
     public class CreateLocationRequest
     {
-        public string Address { get; set; }
+        public required string Address { get; set; }
     }
 }

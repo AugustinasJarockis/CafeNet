@@ -13,29 +13,30 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
-import { createLocation, CreateLocationRequest } from '@/services/locationService';
+import { createTax, CreateTaxRequest } from '@/services/taxService';
 
-export function AddLocationForm({
+export function AddTaxForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
   const navigate = useNavigate();
 
-  const [address, setAddress] = useState('');
+  const [type, setType] = useState('');
+  const [percent, setPercent] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (data: CreateLocationRequest) => createLocation(data),
+    mutationFn: (data: CreateTaxRequest) => createTax(data),
     onSuccess: () => {
       navigate('/menu-admin');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Failed to register location.');
+        setError(err.response?.data?.message || 'Failed to create tax.');
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('Failed to register location.');
+        setError('Failed to create tax.');
       }
     },
   });
@@ -44,8 +45,9 @@ export function AddLocationForm({
     e.preventDefault();
     setError(null);
 
-    const payload: CreateLocationRequest = {
-      address
+    const payload: CreateTaxRequest = {
+      type,
+      percent
     };
 
     mutation.mutate(payload);
@@ -55,9 +57,9 @@ export function AddLocationForm({
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Register New Location</CardTitle>
+          <CardTitle>Create New Tax</CardTitle>
           <CardDescription>
-            Provide the address of a new location.
+            Provide the information of the new tax.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -65,13 +67,26 @@ export function AddLocationForm({
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
-                <Label htmlFor="address">Address</Label>
+                <Label htmlFor="type">Type</Label>
                 <Input
-                  id="address"
+                  id="type"
                   type="text"
-                  placeholder="Imaginary st. 123"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="VAT"
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="grid gap-3">
+                <Label htmlFor="percent">Percent</Label>
+                <Input
+                  id="percent"
+                  type="number"
+                  min="0"
+                  placeholder="10"
+                  value={percent}
+                  onChange={(e) => setPercent(parseInt(e.target.value))}
                   required
                 />
               </div>
@@ -81,7 +96,7 @@ export function AddLocationForm({
                 className="w-full"
                 disabled={mutation.isPending}
               >
-                {mutation.isPending ? 'Adding...' : 'Add Location'}
+                {mutation.isPending ? 'Creating...' : 'Create Tax'}
               </Button>
             </div>
           </form>
