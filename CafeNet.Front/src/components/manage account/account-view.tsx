@@ -21,7 +21,7 @@ export default function AccountView({
                     <div className="mb-4">
                         <strong>Username:</strong> {user.username}
                     </div>
-                    {user.role === 'CUSTOMER' && (
+                    {user.role === 'CLIENT' && (
                         <div className="mb-4">
                         <strong>Location:</strong> {user.locationAddress}
                         </div>

@@ -4,15 +4,21 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { getLocations, Location } from '@/services/locationService';
-import { updateUser, User } from '@/services/employeeService';
+import { UserRole } from '@/types/user/UserRoles';
+import { User } from '@/services/employeeService';
+import { useUpdateCurrentUser } from '@/hooks/useUpdateCurrentUser';
 
 interface EditAccountFormProps {
   user: User;
-  role: 'ADMIN' | 'BARISTA' | 'CUSTOMER';
+  role: UserRole;
   onSuccess?: () => void;
 }
 
-export function EditAccountForm({ user, role, onSuccess }: EditAccountFormProps) {
+export function EditAccountForm({
+  user,
+  role,
+  onSuccess,
+}: EditAccountFormProps) {
   const [name, setName] = useState(user.name);
   const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState('');
@@ -21,32 +27,36 @@ export function EditAccountForm({ user, role, onSuccess }: EditAccountFormProps)
   const [locations, setLocations] = useState<Location[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const { mutate, isPending } = useUpdateCurrentUser();
+
   useEffect(() => {
-    if (role === 'CUSTOMER') {
+    if (role === 'CLIENT') {
       getLocations().then(setLocations);
     }
   }, [role]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
     if (password && password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
-    try {
-      await updateUser(user.id, {
+    mutate(
+      {
         name,
         username,
         password: password || undefined,
-        locationId: role === 'CUSTOMER' ? Number(locationId) : undefined,
-      });
-      onSuccess?.();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update user.');
-    }
+        locationId: role === 'CLIENT' ? Number(locationId) : undefined,
+        version: String(user.version), // 💡 Make sure version is a string
+      },
+      {
+        onSuccess: () => {
+          onSuccess?.();
+        },
+      }
+    );
   };
 
   return (
@@ -59,11 +69,21 @@ export function EditAccountForm({ user, role, onSuccess }: EditAccountFormProps)
           {error && <p className="text-red-500">{error}</p>}
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input id="name" value={name} onChange={e => setName(e.target.value)} required />
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
           <div>
             <Label htmlFor="username">Username</Label>
-            <Input id="username" value={username} onChange={e => setUsername(e.target.value)} required />
+            <Input
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
@@ -71,7 +91,7 @@ export function EditAccountForm({ user, role, onSuccess }: EditAccountFormProps)
               id="password"
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Leave blank to keep current password"
             />
           </div>
@@ -82,23 +102,23 @@ export function EditAccountForm({ user, role, onSuccess }: EditAccountFormProps)
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
           )}
-          {role === 'CUSTOMER' && (
+          {role === 'CLIENT' && (
             <div>
               <Label htmlFor="location">Location</Label>
               <select
                 id="location"
                 value={locationId}
-                onChange={e => setLocationId(e.target.value)}
+                onChange={(e) => setLocationId(e.target.value)}
                 className="border p-2 rounded-md w-full"
                 required
               >
                 <option value="">Select a location</option>
-                {locations.map(loc => (
+                {locations.map((loc) => (
                   <option key={loc.id} value={loc.id}>
                     {loc.address}
                   </option>
@@ -106,8 +126,8 @@ export function EditAccountForm({ user, role, onSuccess }: EditAccountFormProps)
               </select>
             </div>
           )}
-          <Button type="submit" className="w-full">
-            Save Changes
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? 'Saving...' : 'Save Changes'}
           </Button>
         </form>
       </CardContent>

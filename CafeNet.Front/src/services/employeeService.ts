@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import apiClient from '@/api/apiClient';
 import { PagedResult } from '@/types/PagedResult';
+import { UpdateUserPayload } from '@/types/user/UpdateUserPayload';
 
 export type AddEmployeeRequest = {
   name: string;
@@ -18,11 +19,12 @@ export type User = {
   role: string;
   locationId: number | null;
   locationAddress: string;
+  version: string;
 };
 
-export async function getUserById(userId: number): Promise<User> {
+export const getCurrentUser = async (): Promise<User> => {
   try {
-    const response = await apiClient.get(`/users/${userId}`);
+    const response = await apiClient.get('/users/profile');
     return response.data;
   } catch (error) {
     let message = 'An unexpected error occurred.';
@@ -33,7 +35,24 @@ export async function getUserById(userId: number): Promise<User> {
     }
     throw new Error(message);
   }
-}
+};
+
+export const updateCurrentUser = async (
+  data: UpdateUserPayload
+): Promise<User> => {
+  try {
+    const response = await apiClient.patch('/users', data);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
+  }
+};
 
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
   try {
@@ -63,36 +82,15 @@ export const getEmployees = async (
   return response.data;
 };
 
-export const getEmployeesByLocation = async (locationId: number): Promise<User[]> => {
+export const getEmployeesByLocation = async (
+  locationId: number
+): Promise<User[]> => {
   const response = await apiClient.get('/users/employeesByLocation', {
     params: { locationId },
   });
 
-  return response.data; 
+  return response.data;
 };
-
-export async function updateUser(
-  userId: number,
-  data: {
-    name?: string;
-    username?: string;
-    password?: string;
-    locationId?: number;
-  }
-) {
-  try {
-    const response = await apiClient.put(`/users/${userId}`, data);
-    return response.data;
-  } catch (error) {
-    let message = 'An unexpected error occurred.';
-    if (error instanceof AxiosError && error.response?.data?.message) {
-      message = error.response.data.message;
-    } else if (error instanceof Error) {
-      message = error.message;
-    }
-    throw new Error(message);
-  }
-}
 
 export async function deleteEmployee(employeeId: number) {
   try {

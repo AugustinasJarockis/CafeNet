@@ -62,6 +62,16 @@ namespace CafeNet.Controllers
             return Ok(result);
         }
 
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> GetOwnProfile()
+        {
+            var currentUserId = HttpContext.GetUserId();
+
+            var result = await _userService.GetByIdAsync(currentUserId);
+            return Ok(result);
+        }
+
         [HttpGet("employeesByLocation")]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]

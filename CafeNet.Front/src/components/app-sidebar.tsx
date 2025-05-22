@@ -15,14 +15,10 @@ import {
 } from '@/components/ui/sidebar';
 import { useQuery } from '@tanstack/react-query';
 import { getLocations } from '@/services/locationService';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 // This is sample data.
 const data = {
-  user: {
-    name: 'user',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
   navMain: [
     {
       title: 'Manage employees',
@@ -86,28 +82,14 @@ const data = {
         },
       ],
     },
-    // {
-    //   title: 'Manage account',
-    //   url: '#',
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: 'See account information',
-    //       url: '/account',
-    //     },
-    //     {
-    //       title: 'Edit account',
-    //       url: '/account/edit',
-    //     },
-    //   ],
-    // },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: user } = useCurrentUser();
   const {
     data: locations,
-    isLoading,
+    isLoading: isLocationLoading,
     isError,
   } = useQuery({
     queryKey: ['locations'],
@@ -128,7 +110,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <TeamSwitcher teams={mapped_locations} />
         ) : (
           <div className="px-4 py-2 text-sm text-muted-foreground">
-            {isLoading
+            {isLocationLoading
               ? 'Loading locations...'
               : isError
                 ? 'Failed to load locations'
@@ -140,7 +122,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser
+          user={{
+            name: user?.name ?? '',
+            email: user?.username ?? '',
+            avatar: '/avatars/shadcn.jpg',
+          }}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

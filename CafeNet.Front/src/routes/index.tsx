@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { UserRole } from '../types/UserRoles';
+import { UserRole } from '../types/user/UserRoles';
 import LoginPage from '@/pages/login';
 import AccountPage from '@/pages/manage account/account';
 import EditAccountPage from '@/pages/manage account/edit-account';

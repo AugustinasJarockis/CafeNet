@@ -1,6 +1,4 @@
-﻿using CafeNet.Data.Enums;
-
-namespace CafeNet.Business_Management.DTOs;
+﻿namespace CafeNet.Business_Management.DTOs;
 
 public class UserDto
 {
