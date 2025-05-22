@@ -50,20 +50,8 @@ public class UserService : IUserService
     [Loggable]
     public async Task DeleteAsync(long id)
     {
-        await _unitOfWork.BeginTransactionAsync();
-        try
-        {
-            var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-            _userRepository.DeleteById(user.Id);
-
-            await _unitOfWork.SaveChangesAsync();
-            await _unitOfWork.CommitTransactionAsync();
-        }
-        catch
-        {
-            await _unitOfWork.RollbackTransactionAsync();
-            throw;
-        }
+        var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+        _userRepository.DeleteById(user.Id);
     }
 
     [Loggable]

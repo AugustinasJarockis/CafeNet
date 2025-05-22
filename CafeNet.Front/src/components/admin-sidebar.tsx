@@ -82,7 +82,7 @@ const data = {
         },
         {
           title: 'See the discount list',
-          url: '#',
+          url: '/discounts',
         },
       ],
     },
