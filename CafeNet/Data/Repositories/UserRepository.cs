@@ -67,10 +67,5 @@ namespace CafeNet.Data.Repositories
         {
             return await _context.Users.AnyAsync(u => u.Username == username);
         }
-        public bool AnyUserUsernameDuplicate(string username)
-        {
-            return _context.Users
-                .Any(u => u.Username == username);
-        }
     }
 }

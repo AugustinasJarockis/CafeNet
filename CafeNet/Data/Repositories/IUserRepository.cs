@@ -13,6 +13,5 @@ namespace CafeNet.Data.Repositories
         public Task<IEnumerable<User>> GetByRolesPagedAsync(IEnumerable<UserRoles> roles, int pageNumber, int pageSize);
         public Task<int> CountByRolesAsync(IEnumerable<UserRoles> roles);
         public Task<bool> UsernameExistsAsync(string username);
-        public bool AnyUserUsernameDuplicate(string username);
     }
 }
