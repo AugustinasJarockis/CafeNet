@@ -3,7 +3,7 @@ import { Command } from 'lucide-react'
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar'
 import { useQuery } from '@tanstack/react-query'
 import { getCurrentUserLocation } from '@/services/employeeService'
-import type { Location } from '@/services/employeeService'
+import type { Location } from '@/services/locationService'
 
 export function BaristaLocation() {
   const { data: location, isLoading, isError } = useQuery<Location>({
