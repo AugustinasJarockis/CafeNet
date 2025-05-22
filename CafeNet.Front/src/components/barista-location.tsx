@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import { Command } from 'lucide-react'
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar'
 import { useQuery } from '@tanstack/react-query'
