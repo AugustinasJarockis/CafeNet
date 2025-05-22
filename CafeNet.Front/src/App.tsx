@@ -10,6 +10,7 @@ import CreateLocationPage from './pages/manage locations/create-location';
 import EmployeeListPage from './pages/manage employees/employee-list-page';
 import LocationListPage from './pages/manage locations/location-list-page';
 import CreateTaxPage from './pages/manage taxes/create-tax';
+import CreateDiscountPage from './pages/manage discounts/create-discount';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/employees" element={<EmployeeListPage />} />
         <Route path="/locations" element={<LocationListPage />} />
         <Route path="/taxes/create" element={<CreateTaxPage />} />
+        <Route path="/discounts/create" element={<CreateDiscountPage />} />
       </Routes>
     </Router>
   );

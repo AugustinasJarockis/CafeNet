@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { register, RegisterRequest } from '@/services/authService';
+import { getLocations, Location } from '@/services/locationService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +23,27 @@ export function RegisterForm({
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [locationId, setLocationId] = useState('');
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
+
+useEffect(() => {
+  const fetchLocations = async () => {
+    try {
+      const res = await getLocations(); 
+      setLocations(res);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch locations:', error);
+      setIsError(true);
+      setIsLoading(false);
+    }
+  };
+
+  fetchLocations();
+}, []);
 
   const handleRegister = async (
     event: React.SyntheticEvent<HTMLFormElement>
@@ -34,6 +56,7 @@ export function RegisterForm({
         name,
         username,
         password,
+        locationId,
       };
 
       const response = await register(registerRequest as RegisterRequest);
@@ -80,6 +103,29 @@ export function RegisterForm({
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
+              </div>
+              <div className="grid gap-3">
+              <Label htmlFor="locationId">Location</Label>
+                {isLoading ? (
+                  <p>Loading locations...</p>
+                ) : isError ? (
+                  <p className="text-red-500">Failed to load locations</p>
+                ) : (
+                  <select
+                    id="locationId"
+                    value={locationId}
+                    onChange={(e) => setLocationId(e.target.value)}
+                    className="border p-2 rounded-md"
+                    required
+                  >
+                    <option value="">Select a location</option>
+                    {locations.map((loc) => (
+                      <option key={loc.id} value={loc.id}>
+                        {loc.address}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Password</Label>
