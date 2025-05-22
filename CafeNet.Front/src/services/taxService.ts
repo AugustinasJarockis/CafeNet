@@ -40,3 +40,7 @@ export const getTaxes = async (): Promise<Tax[]> => {
     const response = await apiClient.get<Tax[]>('/taxes');
     return response.data;
 };
+
+export const deleteTax = async (id: number) => {
+  await apiClient.delete(`/taxes/${id}`);
+};

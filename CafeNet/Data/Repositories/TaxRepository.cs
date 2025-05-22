@@ -1,5 +1,6 @@
 ﻿using CafeNet.Data.Database;
 using CafeNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Data.Repositories
 {
@@ -19,6 +20,20 @@ namespace CafeNet.Data.Repositories
         public List<Tax> GetTaxes()
         {
             return [.._context.Taxes];
+        }
+        public async Task<Tax> GetByIdAsync(long id)
+        {
+            return await _context.Taxes
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+        public void DeleteById(long id)
+        {
+            var tax = _context.Taxes.FirstOrDefault(u => u.Id == id);
+            if (tax != null)
+            {
+                _context.Taxes.Remove(tax);
+                _context.SaveChanges();
+            }
         }
     }
 }

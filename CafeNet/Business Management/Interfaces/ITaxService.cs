@@ -7,5 +7,6 @@ namespace CafeNet.Business_Management.Interfaces
     {
         Task<Tax> CreateAsync(CreateTaxRequest request);
         List<Tax> GetAll();
+        Task DeleteAsync(long id);
     }
 }
