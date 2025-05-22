@@ -28,7 +28,7 @@ public class UserService : IUserService
     [Loggable]
     public async Task<User> CreateAsync(User user)
     {
-        ValidateUserSignUpConflicts(user);
+        await ValidateUserSignUpConflicts(user);
 
         await _unitOfWork.BeginTransactionAsync();
         try
@@ -123,18 +123,18 @@ public class UserService : IUserService
     }
 
     [Loggable]
-    private void ValidateUserSignUpConflicts(User createUserRequest)
+    private async Task ValidateUserSignUpConflicts(User createUserRequest)
     {
 
-        if (IsUsernameUsed(createUserRequest.Username))
+        if (await IsUsernameUsed(createUserRequest.Username))
         {
             throw new ConflictException("This username is already in use.");
         }
     }
 
     [Loggable]
-    private bool IsUsernameUsed(string username)
+    private async Task<bool> IsUsernameUsed(string username)
     {
-        return _userRepository.AnyUserUsernameDuplicate(username);
+        return await _userRepository.UsernameExistsAsync(username);
     }
 }
