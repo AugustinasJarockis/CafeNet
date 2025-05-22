@@ -14,5 +14,7 @@ namespace CafeNet.Data.Repositories
         public Task<int> CountByRolesAsync(IEnumerable<UserRoles> roles);
         public Task<bool> UsernameExistsAsync(string username);
         public bool AnyUserUsernameDuplicate(string username);
+        public Task<IEnumerable<User>> GetEmployeesByLocationIdAsync(IEnumerable<UserRoles> roles, long locationId);
+        public Task<IEnumerable<User>> GetByLocationIdAndRolesAsync(IEnumerable<UserRoles> roles, long locationId);
     }
 }
