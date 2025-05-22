@@ -35,13 +35,13 @@ namespace CafeNet.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "CLIENT,BARISTA,ADMIN")]
-        [ProducesResponseType<User>(StatusCodes.Status200OK)]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(IEnumerable<Location>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             return Ok(_locationService.GetAll());
         }
-
+        
         [HttpGet("locationsList")]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType(typeof(PagedResult<Location>), StatusCodes.Status200OK)]
