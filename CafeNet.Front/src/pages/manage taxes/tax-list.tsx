@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/admin-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import TaxTable from "@/components/manage taxes/tax-table";
 import { Separator } from "@radix-ui/react-separator";
