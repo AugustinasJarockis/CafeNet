@@ -13,5 +13,5 @@ public interface IUserService
     Task<User> UpdateAsync(User user);
     Task DeleteAsync(long id);
     Task<string> GetUserLocationAddressAsync(long userId);
-
+    public Task<IEnumerable<User>> GetEmployeesByLocation(long id);
 }
