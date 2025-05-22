@@ -40,6 +40,16 @@ namespace CafeNet.Controllers
             return Ok(result);
         }
 
+        [HttpGet("employeesByLocation")]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetEmployeesByLocation([FromQuery(Name = "locationId")] long locationId)
+        {
+            var result = await _userService.GetEmployeesByLocation(locationId);
+            return Ok(result);
+        }
+
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType(typeof(PagedResult<User>), StatusCodes.Status200OK)]

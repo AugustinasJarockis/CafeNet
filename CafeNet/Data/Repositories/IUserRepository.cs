@@ -13,5 +13,7 @@ namespace CafeNet.Data.Repositories
         public Task<IEnumerable<User>> GetByRolesPagedAsync(IEnumerable<UserRoles> roles, int pageNumber, int pageSize);
         public Task<int> CountByRolesAsync(IEnumerable<UserRoles> roles);
         public Task<bool> UsernameExistsAsync(string username);
+        public Task<IEnumerable<User>> GetEmployeesByLocationIdAsync(IEnumerable<UserRoles> roles, long locationId);
+        public Task<IEnumerable<User>> GetByLocationIdAndRolesAsync(IEnumerable<UserRoles> roles, long locationId);
     }
 }

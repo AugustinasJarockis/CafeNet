@@ -51,7 +51,7 @@ const data = {
         },
         {
           title: 'See the locations list',
-          url: '#',
+          url: '/locations',
         },
       ],
     },
