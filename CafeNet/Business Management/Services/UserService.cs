@@ -129,4 +129,16 @@ public class UserService : IUserService
     {
         return _userRepository.AnyUserUsernameDuplicate(username);
     }
+
+    [Loggable]
+    public async Task<string> GetUserLocationAddressAsync(long Id)
+    {
+        var user = await _userRepository.GetByIdAsync(Id);
+
+        if (user?.Location == null)
+            throw new NotFoundException("User location not found");
+
+        return user.Location.Address;
+    }
+
 }

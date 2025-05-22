@@ -1,4 +1,5 @@
 ﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Utility;
 using CafeNet.Data.Models;
@@ -54,5 +55,25 @@ namespace CafeNet.Controllers
 
             return Ok(new { message = "User deleted successfully" });
         }
+
+        [HttpGet("User/location")]
+        [Authorize(Roles = "BARISTA")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCurrentUserLocation()
+        {
+            var userId = TokenHandler.GetUserId(Request.Headers.Authorization);
+
+            try
+            {
+                var locationAddress = await _userService.GetUserLocationAddressAsync(userId);
+                return Ok(locationAddress);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound("Location not found for the current user");
+            }
+        }
+
     }
 }

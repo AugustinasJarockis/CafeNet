@@ -64,3 +64,21 @@ export async function deleteEmployee(employeeId: number) {
     throw new Error(message);
   }
 }
+
+export async function getCurrentUserLocation(): Promise<string> {
+  try {
+    const response = await apiClient.get('/users/User/location')
+    return response.data
+  } catch (error) {
+    let message = 'Failed to fetch user location.'
+
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message
+    } else if (error instanceof Error) {
+      message = error.message
+    }
+
+    throw new Error(message)
+  }
+}
+
