@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/admin-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AddEmployeeForm } from "@/components/manage employees/add-employee-form"
 import { Separator } from "@/components/ui/separator"

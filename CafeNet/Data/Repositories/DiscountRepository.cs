@@ -1,6 +1,8 @@
 ﻿using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CafeNet.Data.Repositories
 {
@@ -21,5 +23,33 @@ namespace CafeNet.Data.Repositories
         public async Task<bool> CodeExistsAsync(string code) {
             return await _context.Discounts.AnyAsync(d => d.Code == code);
         }
+
+        public async Task<Discount> GetByIdAsync(long id)
+        {
+            return await _context.Discounts.FirstOrDefaultAsync(discount => discount.Id == id);
+        }
+
+        public void DeleteById(long id)
+        {
+            var discount = _context.Discounts.FirstOrDefault(d => d.Id == id);
+            if (discount != null)
+            {
+                _context.Discounts.Remove(discount);
+                _context.SaveChanges();
+            }
+        }
+        public async Task<int> CountDiscountsAsync()
+        {
+            return await _context.Discounts.CountAsync();
+        }
+
+        public async Task<IEnumerable<Discount>> GetDiscountsPagedAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Discounts
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
+        }
+
     }
 }
