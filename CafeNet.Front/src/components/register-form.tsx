@@ -10,9 +10,8 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { Location } from '@/types/location';
 import { register, RegisterRequest } from '@/services/authService';
-import { getLocations } from '@/services/locationService';
+import { getLocations, Location } from '@/services/locationService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
