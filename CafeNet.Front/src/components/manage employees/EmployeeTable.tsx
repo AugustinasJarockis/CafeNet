@@ -61,7 +61,8 @@ export default function EmployeeTable({
                 </Button>
               )}
 
-              <AlertDialog>
+              {employee.id !== 3 && ( //TODO: change to id available from the token when that becomes possible
+                <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="icon">
                     <Trash className="h-4 w-4" />
@@ -79,15 +80,16 @@ export default function EmployeeTable({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => onDelete(employee.id)}
-                      className="bg-red-600 hover:bg-red-700"
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                      <AlertDialogAction
+                        onClick={() => onDelete(employee.id)}
+                        className="bg-red-600 hover:bg-red-700"
+                        >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </TableCell>
           </TableRow>
         ))}
