@@ -78,7 +78,7 @@ const data = {
         },
         {
           title: 'Add discount',
-          url: '#',
+          url: '/discounts/create',
         },
         {
           title: 'See the discount list',
