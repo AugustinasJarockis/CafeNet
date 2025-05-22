@@ -45,6 +45,8 @@ export function LoginForm({
 
       if (role === 'ADMIN') {
         navigate('/menu-admin');
+      } else if (role === 'BARISTA') {
+        navigate('/menu-barista');
       } else if (role === 'CLIENT') {
         navigate('/menu-client');
       } else {

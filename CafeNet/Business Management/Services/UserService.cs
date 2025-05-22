@@ -137,4 +137,16 @@ public class UserService : IUserService
     {
         return await _userRepository.UsernameExistsAsync(username);
     }
+
+    [Loggable]
+    public async Task<Location> GetUserLocationAddressAsync(long id)
+    {
+        var user = await _userRepository.GetByIdAsync(id);
+
+        if (user?.Location == null)
+            throw new NotFoundException("User location not found");
+
+        return user.Location;
+    }
+
 }

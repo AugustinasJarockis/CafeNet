@@ -12,5 +12,6 @@ public interface IUserService
     Task<User> CreateAsync(User user);
     Task<User> UpdateAsync(User user);
     Task DeleteAsync(long id);
+    Task<Location> GetUserLocationAddressAsync(long id);
     Task<IEnumerable<User>> GetEmployeesByLocation(long id);
 }
