@@ -135,6 +135,7 @@ using (var scope = app.Services.CreateScope())
         DbSeeder.SeedAdminUsers(context, config);
         DbSeeder.SeedBaristaUsers(context, config);
         DbSeeder.SeedCustomers(context, config);
+        DbSeeder.SeedTaxes(context, config);
     }
 }
 

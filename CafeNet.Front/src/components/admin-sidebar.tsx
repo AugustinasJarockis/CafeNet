@@ -74,7 +74,7 @@ const data = {
         },
         {
           title: 'See the tax list',
-          url: '#',
+          url: '/taxes',
         },
         {
           title: 'Add discount',

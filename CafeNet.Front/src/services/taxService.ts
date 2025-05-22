@@ -15,7 +15,7 @@ export interface Tax {
 
 export const createTax = async (request: CreateTaxRequest): Promise<Tax | string> => {
     try {
-        const response = await apiClient.post<Tax | { message: string }>('/tax', request);
+        const response = await apiClient.post<Tax | { message: string }>('/taxes', request);
 
         if (response.status === 201) {
             return response.data as Tax;
@@ -34,4 +34,9 @@ export const createTax = async (request: CreateTaxRequest): Promise<Tax | string
 
         return message;
     }
+};
+
+export const getTaxes = async (): Promise<Tax[]> => {
+    const response = await apiClient.get<Tax[]>('/taxes');
+    return response.data;
 };

@@ -1,17 +1,18 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeNet.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class TaxController : ControllerBase
+    [Route("api/[controller]")]
+    public class TaxesController : ControllerBase
     {
         private readonly ITaxService _taxService;
-
-        public TaxController(ITaxService taxService) {
+        public TaxesController(ITaxService taxService)
+        {
             _taxService = taxService;
         }
 
@@ -19,14 +20,26 @@ namespace CafeNet.Controllers
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> CreateTax([FromBody] CreateTaxRequest request) {
-            try {
+        public async Task<IActionResult> CreateTax([FromBody] CreateTaxRequest request)
+        {
+            try
+            {
                 await _taxService.CreateAsync(request);
                 return Created();
             }
-            catch (InvalidOperationException ex) {
+            catch (InvalidOperationException ex)
+            {
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpGet]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType<List<Tax>>(StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            return Ok(_taxService.GetAll());
+        }
+
     }
 }

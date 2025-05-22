@@ -4,6 +4,7 @@ namespace CafeNet.Data.Repositories
 {
     public interface ITaxRepository
     {
-        public Task<Tax> CreateAsync(Tax tax);
+        Task<Tax> CreateAsync(Tax tax);
+        List<Tax> GetTaxes();
     }
 }
