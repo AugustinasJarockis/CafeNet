@@ -1,6 +1,7 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Extensions;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,27 @@ namespace CafeNet.Controllers
         {
             var user = await _authService.RegisterAsync(request);
             return Ok(new { message = "User created successfully", user.Id });
+        }
+
+        [HttpPatch]
+        [Authorize]
+        public async Task<IActionResult> Update([FromBody] PatchOwnProfileRequest request)
+        {
+            var userId = HttpContext.GetUserId();
+
+            var updatedUser = await _userService.PatchOwnProfileAsync(userId, request);
+            return Ok(updatedUser);
+        }
+
+        [HttpPatch("{id:long}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Update(long id, [FromBody] PatchUserRequest request)
+        {
+            var targetUserId = id;
+            var currentUserId = HttpContext.GetUserId();
+
+            var updatedUser = await _userService.AdminPatchUserAsync(targetUserId, currentUserId, request);
+            return Ok(updatedUser);
         }
 
         [HttpGet("employees")]

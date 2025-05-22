@@ -14,10 +14,12 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/menu-admin" element={<AdminMenu />} />
-        <Route path="/locations/create" element={<CreateLocationPage />} />
-        <Route path="/employees/create" element={<CreateEmployeePage />} />
-        <Route path="/employees" element={<EmployeeListPage />} />
+        <Route element={<AuthProvider />}>
+          <Route path="/menu-admin" element={<AdminMenu />} />
+          <Route path="/locations/create" element={<CreateLocationPage />} />
+          <Route path="/employees/create" element={<CreateEmployeePage />} />
+          <Route path="/employees" element={<EmployeeListPage />} />
+        </Route>
       </Routes>
     </Router>
   );

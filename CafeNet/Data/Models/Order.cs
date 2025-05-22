@@ -22,7 +22,8 @@ namespace CafeNet.Data.Models
         public User User { get; set; }
 
         // Optimistic concurrency token
-        [Timestamp]
-        public byte[] Version { get; set; }
+        [NotMapped]
+        public uint Version { get; set; }
+
     }
 }

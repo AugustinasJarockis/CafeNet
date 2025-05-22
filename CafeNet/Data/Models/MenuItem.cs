@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CafeNet.Data.Models
 {
@@ -17,7 +18,8 @@ namespace CafeNet.Data.Models
         public Tax Tax { get; set; }
 
         // Optimistic concurrency token
-        [Timestamp]
-        public byte[] Version { get; set; }
+        [NotMapped]
+        public uint Version { get; set; }
+
     }
 }

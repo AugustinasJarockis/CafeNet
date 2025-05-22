@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CafeNet.Data.Models
 {
@@ -10,7 +11,8 @@ namespace CafeNet.Data.Models
         public bool IsArchived { get; set; }
 
         // Optimistic concurrency token
-        [Timestamp]
-        public byte[] Version { get; set; }
+        [NotMapped]
+        public uint Version { get; set; }
+
     }
 }

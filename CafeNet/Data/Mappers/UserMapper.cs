@@ -18,18 +18,51 @@ namespace CafeNet.Data.Mappers
             };
         }
 
-        public static UserDto ToUserDto(User user)
+        public static User PatchUser(User user, PatchUserRequest request)
         {
-            return new UserDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Username = user.Username,
-                Password = user.Password,
-                Role = user.Role.ToString(),
-                LocationId = user.LocationId,
-                LocationAddress = user.Location?.Address ?? "Unassigned"
-            };
+            if (request.Name is not null)
+                user.Name = request.Name;
+
+            if (request.Username is not null)
+                user.Username = request.Username;
+
+            if (request.LocationId is not null)
+                user.LocationId = request.LocationId;
+
+            user.Version = uint.Parse(request.Version);
+
+            return user;
         }
+
+        public static User PatchUser(User user, PatchOwnProfileRequest request)
+        {
+            if (request.Name is not null)
+                user.Name = request.Name;
+
+            if (request.Username is not null)
+                user.Username = request.Username;
+
+            if (request.Password is not null)
+                user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password, 13);
+
+            if (request.LocationId is not null)
+                user.LocationId = request.LocationId;
+
+            user.Version = uint.Parse(request.Version);
+
+            return user;
+        }
+
+        public static UserDto ToUserDto(User user) => new()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Username = user.Username,
+            Password = user.Password,
+            Role = user.Role.ToString(),
+            LocationId = user.LocationId,
+            LocationAddress = user.Location?.Address ?? "Unassigned",
+            Version = user.Version.ToString(),
+        };
     }
 }
