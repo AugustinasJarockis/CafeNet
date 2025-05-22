@@ -14,6 +14,9 @@ import AdminMenu from '@/pages/menu-admin';
 import ClientMenu from '@/pages/menu-client';
 import RegisterPage from '@/pages/register';
 import WelcomePage from '@/pages/welcome';
+import BaristaMenu from '@/pages/menu-barista';
+import TaxListPage from '@/pages/manage taxes/tax-list';
+import DiscountsPage from '@/pages/manage discounts/discount-list-page';
 
 export interface AppRoute {
   path: string;
@@ -36,6 +39,11 @@ export const routeConfig: AppRoute[] = [
     element: <ClientMenu />,
     roles: ['BARISTA', 'CLIENT'],
   },
+  {
+    path: '/menu-barista',
+    element: <BaristaMenu />,
+    roles: ['BARISTA'],
+  },
   { path: '/menu-admin', element: <AdminMenu />, roles: ADMIN_ONLY },
   {
     path: '/locations/create',
@@ -50,9 +58,11 @@ export const routeConfig: AppRoute[] = [
   },
   { path: '/employees', element: <EmployeeListPage />, roles: ADMIN_ONLY },
   { path: '/taxes/create', element: <CreateTaxPage />, roles: ADMIN_ONLY },
+  { path: '/taxes', element: <TaxListPage />, roles: ADMIN_ONLY },
   {
     path: '/discounts/create',
     element: <CreateDiscountPage />,
     roles: ADMIN_ONLY,
   },
+  { path: '/discounts', element: <DiscountsPage />, roles: ADMIN_ONLY },
 ];

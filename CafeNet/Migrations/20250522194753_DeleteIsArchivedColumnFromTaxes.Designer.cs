@@ -3,6 +3,7 @@ using System;
 using CafeNet.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CafeNet.Migrations
 {
     [DbContext(typeof(CafeNetDbContext))]
-    partial class CafeNetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522194753_DeleteIsArchivedColumnFromTaxes")]
+    partial class DeleteIsArchivedColumnFromTaxes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,11 +39,11 @@ namespace CafeNet.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -68,11 +71,11 @@ namespace CafeNet.Migrations
                     b.Property<byte?>("Percent")
                         .HasColumnType("smallint");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -91,11 +94,11 @@ namespace CafeNet.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -126,11 +129,11 @@ namespace CafeNet.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -157,11 +160,11 @@ namespace CafeNet.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -190,11 +193,11 @@ namespace CafeNet.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -224,11 +227,11 @@ namespace CafeNet.Migrations
                     b.Property<bool>("Refunded")
                         .HasColumnType("boolean");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -253,11 +256,11 @@ namespace CafeNet.Migrations
                     b.Property<long>("OrderItemId")
                         .HasColumnType("bigint");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -297,11 +300,11 @@ namespace CafeNet.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -329,11 +332,11 @@ namespace CafeNet.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -355,11 +358,11 @@ namespace CafeNet.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 
@@ -392,11 +395,11 @@ namespace CafeNet.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<uint>("Version")
+                    b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
+                        .HasColumnType("bytea");
 
                     b.HasKey("Id");
 

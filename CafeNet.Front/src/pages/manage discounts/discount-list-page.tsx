@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/admin-sidebar';
-import LocationTable from '@/components/manage locations/location-table';
+import DiscountTable from '@/components/manage discounts/discount-table';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,23 +18,23 @@ import {
 } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { useDeleteLocation } from '@/hooks/useDeleteLocation';
-import { useLocations } from '@/hooks/useLocations';
-import { Location } from '@/services/locationService';
+import { useDeleteDiscount } from '@/hooks/useDeleteDiscount';
+import { useDiscounts } from '@/hooks/useDiscounts';
+import { Discount } from '@/services/discountService';
 import { useState } from 'react';
 
-export default function LocationsPage() {
+export default function DiscountsPage() {
   const [page, setPage] = useState(1);
   const pageSize = 8;
-  const { data, isLoading, error } = useLocations(page, pageSize);
-  const deleteMutation = useDeleteLocation();
+  const { data, isLoading, error } = useDiscounts(page, pageSize);
+  const deleteMutation = useDeleteDiscount();
 
-  const handleDelete = async (locationId: number) => {
-    deleteMutation.mutate(locationId);
+  const handleDelete = async (discountId: number) => {
+    deleteMutation.mutate(discountId);
   };
 
-  const handleEdit = (location: Location) => {
-    console.log('Editing location: ' + location);
+  const handleEdit = (discount: Discount) => {
+    console.log('Editing discount: ' + discount);
   };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;
@@ -67,11 +67,11 @@ export default function LocationsPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbPage>Locations</BreadcrumbPage>
+                  <BreadcrumbPage>Discounts</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/locations/create">
+                  <BreadcrumbLink href="/discounts/create">
                     Create
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -81,12 +81,12 @@ export default function LocationsPage() {
         </header>
         <div className="p-6">
           {isLoading && <p>Loading...</p>}
-          {error && <p>Error loading locations</p>}
+          {error && <p>Error loading discounts</p>}
 
           {data && (
             <>
-              <LocationTable
-                locations={data.items}
+              <DiscountTable
+                discounts={data.items}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />

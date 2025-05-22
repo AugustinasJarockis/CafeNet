@@ -181,6 +181,20 @@
       {
         "Address": "888 Roast Road"
       }
+    ],
+    "Taxes": [
+      {
+        "Type": "Drinks",
+        "Percent": 9
+      },
+      {
+        "Type": "Food",
+        "Percent": 12
+      },
+      {
+        "Type": "Tobacco Products",
+        "Percent": 30
+      }
     ]
   }
 }

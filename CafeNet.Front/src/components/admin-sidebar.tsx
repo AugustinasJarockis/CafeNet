@@ -70,7 +70,7 @@ const data = {
         },
         {
           title: 'See the tax list',
-          url: '#',
+          url: '/taxes',
         },
         {
           title: 'Add discount',
@@ -78,7 +78,7 @@ const data = {
         },
         {
           title: 'See the discount list',
-          url: '#',
+          url: '/discounts',
         },
       ],
     },

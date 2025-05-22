@@ -1,5 +1,6 @@
 import apiClient from '@/api/apiClient';
 import { AxiosError } from 'axios';
+import { PagedResult } from '@/types/PagedResult';
 
 export interface CreateDiscountRequest {
   code: string;
@@ -37,3 +38,31 @@ export const createDiscount = async (request: CreateDiscountRequest): Promise<Di
         return message;
     }
 };
+
+export const getDiscounts = async (
+  pageNumber: number = 1,
+  pageSize: number = 10
+): Promise<PagedResult<Discount>> => {
+  const response = await apiClient.get('/Discounts', {
+    params: { pageNumber, pageSize },
+  });
+
+  return response.data;
+};
+
+export async function deleteDiscount(discountId: number) {
+  try {
+    const response = await apiClient.delete(`/discounts/${discountId}`);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+
+    throw new Error(message);
+  }
+}

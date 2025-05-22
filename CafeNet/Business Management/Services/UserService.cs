@@ -51,20 +51,8 @@ public class UserService : IUserService
     [Loggable]
     public async Task DeleteAsync(long id)
     {
-        await _unitOfWork.BeginTransactionAsync();
-        try
-        {
-            var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-            _userRepository.DeleteById(user.Id);
-
-            await _unitOfWork.SaveChangesAsync();
-            await _unitOfWork.CommitTransactionAsync();
-        }
-        catch
-        {
-            await _unitOfWork.RollbackTransactionAsync();
-            throw;
-        }
+        var user = await _userRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+        _userRepository.DeleteById(user.Id);
     }
 
     [Loggable]
@@ -168,4 +156,16 @@ public class UserService : IUserService
     {
         return await _userRepository.UsernameExistsAsync(username);
     }
+
+    [Loggable]
+    public async Task<Location> GetUserLocationAddressAsync(long id)
+    {
+        var user = await _userRepository.GetByIdAsync(id);
+
+        if (user?.Location == null)
+            throw new NotFoundException("User location not found");
+
+        return user.Location;
+    }
+
 }

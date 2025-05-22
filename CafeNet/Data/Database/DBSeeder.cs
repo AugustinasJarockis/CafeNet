@@ -114,4 +114,23 @@ public static class DbSeeder
 
         context.SaveChanges();
     }
+    public static void SeedTaxes(CafeNetDbContext context, IConfiguration config)
+    {
+        var taxesSection = config.GetSection("SeedData:Taxes");
+        var taxesItems = taxesSection.GetChildren();
+
+        foreach (var taxesItem in taxesItems)
+        {
+            var request = new CreateTaxRequest
+            {
+                Type = taxesItem.GetRequiredConfigValue("Type"),
+                Percent = byte.Parse(taxesItem.GetRequiredConfigValue("Percent"))            
+            };
+
+            var tax = TaxMapper.ToTax(request);
+            context.Taxes.Add(tax);
+        }
+
+        context.SaveChanges();
+    }
 }

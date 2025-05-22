@@ -1,17 +1,10 @@
-import { AppSidebar } from "@/components/admin-sidebar"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { AddDiscountForm } from "@/components/manage discounts/add-discount-form"
+import { AppSidebar } from "@/components/admin-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import TaxTable from "@/components/manage taxes/tax-table";
+import { Separator } from "@radix-ui/react-separator";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
-export default function CreateDiscountPage() {
+export default function TaxListPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -22,21 +15,22 @@ export default function CreateDiscountPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/locations">Discounts</BreadcrumbLink>
+                  <BreadcrumbPage>Taxes</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Create</BreadcrumbPage>
+                  <BreadcrumbLink href="/taxes/create">
+                    Create
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
-
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <AddDiscountForm />
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <TaxTable />
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
