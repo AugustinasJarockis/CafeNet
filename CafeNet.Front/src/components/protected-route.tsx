@@ -23,6 +23,7 @@ export default function ProtectedRoute({
     case 'ADMIN':
       return <Navigate to="/menu-admin" replace />;
     case 'BARISTA':
+      return <Navigate to="/menu-barista" replace />;
     case 'CLIENT':
       return <Navigate to="/menu-client" replace />;
     default:

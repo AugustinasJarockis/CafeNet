@@ -49,7 +49,7 @@ export function EditAccountForm({
         username,
         password: password || undefined,
         locationId: role === 'CLIENT' ? Number(locationId) : undefined,
-        version: String(user.version), // 💡 Make sure version is a string
+        version: String(user.version),
       },
       {
         onSuccess: () => {
