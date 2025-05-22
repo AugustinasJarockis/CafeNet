@@ -20,6 +20,12 @@ export type User = {
   locationAddress: string;
 };
 
+export type Location = {
+  id: number;
+  address: string;
+  version: string;
+}
+
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
   try {
     const response = await apiClient.post('/users', addEmployeeRequest);
@@ -73,7 +79,7 @@ export async function deleteEmployee(employeeId: number) {
   }
 }
 
-export async function getCurrentUserLocation(): Promise<string> {
+export async function getCurrentUserLocation(): Promise<Location> {
   try {
     const response = await apiClient.get('/users/User/location')
     return response.data
@@ -89,4 +95,5 @@ export async function getCurrentUserLocation(): Promise<string> {
     throw new Error(message)
   }
 }
+
 

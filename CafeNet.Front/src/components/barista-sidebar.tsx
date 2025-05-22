@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Settings2, Users, Package } from 'lucide-react';
+import { Users, Package } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -41,17 +41,6 @@ const data = {
       items: [
         {
           title: 'See the item list',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Manage account',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'See account information',
           url: '#',
         },
       ],

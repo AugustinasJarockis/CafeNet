@@ -69,20 +69,15 @@ namespace CafeNet.Controllers
         [HttpGet("User/location")]
         [Authorize(Roles = "BARISTA")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCurrentUserLocation()
         {
             var userId = TokenHandler.GetUserId(Request.Headers.Authorization);
 
-            try
-            {
-                var locationAddress = await _userService.GetUserLocationAddressAsync(userId);
-                return Ok(locationAddress);
-            }
-            catch (NotFoundException)
-            {
-                return NotFound("Location not found for the current user");
-            }
+            var locationAddress = await _userService.GetUserLocationAddressAsync(userId);
+            return Ok(locationAddress);
         }
 
     }
