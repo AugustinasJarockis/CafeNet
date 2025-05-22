@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import type { Location } from '@/types/location';
 import { register, RegisterRequest } from '@/services/authService';
 import { getLocations } from '@/services/locationService';
 import { useState } from 'react';
@@ -24,7 +25,7 @@ export function RegisterForm({
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [locationId, setLocationId] = useState('');
-  const [locations, setLocations] = useState<any[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
