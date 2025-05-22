@@ -110,6 +110,7 @@ export function AddDiscountForm({
                   max="100"
                   value={percent}
                   onChange={(e) => setPercent(parseInt(e.target.value))}
+                  required
                 />
               </div>
             ):(
@@ -121,6 +122,7 @@ export function AddDiscountForm({
                   min="0"
                   value={amount}
                   onChange={(e) => setAmount(parseInt(e.target.value))}
+                  required
                 />
               </div>
             )}
