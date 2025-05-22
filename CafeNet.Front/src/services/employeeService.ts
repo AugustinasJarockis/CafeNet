@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import apiClient from '@/api/apiClient';
 import { PagedResult } from '@/types/PagedResult';
+import { Location } from '@/services/locationService'
 
 export type AddEmployeeRequest = {
   name: string;
@@ -19,12 +20,6 @@ export type User = {
   locationId: number | null;
   locationAddress: string;
 };
-
-export type Location = {
-  id: number;
-  address: string;
-  version: string;
-}
 
 export async function addEmployee(addEmployeeRequest: AddEmployeeRequest) {
   try {
