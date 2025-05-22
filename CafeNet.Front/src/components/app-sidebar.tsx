@@ -51,7 +51,7 @@ const data = {
         },
         {
           title: 'See the locations list',
-          url: '#',
+          url: '/locations',
         },
       ],
     },
@@ -70,7 +70,7 @@ const data = {
         },
         {
           title: 'Add tax',
-          url: '#',
+          url: '/taxes/create',
         },
         {
           title: 'See the tax list',
@@ -78,7 +78,7 @@ const data = {
         },
         {
           title: 'Add discount',
-          url: '#',
+          url: '/discounts/create',
         },
         {
           title: 'See the discount list',

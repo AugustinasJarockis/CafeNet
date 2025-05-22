@@ -48,6 +48,14 @@ export const getEmployees = async (
   return response.data;
 };
 
+export const getEmployeesByLocation = async (locationId: number): Promise<User[]> => {
+  const response = await apiClient.get('/users/employeesByLocation', {
+    params: { locationId },
+  });
+
+  return response.data; 
+};
+
 export async function deleteEmployee(employeeId: number) {
   try {
     const response = await apiClient.delete(`/users/${employeeId}`);

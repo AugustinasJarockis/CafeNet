@@ -70,6 +70,32 @@ public static class DbSeeder
         }
     }
 
+    public static void SeedCustomers(CafeNetDbContext context, IConfiguration config)
+    {
+        var customers = config.GetSection("SeedData:Customers").GetChildren();
+
+        foreach (var customerSection in customers)
+        {
+            var username = customerSection.GetRequiredConfigValue("Username");
+
+            if (!context.Users.Any(user => user.Username == username))
+            {
+                var request = new RegisterUserRequest
+                {
+                    Name = customerSection.GetRequiredConfigValue("Name"),
+                    Username = username,
+                    Password = customerSection.GetRequiredConfigValue("Password"),
+                    Role = Enum.Parse<UserRoles>(customerSection.GetRequiredConfigValue("Role")),
+                    LocationId = context.Locations.First().Id
+                };
+
+                var user = UserMapper.ToUser(request);
+                context.Users.Add(user);
+                context.SaveChanges();
+            }
+        }
+    }
+
     public static void SeedLocations(CafeNetDbContext context, IConfiguration config)
     {
         var locationsSection = config.GetSection("SeedData:Locations");

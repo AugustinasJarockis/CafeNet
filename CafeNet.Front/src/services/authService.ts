@@ -23,6 +23,14 @@ export interface RegisterResponse {
   message: string;
 }
 
+export interface DecodedToken {
+  nameid: string;
+  unique_name: string;
+  role: 'ADMIN' | 'BARISTA' | 'CLIENT';
+  exp: number;
+  iss: string;
+}
+
 const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
   try {
     const response = await authClient.post<LoginResponse>(
@@ -86,13 +94,5 @@ const register = async (
     };
   }
 };
-
-export interface DecodedToken {
-  nameid: string;
-  unique_name: string;
-  role: 'ADMIN' | 'BARISTA' | 'CLIENT';
-  exp: number;
-  iss: string;
-}
 
 export { login, register };

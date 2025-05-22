@@ -13,4 +13,5 @@ public interface IUserService
     Task<User> PatchOwnProfileAsync(long id, PatchOwnProfileRequest patchOwnProfileRequest);
     Task<User> AdminPatchUserAsync(long targetUserId, long currentUserId, PatchUserRequest patchUserRequest);
     Task DeleteAsync(long id);
+    public Task<IEnumerable<User>> GetEmployeesByLocation(long id);
 }

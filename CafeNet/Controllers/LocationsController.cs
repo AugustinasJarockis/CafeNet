@@ -1,6 +1,8 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Services;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +40,24 @@ namespace CafeNet.Controllers
         public IActionResult GetAll()
         {
             return Ok(_locationService.GetAll());
+        }
+
+        [HttpGet("locationsList")]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(PagedResult<Location>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetLocations([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _locationService.GetLocationsAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _locationService.DeleteAsync(id);
+
+            return Ok(new { message = "Location deleted successfully" });
         }
     }
 }

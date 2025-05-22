@@ -109,12 +109,16 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ITaxRepository, TaxRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddInterceptedService<IAuthService, AuthService>();
-builder.Services.AddInterceptedService<IUserService, UserService>();
+builder.Services.AddInterceptedService<IDiscountService, DiscountService>();
 builder.Services.AddInterceptedService<ILocationService, LocationService>();
+builder.Services.AddInterceptedService<ITaxService, TaxService>();
+builder.Services.AddInterceptedService<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -130,6 +134,7 @@ using (var scope = app.Services.CreateScope())
         DbSeeder.SeedLocations(context, config);
         DbSeeder.SeedAdminUsers(context, config);
         DbSeeder.SeedBaristaUsers(context, config);
+        DbSeeder.SeedCustomers(context, config);
     }
 }
 

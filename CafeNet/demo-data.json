@@ -121,6 +121,26 @@
         }
       }
     ],
+    "Customers": [
+      {
+        "Name": "Client 1",
+        "Username": "client1",
+        "Password": "ilovecoffee",
+        "Role": "CLIENT"
+      },
+      {
+        "Name": "Client 2",
+        "Username": "client2",
+        "Password": "ilovetea",
+        "Role": "CLIENT"
+      },
+      {
+        "Name": "Client 3",
+        "Username": "client3",
+        "Password": "ilovetea",
+        "Role": "CLIENT"
+      }
+    ],
     "Locations": [
       {
         "Address": "Vinco Kudirkos g. 15, Vilnius"
