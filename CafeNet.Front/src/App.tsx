@@ -32,6 +32,7 @@ function App() {
         <Route path="/discounts/create" element={<CreateDiscountPage />} />
         <Route path="/taxes" element={<TaxListPage/>}/>
         <Route path="/discounts" element={<DiscountsPage />} />
+        <Route path="/items/create" element={<CreateItemsPage />} />
       </Routes>
     </Router>
   );
