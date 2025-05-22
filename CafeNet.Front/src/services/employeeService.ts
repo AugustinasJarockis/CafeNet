@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import apiClient from '@/api/apiClient';
 import { PagedResult } from '@/types/PagedResult';
+import { Location } from '@/services/locationService'
 
 export type AddEmployeeRequest = {
   name: string;
@@ -72,3 +73,22 @@ export async function deleteEmployee(employeeId: number) {
     throw new Error(message);
   }
 }
+
+export async function getCurrentUserLocation(): Promise<Location> {
+  try {
+    const response = await apiClient.get('/users/User/location')
+    return response.data
+  } catch (error) {
+    let message = 'Failed to fetch user location.'
+
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message
+    } else if (error instanceof Error) {
+      message = error.message
+    }
+
+    throw new Error(message)
+  }
+}
+
+
