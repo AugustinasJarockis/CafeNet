@@ -10,6 +10,7 @@ export interface RegisterRequest {
   name: string;
   username: string;
   password: string;
+  locationId: string;
 }
 
 export interface LoginResponse {
