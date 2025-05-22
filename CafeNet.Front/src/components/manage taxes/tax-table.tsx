@@ -37,9 +37,9 @@ export default function TaxTable() {
     },
   });
 
-  const handleEdit = (tax: any) => {
+  const handleEdit = () => {
     // TODO: implement edit logic
-    console.log('Edit tax', tax);
+    console.log('Edit tax');
   };
 
   return (
@@ -65,7 +65,7 @@ export default function TaxTable() {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => handleEdit(tax)}
+                    onClick={() => handleEdit()}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
