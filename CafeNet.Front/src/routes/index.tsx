@@ -17,6 +17,7 @@ import WelcomePage from '@/pages/welcome';
 import BaristaMenu from '@/pages/menu-barista';
 import TaxListPage from '@/pages/manage taxes/tax-list';
 import DiscountsPage from '@/pages/manage discounts/discount-list-page';
+import CreateMenuItemPage from '@/pages/manage menu items/create-menu-item';
 
 export interface AppRoute {
   path: string;
@@ -67,4 +68,9 @@ export const routeConfig: AppRoute[] = [
     roles: ADMIN_ONLY,
   },
   { path: '/discounts', element: <DiscountsPage />, roles: ADMIN_ONLY },
+  { 
+    path: '/items/create',
+    element: <CreateMenuItemPage />, 
+    roles: ADMIN_ONLY 
+  },
 ];

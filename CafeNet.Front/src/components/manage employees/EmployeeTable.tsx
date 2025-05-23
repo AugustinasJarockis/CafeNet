@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
+import { useAuth } from '@/context/authContext';
 
 interface EmployeeTableProps {
   employees: User[];
@@ -32,6 +33,8 @@ export default function EmployeeTable({
   onEdit,
   onDelete,
 }: EmployeeTableProps) {
+  const { user } = useAuth();
+
   return (
     <Table>
       <TableHeader>
@@ -61,7 +64,7 @@ export default function EmployeeTable({
                 </Button>
               )}
 
-              {employee.id !== 3 && ( //TODO: change to id available from the token when that becomes possible
+              {user && String(employee.id) !== user.nameid && (
                 <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="icon">

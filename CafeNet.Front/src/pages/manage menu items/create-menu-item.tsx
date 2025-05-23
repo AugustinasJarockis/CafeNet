@@ -9,9 +9,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { AddDiscountForm } from "@/components/manage discounts/add-discount-form"
+import { AddMenuItemForm } from "@/components/manage menu items/add-menu-item-form"
 
-export default function CreateDiscountPage() {
+export default function CreateMenuItemPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -22,7 +22,7 @@ export default function CreateDiscountPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/discounts">Discounts</BreadcrumbLink>
+                  <BreadcrumbLink href="/items">Menu Items</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -34,7 +34,7 @@ export default function CreateDiscountPage() {
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <AddDiscountForm />
+          <AddMenuItemForm />
         </div>
       </SidebarInset>
     </SidebarProvider>
