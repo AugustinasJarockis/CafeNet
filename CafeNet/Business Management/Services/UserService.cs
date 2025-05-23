@@ -2,6 +2,7 @@
 using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Validators;
 using CafeNet.Data.Database;
 using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
@@ -98,11 +99,41 @@ public class UserService : IUserService
     }
 
     [Loggable]
-    public async Task<User> UpdateAsync(User user)
+    public async Task<User> PatchOwnProfileAsync(long id, PatchOwnProfileRequest patchOwnProfileRequest)
     {
         try
         {
+            var user = await _userRepository.GetByIdAsync(id)
+                ?? throw new NotFoundException("User not found");
+
+            UserValidator.ValidateUpdateUserRequest(patchOwnProfileRequest);
+            user.ToUser(patchOwnProfileRequest);
             return await _userRepository.UpdateAsync(user);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConflictException("User was modified by another process.");
+        }
+    }
+
+    [Loggable]
+    public async Task<User> AdminPatchUserAsync(long targetUserId, long currentUserId, PatchUserRequest patchUserRequest)
+    {
+        try
+        {
+            UserValidator.ValidateUpdateUserRequest(patchUserRequest);
+
+            var targetUser = await _userRepository.GetByIdAsync(targetUserId)
+                ?? throw new NotFoundException("User not found.");
+
+            if (targetUser.Role == UserRoles.ADMIN && targetUser.Id != currentUserId)
+                throw new ForbiddenException("You are not allowed to update other admins.");
+
+            if (targetUser.Role == UserRoles.CLIENT)
+                throw new ForbiddenException("You are not allowed to update client information.");
+
+            targetUser.ToUser(patchUserRequest);
+            return await _userRepository.UpdateAsync(targetUser);
         }
         catch (DbUpdateConcurrencyException)
         {

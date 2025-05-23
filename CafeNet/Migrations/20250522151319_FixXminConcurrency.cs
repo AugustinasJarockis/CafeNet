@@ -5,157 +5,157 @@
 namespace CafeNet.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTimestampToEntities : Migration
+    public partial class FixXminConcurrency : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Users",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Taxes",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "StripeReaders",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Payments",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Orders",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "OrderItemVariations",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "OrderItems",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "MenuItemVariations",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "MenuItems",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Locations",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Discounts",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
 
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "Credits",
-                type: "bytea",
+                type: "xid",
                 rowVersion: true,
                 nullable: false,
-                defaultValue: new byte[0]);
+                defaultValue: 0u);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Taxes");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "StripeReaders");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Payments");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "OrderItemVariations");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "OrderItems");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "MenuItemVariations");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "MenuItems");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Locations");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Discounts");
 
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "Credits");
         }
     }

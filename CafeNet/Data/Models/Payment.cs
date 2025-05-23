@@ -23,7 +23,8 @@ namespace CafeNet.Data.Models
         public Order Order { get; set; }
 
         // Optimistic concurrency token
-        [Timestamp]
-        public byte[] Version { get; set; }
+        [NotMapped]
+        public uint Version { get; set; }
+
     }
 }
