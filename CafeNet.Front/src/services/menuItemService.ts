@@ -6,7 +6,7 @@ export interface CreateMenuItemRequest {
   price: number;
   imgPath?: string;
   taxId: number;
-  menuItemVariations: CreateMenuItemVariationDTO[]
+  menuItemVariations?: CreateMenuItemVariationDTO[]
 }
 
 export interface CreateMenuItemVariationDTO {

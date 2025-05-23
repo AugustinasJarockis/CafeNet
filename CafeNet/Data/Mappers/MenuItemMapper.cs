@@ -12,7 +12,7 @@ namespace CafeNet.Data.Mappers
                 Available = true,
                 ImgPath = request.ImgPath,
                 TaxId = request.TaxId,
-                MenuItemVariations = (ICollection<MenuItemVariation>)(request.MenuItemVariations?.Select(var => var.ToMenuItemVariation()) ?? [])
+                MenuItemVariations = (request.MenuItemVariations?.Select(var => var.ToMenuItemVariation()).ToList() ?? [])
             };
         }
 

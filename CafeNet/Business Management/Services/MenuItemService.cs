@@ -1,9 +1,7 @@
 ﻿using CafeNet.Business_Management.DTOs;
-using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Database;
-using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
@@ -36,6 +34,10 @@ namespace CafeNet.Business_Management.Services
 
                 menuItem = await _menuItemRepository.CreateAsync(menuItem);
 
+                variations = variations.Select(var => {
+                    var.MenuItemId = menuItem.Id;
+                    return var;
+                }).ToList();
                 await _menuItemVariationRepository.CreateMultipleAsync(variations);
 
                 await _unitOfWork.SaveChangesAsync();

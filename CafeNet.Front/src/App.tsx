@@ -13,6 +13,7 @@ import CreateTaxPage from './pages/manage taxes/create-tax';
 import CreateDiscountPage from './pages/manage discounts/create-discount';
 import TaxListPage from './pages/manage taxes/tax-list';
 import DiscountsPage from './pages/manage discounts/discount-list-page';
+import CreateMenuItemPage from './pages/manage menu items/create-menu-item';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         <Route path="/discounts/create" element={<CreateDiscountPage />} />
         <Route path="/taxes" element={<TaxListPage/>}/>
         <Route path="/discounts" element={<DiscountsPage />} />
-        <Route path="/items/create" element={<CreateItemsPage />} />
+        <Route path="/items/create" element={<CreateMenuItemPage />} />
       </Routes>
     </Router>
   );
