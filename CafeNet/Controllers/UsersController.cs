@@ -90,7 +90,7 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(long id)
         {
-            if (TokenHandler.GetUserId(HttpContext.Request.Headers.Authorization) == id)
+            if (HttpContext.GetUserId() == id)
                 return Forbid();
 
             await _userService.DeleteAsync(id);
@@ -106,7 +106,7 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCurrentUserLocation()
         {
-            var userId = TokenHandler.GetUserId(Request.Headers.Authorization);
+            var userId = HttpContext.GetUserId();
 
             var locationAddress = await _userService.GetUserLocationAddressAsync(userId);
             return Ok(locationAddress);

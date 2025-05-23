@@ -20,36 +20,23 @@ namespace CafeNet.Data.Mappers
 
         public static User PatchUser(User user, PatchUserRequest request)
         {
-            if (request.Name is not null)
-                user.Name = request.Name;
-
-            if (request.Username is not null)
-                user.Username = request.Username;
-
-            if (request.LocationId is not null)
-                user.LocationId = request.LocationId;
-
+            user.Name = request.Name ?? user.Name;
+            user.Username = request.Username ?? user.Username;
+            user.LocationId = request.LocationId ?? user.LocationId;
             user.Version = uint.Parse(request.Version);
-
             return user;
         }
 
         public static User PatchUser(User user, PatchOwnProfileRequest request)
         {
-            if (request.Name is not null)
-                user.Name = request.Name;
-
-            if (request.Username is not null)
-                user.Username = request.Username;
+            user.Name = request.Name ?? user.Name;
+            user.Username = request.Username ?? user.Username;
+            user.LocationId = request.LocationId ?? user.LocationId;
 
             if (request.Password is not null)
                 user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password, 13);
 
-            if (request.LocationId is not null)
-                user.LocationId = request.LocationId;
-
             user.Version = uint.Parse(request.Version);
-
             return user;
         }
 
