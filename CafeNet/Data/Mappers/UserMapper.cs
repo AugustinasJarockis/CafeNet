@@ -6,7 +6,7 @@ namespace CafeNet.Data.Mappers
 {
     public static class UserMapper
     {
-        public static User ToUser(RegisterUserRequest request)
+        public static User ToUser(this RegisterUserRequest request)
         {
             return new User
             {
@@ -18,7 +18,7 @@ namespace CafeNet.Data.Mappers
             };
         }
 
-        public static User PatchUser(User user, PatchUserRequest request)
+        public static User ToUser(this User user, PatchUserRequest request)
         {
             user.Name = request.Name ?? user.Name;
             user.Username = request.Username ?? user.Username;
@@ -27,7 +27,7 @@ namespace CafeNet.Data.Mappers
             return user;
         }
 
-        public static User PatchUser(User user, PatchOwnProfileRequest request)
+        public static User ToUser(this User user, PatchOwnProfileRequest request)
         {
             user.Name = request.Name ?? user.Name;
             user.Username = request.Username ?? user.Username;
@@ -40,7 +40,7 @@ namespace CafeNet.Data.Mappers
             return user;
         }
 
-        public static UserDto ToUserDto(User user) => new()
+        public static UserDto ToUserDto(this User user) => new()
         {
             Id = user.Id,
             Name = user.Name,

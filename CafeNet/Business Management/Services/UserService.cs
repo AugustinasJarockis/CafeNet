@@ -107,8 +107,8 @@ public class UserService : IUserService
                 ?? throw new NotFoundException("User not found");
 
             UserValidator.ValidateUpdateUserRequest(patchOwnProfileRequest);
-            var patchedUser = UserMapper.PatchUser(user, patchOwnProfileRequest);
-            return await _userRepository.UpdateAsync(patchedUser);
+            user.ToUser(patchOwnProfileRequest);
+            return await _userRepository.UpdateAsync(user);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -132,8 +132,8 @@ public class UserService : IUserService
             if (targetUser.Role == UserRoles.CLIENT)
                 throw new ForbiddenException("You are not allowed to update client information.");
 
-            var patchedTargedUser = UserMapper.PatchUser(targetUser, patchUserRequest);
-            return await _userRepository.UpdateAsync(patchedTargedUser);
+            targetUser.ToUser(patchUserRequest);
+            return await _userRepository.UpdateAsync(targetUser);
         }
         catch (DbUpdateConcurrencyException)
         {
