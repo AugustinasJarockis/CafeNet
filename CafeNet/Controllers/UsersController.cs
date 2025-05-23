@@ -3,6 +3,7 @@ using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Utility;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Extensions;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,12 +33,43 @@ namespace CafeNet.Controllers
             return Ok(new { message = "User created successfully", user.Id });
         }
 
+        [HttpPatch]
+        [Authorize]
+        public async Task<IActionResult> Update([FromBody] PatchOwnProfileRequest request)
+        {
+            var userId = HttpContext.GetUserId();
+
+            var updatedUser = await _userService.PatchOwnProfileAsync(userId, request);
+            return Ok(updatedUser);
+        }
+
+        [HttpPatch("{id:long}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Update(long id, [FromBody] PatchUserRequest request)
+        {
+            var targetUserId = id;
+            var currentUserId = HttpContext.GetUserId();
+
+            var updatedUser = await _userService.AdminPatchUserAsync(targetUserId, currentUserId, request);
+            return Ok(updatedUser);
+        }
+
         [HttpGet("employees")]
         [Authorize(Roles = "ADMIN")]
         [ProducesResponseType(typeof(PagedResult<User>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEmployees([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _userService.GetEmployeesAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> GetOwnProfile()
+        {
+            var currentUserId = HttpContext.GetUserId();
+
+            var result = await _userService.GetByIdAsync(currentUserId);
             return Ok(result);
         }
 
@@ -58,7 +90,7 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(long id)
         {
-            if (TokenHandler.GetUserId(HttpContext.Request.Headers.Authorization) == id)
+            if (HttpContext.GetUserId() == id)
                 return Forbid();
 
             await _userService.DeleteAsync(id);
@@ -74,7 +106,7 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCurrentUserLocation()
         {
-            var userId = TokenHandler.GetUserId(Request.Headers.Authorization);
+            var userId = HttpContext.GetUserId();
 
             var locationAddress = await _userService.GetUserLocationAddressAsync(userId);
             return Ok(locationAddress);

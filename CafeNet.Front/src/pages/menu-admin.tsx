@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/admin-sidebar"
+import { AppSidebar } from '@/components/admin-sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,16 +6,15 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 export default function AdminMenu() {
-
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -49,5 +48,5 @@ export default function AdminMenu() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

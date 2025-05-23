@@ -13,18 +13,8 @@ public static class DbSeeder
 
         foreach (var adminSection in adminUsers)
         {
-            var locationAddress = adminSection.GetSection("Location")
-                                              .GetRequiredConfigValue("Address");
-
-            var location = context.Locations.FirstOrDefault(l => l.Address == locationAddress);
-            if (location == null)
-            {
-                location = new Location { Address = locationAddress };
-                context.Locations.Add(location);
-                context.SaveChanges();
-            }
-
             var username = adminSection.GetRequiredConfigValue("Username");
+
             if (!context.Users.Any(user => user.Username == username))
             {
                 var request = new RegisterUserRequest
@@ -33,7 +23,7 @@ public static class DbSeeder
                     Username = username,
                     Password = adminSection.GetRequiredConfigValue("Password"),
                     Role = Enum.Parse<UserRoles>(adminSection.GetRequiredConfigValue("Role")),
-                    LocationId = location.Id
+                    LocationId = null
                 };
 
                 var user = UserMapper.ToUser(request);
@@ -42,6 +32,7 @@ public static class DbSeeder
             }
         }
     }
+
 
     public static void SeedBaristaUsers(CafeNetDbContext context, IConfiguration config)
     {

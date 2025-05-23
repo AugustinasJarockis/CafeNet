@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CafeNet.Business_Management.Utility;
 
-public class TokenGenerator
+public static class TokenGenerator
 {
     public static string GenerateJwtToken(User user, IConfiguration configuration)
     {

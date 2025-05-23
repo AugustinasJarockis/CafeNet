@@ -59,7 +59,6 @@ export function LoginForm({
     }
   };
 
-
   const handleNavigateToRegister = () => {
     navigate('/register');
   };

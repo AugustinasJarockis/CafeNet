@@ -1,5 +1,6 @@
 ﻿using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CafeNet.Data.Database
 {
@@ -17,7 +18,9 @@ namespace CafeNet.Data.Database
         public DbSet<StripeReader> StripeReaders { get; set; }
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<User> Users { get; set; }
+
         public CafeNetDbContext(DbContextOptions options) : base(options) { }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             foreach (var entity in builder.Model.GetEntityTypes())
@@ -30,7 +33,32 @@ namespace CafeNet.Data.Database
                     }
                 }
             }
+
+            ApplyPostgresVersioning<Credit>(builder);
+            ApplyPostgresVersioning<Discount>(builder);
+            ApplyPostgresVersioning<Location>(builder);
+            ApplyPostgresVersioning<MenuItem>(builder);
+            ApplyPostgresVersioning<MenuItemVariation>(builder);
+            ApplyPostgresVersioning<Order>(builder);
+            ApplyPostgresVersioning<OrderItem>(builder);
+            ApplyPostgresVersioning<OrderItemVariation>(builder);
+            ApplyPostgresVersioning<Payment>(builder);
+            ApplyPostgresVersioning<StripeReader>(builder);
+            ApplyPostgresVersioning<Tax>(builder);
+            ApplyPostgresVersioning<User>(builder);
+
             base.OnModelCreating(builder);
+        }
+
+        private static void ApplyPostgresVersioning<TEntity>(ModelBuilder builder) where TEntity : class
+        {
+            builder.Entity<TEntity>()
+                .Property("Version")
+                .IsRowVersion()
+                .HasColumnName("xmin")
+                .HasColumnType("xid")
+                .ValueGeneratedOnAddOrUpdate()
+                .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
         }
     }
 }
