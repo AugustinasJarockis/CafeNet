@@ -1,8 +1,11 @@
 import { AxiosError } from 'axios';
 import apiClient from '@/api/apiClient';
 import { PagedResult } from '@/types/PagedResult';
-import { UpdateUserPayload } from '@/types/user/UpdateUserPayload';
-import { Location } from '@/services/locationService'
+import { Location } from '@/services/locationService';
+import {
+  UpdateCurrentUserPayload,
+  UpdateUserPayload,
+} from '@/types/user/UpdateUserPayload';
 
 export type AddEmployeeRequest = {
   name: string;
@@ -18,7 +21,7 @@ export type User = {
   username: string;
   password: string;
   role: string;
-  locationId: number | null;
+  locationId?: number;
   locationAddress: string;
   version: string;
 };
@@ -39,10 +42,28 @@ export const getCurrentUser = async (): Promise<User> => {
 };
 
 export const updateCurrentUser = async (
-  data: UpdateUserPayload
+  data: UpdateCurrentUserPayload
 ): Promise<User> => {
   try {
     const response = await apiClient.patch('/users', data);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
+  }
+};
+
+export const updateUser = async (
+  data: UpdateUserPayload,
+  userId: number
+): Promise<User> => {
+  try {
+    const response = await apiClient.patch(`users/${userId}`, data);
     return response.data;
   } catch (error) {
     let message = 'An unexpected error occurred.';
@@ -112,19 +133,17 @@ export async function deleteEmployee(employeeId: number) {
 
 export async function getCurrentUserLocation(): Promise<Location> {
   try {
-    const response = await apiClient.get('/users/User/location')
-    return response.data
+    const response = await apiClient.get('/users/User/location');
+    return response.data;
   } catch (error) {
-    let message = 'Failed to fetch user location.'
+    let message = 'Failed to fetch user location.';
 
     if (error instanceof AxiosError && error.response?.data?.message) {
-      message = error.response.data.message
+      message = error.response.data.message;
     } else if (error instanceof Error) {
-      message = error.message
+      message = error.message;
     }
 
-    throw new Error(message)
+    throw new Error(message);
   }
 }
-
-
