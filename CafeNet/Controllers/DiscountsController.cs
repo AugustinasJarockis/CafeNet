@@ -39,12 +39,13 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateDiscount([FromBody] UpdateDiscountRequest request) {
             var discount = await _discountService.UpdateAsync(request);
+            Console.WriteLine(request.Version);
             return Ok(discount);
         }
 
         [HttpGet]
         [Authorize(Roles = "ADMIN")]
-        [ProducesResponseType(typeof(PagedResult<DiscountDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<DiscountDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDiscounts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _discountService.GetDiscountsAsync(pageNumber, pageSize);
@@ -53,7 +54,7 @@ namespace CafeNet.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "ADMIN")]
-        [ProducesResponseType(typeof(PagedResult<Discount>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DiscountDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDiscount(long id) {
             var result = await _discountService.GetDiscountAsync(id);

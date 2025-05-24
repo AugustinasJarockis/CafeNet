@@ -10,6 +10,7 @@ export const useDeleteDiscount = () => {
       queryClient.invalidateQueries({ queryKey: ['discounts'] });
     },
     onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['discounts'] });
       console.error('Delete failed:', error.message);
     },
   });

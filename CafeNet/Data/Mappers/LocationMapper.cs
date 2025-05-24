@@ -9,13 +9,24 @@ namespace CafeNet.Data.Mappers
             return new(){ Address = request.Address };
         }
 
-        public static LocationDto ToLocationDto(this Location location)
+        public static LocationDTO ToLocationDTO(this Location location)
         {
-            return new LocationDto
+            return new LocationDTO
             {
                 Id = location.Id,
-                Address = location.Address
+                Address = location.Address,
+                Version = location.Version
             };
         }
-}
+
+        public static Location ToLocation(this UpdateLocationRequest request)
+        {
+            return new()
+            {
+                Id = request.Id,
+                Address = request.Address,
+                Version = request.Version
+            };
+        }
+    }
 }

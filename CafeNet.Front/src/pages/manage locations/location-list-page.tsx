@@ -1,4 +1,4 @@
-import { AppSidebar } from '@/components/admin-sidebar';
+import { AdminSidebar } from '@/components/admin-sidebar';
 import LocationTable from '@/components/manage locations/location-table';
 import {
   Breadcrumb,
@@ -22,19 +22,23 @@ import { useDeleteLocation } from '@/hooks/useDeleteLocation';
 import { useLocations } from '@/hooks/useLocations';
 import { Location } from '@/services/locationService';
 import { useState } from 'react';
+import { useUpdateLocation } from '@/hooks/useUpdateLocation';
 
 export default function LocationsPage() {
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const { data, isLoading, error } = useLocations(page, pageSize);
   const deleteMutation = useDeleteLocation();
+  const updateLocationMutation = useUpdateLocation();
 
   const handleDelete = async (locationId: number) => {
     deleteMutation.mutate(locationId);
   };
 
-  const handleEdit = (location: Location) => {
-    console.log('Editing location: ' + location);
+  const handleEdit = (updatedLocation: Location) => {
+    updateLocationMutation.mutate({
+      data: updatedLocation,
+    });
   };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;
@@ -59,7 +63,7 @@ export default function LocationsPage() {
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AdminSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

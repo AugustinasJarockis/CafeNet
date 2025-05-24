@@ -8,20 +8,14 @@ export interface CreateDiscountRequest {
   amount?: number;
 }
 
-export interface UpdateDiscountRequest {
-  id: number;
-  code: string;
-  percent?: number;
-  amount?: number;
-  version: number;
-}
 
 export interface Discount {
   id: number;
   code: string;
   percent?: number;
   amount?: number;
-  version?: number;
+  version: string;
+
 }
 
 export const createDiscount = async (request: CreateDiscountRequest): Promise<Discount | string> => {
@@ -48,7 +42,7 @@ export const createDiscount = async (request: CreateDiscountRequest): Promise<Di
 };
 
 export const updateDiscount = async (
-  data: UpdateDiscountRequest
+  data: Discount
 ): Promise<Discount> => {
   try {
     const response = await apiClient.put('/discounts', data);

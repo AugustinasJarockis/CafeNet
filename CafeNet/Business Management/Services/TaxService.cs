@@ -3,7 +3,6 @@ using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Database;
-using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
@@ -57,11 +56,13 @@ namespace CafeNet.Business_Management.Services
             try
             {
                 var tax = updateTaxRequest.ToTax();
+                if (!await _taxRepository.TaxExistsAsync(tax.Id))
+                    throw new NotFoundException("Tax not found");
                 return await _taxRepository.UpdateAsync(tax);
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw new DbUpdateConcurrencyException("Tax was modified by another process.");
+                throw new ConflictException("Tax was modified in another session.");
             }
         }
     }

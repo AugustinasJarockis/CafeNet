@@ -18,6 +18,7 @@ import BaristaMenu from '@/pages/menu-barista';
 import TaxListPage from '@/pages/manage taxes/tax-list';
 import DiscountsPage from '@/pages/manage discounts/discount-list-page';
 import CreateMenuItemPage from '@/pages/manage menu items/create-menu-item';
+import MenuItemListPage from '@/pages/manage menu items/menu-item-list-page';
 
 export interface AppRoute {
   path: string;
@@ -27,6 +28,7 @@ export interface AppRoute {
 }
 
 const COMMON_ROLES: UserRole[] = ['ADMIN', 'BARISTA', 'CLIENT'];
+const EMPLOYEES_ONLY: UserRole[] = ['ADMIN', 'BARISTA'];
 const ADMIN_ONLY: UserRole[] = ['ADMIN'];
 const BARISTA_ONLY: UserRole[] = ['BARISTA'];
 const CLIENT_ONLY: UserRole[] = ['CLIENT'];
@@ -72,5 +74,10 @@ export const routeConfig: AppRoute[] = [
     path: '/items/create',
     element: <CreateMenuItemPage />,
     roles: ADMIN_ONLY,
+  },
+  { 
+    path: '/items',
+    element: <MenuItemListPage />, 
+    roles: EMPLOYEES_ONLY 
   },
 ];

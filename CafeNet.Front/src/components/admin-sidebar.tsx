@@ -17,7 +17,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getLocations } from '@/services/locationService';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -62,7 +61,7 @@ const data = {
         },
         {
           title: 'See the item list',
-          url: '#',
+          url: '/items',
         },
         {
           title: 'Add tax',
@@ -85,7 +84,7 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: user } = useCurrentUser();
   const {
     data: locations,

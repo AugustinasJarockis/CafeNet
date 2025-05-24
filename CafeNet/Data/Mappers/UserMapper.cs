@@ -40,7 +40,7 @@ namespace CafeNet.Data.Mappers
             return user;
         }
 
-        public static UserDto ToUserDto(this User user) => new()
+        public static UserDTO ToUserDTO(this User user) => new()
         {
             Id = user.Id,
             Name = user.Name,

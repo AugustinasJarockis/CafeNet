@@ -1,13 +1,14 @@
-﻿using CafeNet.Business_Management.Interceptors;
-using CafeNet.Business_Management.Interfaces;
-﻿using CafeNet.Business_Management.DTOs;
+﻿﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Exceptions;
+using CafeNet.Business_Management.Interceptors;
+using CafeNet.Business_Management.Interfaces;
+using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
-using CafeNet.Data.Enums;
 using CafeNet.Infrastructure.Pagination;
-using CafeNet.Data.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services
 {
@@ -39,14 +40,14 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<PagedResult<LocationDto>> GetLocationsAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<LocationDTO>> GetLocationsAsync(int pageNumber, int pageSize)
         {
             var totalCount = await _locationRepository.CountLocationsAsync();
             var locations = await _locationRepository.GetLocationsPagedAsync(pageNumber, pageSize);
 
-            var items = locations.Select(LocationMapper.ToLocationDto).ToList();
+            var items = locations.Select(LocationMapper.ToLocationDTO).ToList();
 
-            return new PagedResult<LocationDto>
+            return new PagedResult<LocationDTO>
             {
                 Items = items,
                 TotalCount = totalCount,
@@ -85,6 +86,27 @@ namespace CafeNet.Business_Management.Services
             {
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
+            }
+        }
+
+        [Loggable]
+        public async Task<Location> UpdateLocationAsync(UpdateLocationRequest updateLocationRequest)
+        {
+            try
+            {
+                var location = updateLocationRequest.ToLocation();
+
+                if (!(await _locationRepository.LocationExistsAsync(location.Id)))
+                    throw new NotFoundException($"Location not found.");
+
+                if (_locationRepository.AddressAlreadyRegistered(location.Address))
+                    throw new ConflictException("A location with this address already exists");
+
+                return await _locationRepository.UpdateAsync(location);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new ConflictException("Location was modified by another process.");
             }
         }
     }

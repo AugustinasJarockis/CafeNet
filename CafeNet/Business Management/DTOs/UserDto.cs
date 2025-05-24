@@ -1,6 +1,6 @@
 ﻿namespace CafeNet.Business_Management.DTOs;
 
-public class UserDto
+public class UserDTO
 {
     public long Id { get; set; }
     public required string Name { get; set; }
