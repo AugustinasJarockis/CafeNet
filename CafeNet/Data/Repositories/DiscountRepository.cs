@@ -1,8 +1,6 @@
 ﻿using CafeNet.Data.Database;
-using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace CafeNet.Data.Repositories
 {
@@ -16,6 +14,12 @@ namespace CafeNet.Data.Repositories
 
         public async Task<Discount> CreateAsync(Discount discount) {
             _context.Discounts.Add(discount);
+            await _context.SaveChangesAsync();
+            return discount;
+        }
+
+        public async Task<Discount> UpdateAsync(Discount discount) {
+            _context.Discounts.Update(discount);
             await _context.SaveChangesAsync();
             return discount;
         }

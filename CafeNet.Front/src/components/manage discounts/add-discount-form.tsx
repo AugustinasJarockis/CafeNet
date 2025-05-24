@@ -121,7 +121,7 @@ export function AddDiscountForm({
                   type="number"
                   min="0"
                   value={amount}
-                  onChange={(e) => setAmount(parseInt(e.target.value))}
+                  onChange={(e) => setAmount(Math.round(+e.target.value * 100) / 100)}
                   required
                 />
               </div>

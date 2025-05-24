@@ -7,7 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import { Discount } from '@/services/discountService';
 import {
   AlertDialog,
@@ -20,16 +20,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
+import { EditDiscountPopup } from './edit-discount-popup';
 
 interface DiscountTableProps {
   discounts: Discount[];
-  onEdit: (discount: Discount) => void;
   onDelete: (discountId: number) => void;
 }
 
 export default function DiscountTable({
   discounts,
-  onEdit,
   onDelete,
 }: DiscountTableProps) {
   return (
@@ -49,15 +48,7 @@ export default function DiscountTable({
             <TableCell>{discount.percent}</TableCell>
             <TableCell>{discount.amount}</TableCell>
             <TableCell className="text-right space-x-2">
-              {(
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => onEdit(discount)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              )}
+              <EditDiscountPopup discountId={discount.id}/>
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
