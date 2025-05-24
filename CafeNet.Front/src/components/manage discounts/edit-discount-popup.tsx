@@ -6,18 +6,18 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Pencil } from 'lucide-react';
 import { useUpdateDiscount } from '@/hooks/useUpdateDiscount';
-import { UpdateDiscountRequest } from '@/services/discountService';
-import { useDiscount } from '@/hooks/useDiscount';
+import { Discount } from '@/services/discountService';
 
 interface EditDiscountPopupProps {
     className?: string | undefined,
-    discountId: number
+    discount: Discount
 }
 
-export function EditDiscountPopup(props: EditDiscountPopupProps) {
+export function EditDiscountPopup({
+    discount
+}: EditDiscountPopupProps) {
   const [open, setOpen] = useState(false);
-  const { mutate, isPending } = useUpdateDiscount();
-  const { data: discount, isLoading, error } = useDiscount(props.discountId);
+  const { mutate, isPending, error } = useUpdateDiscount();
   const [code, setCode] = useState<string>('');
   const [percent, setPercent] = useState<number | undefined>();
   const [amount, setAmount] = useState<number | undefined>();
@@ -30,18 +30,18 @@ export function EditDiscountPopup(props: EditDiscountPopupProps) {
         setPercent(discount.percent);
         setAmount(discount.amount);
     }
-  }, [open, discount, isLoading]);
+  }, [open, discount]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (discount) {
-        const payload: UpdateDiscountRequest = {
+        const payload: Discount = {
             id: discount.id,
             code,
             percent,
             amount,
-            version: discount.version ?? 0
+            version: discount.version
         };
         mutate(payload);
     }

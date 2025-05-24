@@ -1,11 +1,9 @@
-﻿using Azure.Core;
-using CafeNet.Business_Management.DTOs;
+﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Database;
 using CafeNet.Data.Mappers;
-using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +18,7 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<Discount> CreateAsync(CreateDiscountRequest request) {
+        public async Task<DiscountDTO> CreateAsync(CreateDiscountRequest request) {
             if (!(request.Percent == null || request.Amount == null) || (request.Percent == null && request.Amount == null))
                 throw new BadRequestException();
 
@@ -28,17 +26,17 @@ namespace CafeNet.Business_Management.Services
                 throw new ConflictException("Discount with specified code already exists");
 
             var discount = request.ToDiscount();
-            return await _discountRepository.CreateAsync(discount);
+            return (await _discountRepository.CreateAsync(discount)).ToDiscountDTO();
         }
 
         [Loggable]
-        public async Task<PagedResult<DiscountDto>> GetDiscountsAsync(int pageNumber, int pageSize){
+        public async Task<PagedResult<DiscountDTO>> GetDiscountsAsync(int pageNumber, int pageSize){
             var totalCount = await _discountRepository.CountDiscountsAsync();
             var discounts = await _discountRepository.GetDiscountsPagedAsync(pageNumber, pageSize);
 
-            var items = discounts.Select(DiscountMapper.ToDiscountDto).ToList();
+            var items = discounts.Select(DiscountMapper.ToDiscountDTO).ToList();
 
-            return new PagedResult<DiscountDto>
+            return new PagedResult<DiscountDTO>
             {
                 Items = items,
                 TotalCount = totalCount,
@@ -46,13 +44,13 @@ namespace CafeNet.Business_Management.Services
                 PageSize = pageSize
             };
         }
-        public async Task<Discount> GetDiscountAsync(long id) {
+        public async Task<DiscountDTO> GetDiscountAsync(long id) {
             var discount = await _discountRepository.GetByIdAsync(id)
                 ?? throw new NotFoundException("Discount not found");
-            return discount;
+            return discount.ToDiscountDTO();
         }
         [Loggable]
-        public async Task<Discount> UpdateAsync(UpdateDiscountRequest request) {
+        public async Task<DiscountDTO> UpdateAsync(UpdateDiscountRequest request) {
             try {
                 if (!(request.Percent == null || request.Amount == null) || (request.Percent == null && request.Amount == null))
                     throw new BadRequestException();
@@ -64,7 +62,7 @@ namespace CafeNet.Business_Management.Services
                     throw new ConflictException("Discount with specified code already exists");
 
                 discount.ToDiscount(request);
-                return await _discountRepository.UpdateAsync(discount);
+                return (await _discountRepository.UpdateAsync(discount)).ToDiscountDTO();
             }
             catch (DbUpdateConcurrencyException) {
                 throw new ConflictException("Discount was modified in another session.");

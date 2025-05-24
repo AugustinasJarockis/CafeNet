@@ -17,14 +17,15 @@ namespace CafeNet.Data.Mappers
             discount.Version = request.Version;
             return discount;
         }
-        public static DiscountDto ToDiscountDto(this Discount discount)
+        public static DiscountDTO ToDiscountDTO(this Discount discount)
         {
-            return new DiscountDto
+            return new DiscountDTO
             {
                 Id = discount.Id,
                 Code = discount.Code,
                 Percent = discount.Percent,
-                Amount = discount.Amount
+                Amount = discount.Amount,
+                Version = discount.Version
             };
         }
     }
