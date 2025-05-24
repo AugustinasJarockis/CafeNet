@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pencil, Trash } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -15,10 +15,11 @@ import {
 import { TableRow, TableCell } from '@/components/ui/table';
 import { useEmployeesByLocation } from '@/hooks/useEmployeesByLocation';
 import { Location } from '@/services/locationService';
+import { EditLocationPopup} from './edit-location-popup';
 
 interface LocationRowProps {
   location: Location;
-  onEdit: (location: Location) => void;
+  onEdit: ( location: Location) => void;
   onDelete: (locationId: number) => void;
 }
 
@@ -32,9 +33,7 @@ export function LocationRow({ location, onEdit, onDelete }: LocationRowProps) {
     <TableRow>
       <TableCell>{location.address}</TableCell>
       <TableCell className="text-right space-x-2">
-        <Button variant="outline" size="icon" onClick={() => onEdit(location)}>
-          <Pencil className="h-4 w-4" />
-        </Button>
+        <EditLocationPopup location={location} onSubmit={onEdit} />
 
         <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <AlertDialogTrigger asChild>

@@ -8,12 +8,14 @@ export interface CreateDiscountRequest {
   amount?: number;
 }
 
+
 export interface Discount {
   id: number;
   code: string;
   percent?: number;
   amount?: number;
-  version: number;
+  version: string;
+
 }
 
 export const createDiscount = async (request: CreateDiscountRequest): Promise<Discount | string> => {
