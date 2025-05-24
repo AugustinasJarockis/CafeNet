@@ -17,7 +17,9 @@ export function useUpdateEmployee() {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
     },
     onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
       console.error('Update failed:', error.message);
+      alert(`Update failed: ${error.message}`);
     },
   });
 }

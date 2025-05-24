@@ -13,7 +13,7 @@ import CreateTaxPage from '@/pages/manage taxes/create-tax';
 import AdminMenu from '@/pages/menu-admin';
 import ClientMenu from '@/pages/menu-client';
 import RegisterPage from '@/pages/register';
-import WelcomePage from '@/pages/welcome';
+
 import BaristaMenu from '@/pages/menu-barista';
 import TaxListPage from '@/pages/manage taxes/tax-list';
 import DiscountsPage from '@/pages/manage discounts/discount-list-page';
@@ -35,7 +35,6 @@ const CLIENT_ONLY: UserRole[] = ['CLIENT'];
 export const routeConfig: AppRoute[] = [
   { path: '/', element: <LoginPage />, public: true },
   { path: '/register', element: <RegisterPage />, public: true },
-  { path: '/welcome', element: <WelcomePage />, roles: COMMON_ROLES },
   { path: '/account', element: <AccountPage />, roles: COMMON_ROLES },
   { path: '/account/edit', element: <EditAccountPage />, roles: COMMON_ROLES },
   {
