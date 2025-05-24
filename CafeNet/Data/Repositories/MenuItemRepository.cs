@@ -55,7 +55,11 @@ namespace CafeNet.Data.Repositories
 
         public async Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request)
         {
-            var menuItem = await _context.MenuItems.AsNoTracking().FirstAsync(m => m.Id == request.Id);
+            var menuItem = await _context.MenuItems
+                .AsNoTracking()
+                .Include(m => m.MenuItemVariations)
+                .Include(m => m.Tax)
+                .FirstAsync(m => m.Id == request.Id);
             menuItem.Available = request.Available;
             menuItem.Version = request.Version;
 
