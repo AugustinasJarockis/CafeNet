@@ -10,6 +10,7 @@ export const useDeleteEmployee = () => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
     },
     onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
       console.error('Delete failed:', error.message);
     },
   });

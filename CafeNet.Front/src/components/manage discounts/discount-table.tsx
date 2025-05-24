@@ -48,7 +48,7 @@ export default function DiscountTable({
             <TableCell>{discount.percent}</TableCell>
             <TableCell>{discount.amount}</TableCell>
             <TableCell className="text-right space-x-2">
-              <EditDiscountPopup discountId={discount.id}/>
+              <EditDiscountPopup discount={discount}/>
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>

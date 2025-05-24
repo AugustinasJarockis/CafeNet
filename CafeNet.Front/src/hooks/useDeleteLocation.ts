@@ -10,6 +10,7 @@ export const useDeleteLocation = () => {
       queryClient.invalidateQueries({ queryKey: ['locations/locationsList'] });
     },
     onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['locations/locationsList'] });
       console.error('Delete failed:', error.message);
     },
   });

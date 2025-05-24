@@ -31,7 +31,7 @@ export function AddDiscountForm({
   const mutation = useMutation({
     mutationFn: (data: CreateDiscountRequest) => createDiscount(data),
     onSuccess: () => {
-      navigate('/menu-admin');
+      navigate('/discounts');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err)) {

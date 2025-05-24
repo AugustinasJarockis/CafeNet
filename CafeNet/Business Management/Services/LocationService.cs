@@ -39,14 +39,14 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<PagedResult<LocationDto>> GetLocationsAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<LocationDTO>> GetLocationsAsync(int pageNumber, int pageSize)
         {
             var totalCount = await _locationRepository.CountLocationsAsync();
             var locations = await _locationRepository.GetLocationsPagedAsync(pageNumber, pageSize);
 
-            var items = locations.Select(LocationMapper.ToLocationDto).ToList();
+            var items = locations.Select(LocationMapper.ToLocationDTO).ToList();
 
-            return new PagedResult<LocationDto>
+            return new PagedResult<LocationDTO>
             {
                 Items = items,
                 TotalCount = totalCount,
