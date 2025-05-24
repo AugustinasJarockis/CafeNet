@@ -28,7 +28,7 @@ export function AddTaxForm({
   const mutation = useMutation({
     mutationFn: (data: CreateTaxRequest) => createTax(data),
     onSuccess: () => {
-      navigate('/menu-admin');
+      navigate('/taxes');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err)) {

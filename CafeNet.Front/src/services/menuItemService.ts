@@ -112,3 +112,13 @@ export const updateMenuItemAvailability = async (
     throw new Error(message);
   }
 };
+
+export const getMenuItemsByTax = async (
+    taxId: number
+): Promise<MenuItem[]> => {
+  const response = await apiClient.get('/menuItem/menuItemsByTax', {
+    params: { taxId },
+  });
+
+  return response.data;
+};

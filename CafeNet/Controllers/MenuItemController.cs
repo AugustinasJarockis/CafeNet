@@ -4,6 +4,7 @@ using CafeNet.Business_Management.Services;
 using CafeNet.Data.Models;
 using CafeNet.Infrastructure.Extensions;
 using CafeNet.Infrastructure.Pagination;
+using CafeNet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,6 +68,15 @@ namespace CafeNet.Controllers
             var updatedAvailabilityItem = await _menuItemService.UpdateAvailabilityAsync(updateItemAvailabilityRequest);
 
             return Ok(updatedAvailabilityItem);
+        }
+
+        [HttpGet("menuItemsByTax")]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(IEnumerable<Tax>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMenuItemsByTax([FromQuery(Name = "taxId")] long taxId)
+        {
+            var result = await _menuItemService.GetMenuItemsByTaxIdAsync(taxId);
+            return Ok(result);
         }
     }
 }

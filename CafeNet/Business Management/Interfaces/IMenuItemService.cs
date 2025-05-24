@@ -10,5 +10,6 @@ namespace CafeNet.Business_Management.Interfaces
         Task<PagedResult<MenuItemDto>> GetMenuItemsAsync(int pageNumber, int pageSize);
         Task DeleteAsync(long id);
         Task<MenuItemDto> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest updateItemAvailabilityRequest);
+        Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id);
     }
 }
