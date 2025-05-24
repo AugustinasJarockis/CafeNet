@@ -35,5 +35,12 @@ namespace CafeNet.Data.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public async Task<Tax> UpdateAsync(Tax tax)
+        {
+            _context.Taxes.Update(tax);
+            await _context.SaveChangesAsync();
+            return tax;
+        }
     }
 }
