@@ -84,5 +84,9 @@ namespace CafeNet.Data.Repositories
         }
 
 
+        public async Task<List<MenuItem>> GetByTaxIdAsync(long id)
+        {
+            return await _context.MenuItems.Where(t => t.TaxId == id).ToListAsync();
+        }
     }
 }

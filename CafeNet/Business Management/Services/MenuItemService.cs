@@ -105,5 +105,10 @@ namespace CafeNet.Business_Management.Services
                 throw new DbUpdateConcurrencyException("Item availability was modified by another process.");
             }
         }
+        [Loggable]
+        public async Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id)
+        {
+            return await _menuItemRepository.GetByTaxIdAsync(id);
+        }
     }
 }

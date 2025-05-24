@@ -11,5 +11,6 @@ namespace CafeNet.Data.Repositories
         public Task<MenuItem> GetByIdAsync(long id);
         public void DeleteById(long id);
         public Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request);
+        public Task<List<MenuItem>> GetByTaxIdAsync(long id);
     }
 }
