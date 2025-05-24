@@ -7,6 +7,7 @@ using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services
 {
@@ -47,6 +48,20 @@ namespace CafeNet.Business_Management.Services
             {
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
+            }
+        }
+
+        [Loggable]
+        public async Task<Tax> UpdateAsync(UpdateTaxRequest updateTaxRequest)
+        {
+            try
+            {
+                var tax = updateTaxRequest.ToTax();
+                return await _taxRepository.UpdateAsync(tax);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbUpdateConcurrencyException("Tax was modified by another process.");
             }
         }
     }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation} from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,10 +14,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import { createMenuItem, CreateMenuItemRequest, CreateMenuItemVariationDTO } from '@/services/menuItemService';
-import { getTaxes, Tax } from '@/services/taxService';
 import { AddMenuItemVariationForm } from './add-menu-item-variation-form';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Trash } from 'lucide-react';
+import { useTaxes } from '@/hooks/useTaxes';
 
 export function AddMenuItemForm({
   className,
@@ -31,6 +31,7 @@ export function AddMenuItemForm({
   const [taxId, setTaxId] = useState<string>('');
   const [menuItemVariations, setMenuItemVariations] = useState<CreateMenuItemVariationDTO[] | undefined>();
   const [error, setError] = useState<string | null>(null);
+  const {data: taxes, isLoading, isError} = useTaxes();
 
   const mutation = useMutation({
     mutationFn: (data: CreateMenuItemRequest) => createMenuItem(data),
@@ -46,15 +47,6 @@ export function AddMenuItemForm({
         setError('Failed to create menu item.');
       }
     },
-  });
-
-  const {
-    data: taxes,
-    isLoading,
-    isError,
-  } = useQuery<Tax[], Error>({
-    queryKey: ['taxes'],
-    queryFn: getTaxes,
   });
 
   const handleVariationSubmit = (payload: CreateMenuItemVariationDTO) => {

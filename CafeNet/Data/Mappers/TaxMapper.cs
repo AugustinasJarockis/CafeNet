@@ -8,5 +8,15 @@ namespace CafeNet.Data.Mappers
         public static Tax ToTax(this CreateTaxRequest request) {
             return new() { Percent = request.Percent, Type = request.Type };
         }
+
+        public static Tax ToTax(this UpdateTaxRequest request) {
+            return new()
+            {
+                Id = request.Id,
+                Percent = request.Percent,
+                Type = request.Type,
+                Version = request.Version
+            };
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,6 +54,24 @@ namespace CafeNet.Controllers
             await _taxService.DeleteAsync(id);
 
             return Ok(new { message = "Tax deleted successfully" });
+        }
+
+        [HttpPut("{id:long}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Update(long id, [FromBody] UpdateTaxRequest updateTaxRequest)
+        {
+            var targetTaxId = id;
+            var currentUserRole = HttpContext.GetUserRole();
+
+            if (targetTaxId != updateTaxRequest.Id)
+                return BadRequest("ID ir route does not match ID in request");
+
+            if (currentUserRole != "ADMIN")
+                return Forbid();
+
+            var updatedTax = await _taxService.UpdateAsync(updateTaxRequest);
+
+            return Ok(updatedTax);
         }
     }
 }
