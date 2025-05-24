@@ -112,7 +112,7 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            throw new ConflictException("User was modified by another process.");
+            throw new ConflictException("User was modified in another session.");
         }
     }
 
@@ -137,7 +137,7 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            throw new ConflictException("User was modified by another process.");
+            throw new ConflictException("User was modified in another session.");
         }
     }
 
