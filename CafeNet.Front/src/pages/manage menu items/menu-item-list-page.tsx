@@ -1,5 +1,4 @@
 import { AppSidebar } from '@/components/admin-sidebar';
-import EmployeeTable from '@/components/manage employees/EmployeeTable';
 import MenuItemTable from '@/components/manage menu items/menu-item-table';
 import {
   Breadcrumb,
