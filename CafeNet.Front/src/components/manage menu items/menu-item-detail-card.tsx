@@ -1,5 +1,3 @@
-"use client"
-
 import { X } from "lucide-react"
 import type { MenuItem } from "@/services/menuItemService"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,11 +8,16 @@ import { Separator } from "@/components/ui/separator"
 interface MenuItemDetailCardProps {
   menuItem: MenuItem
   onClose: () => void
+  userRole: string
 }
 
-export function MenuItemDetailCard({ menuItem, onClose }: MenuItemDetailCardProps) {
+export function MenuItemDetailCard({ menuItem, onClose, userRole }: MenuItemDetailCardProps) {
   return (
-    <Card className="w-[450px] max-w-[90vw] max-h-[90vh] overflow-auto">
+    <Card
+      className={`w-[450px] max-w-[90vw] max-h-[90vh] overflow-auto ${
+        userRole === "BARISTA" && !menuItem.available ? "text-gray-400" : ""
+      }`}
+    >
       <CardHeader className="relative">
         <Button
           variant="ghost"
@@ -29,7 +32,7 @@ export function MenuItemDetailCard({ menuItem, onClose }: MenuItemDetailCardProp
         </Button>
         <div className="flex justify-center mb-4">
           <img
-            src={menuItem.imgPath || "/placeholder.svg?height=128&width=128"}
+            src={menuItem.imgPath}
             alt={menuItem.title}
             className="w-32 h-32 object-cover rounded-md"
           />
@@ -49,6 +52,13 @@ export function MenuItemDetailCard({ menuItem, onClose }: MenuItemDetailCardProp
           </div>
         </div>
 
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Availability</p>
+            <p className="text-lg font-semibold">
+              {menuItem.available ? "Available" : "Not Available"}
+            </p>
+          </div>
+
         {menuItem.menuItemVariations && menuItem.menuItemVariations.length > 0 && (
           <div>
             <Separator className="my-2" />
@@ -66,13 +76,16 @@ export function MenuItemDetailCard({ menuItem, onClose }: MenuItemDetailCardProp
             </div>
           </div>
         )}
+        
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={onClose}>
-          Close
-        </Button>
+      <CardFooter className={userRole === "BARISTA" ? "flex justify-end" : "flex justify-between"}>
+      <Button variant="outline" onClick={onClose}>
+        Close
+      </Button>
+      {userRole !== "BARISTA" && (
         <Button onClick={() => window.alert("Feature not implemented")}>Edit</Button>
-      </CardFooter>
-    </Card>
+      )}
+    </CardFooter>
+      </Card>
   )
 }

@@ -17,6 +17,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useDeleteMenuItem } from '@/hooks/useDeleteMenuItem';
 import { useUpdateMenuItemAvailability } from "@/hooks/useUpdateMenuItemAvailability";
@@ -25,11 +26,16 @@ import { MenuItem } from '@/services/menuItemService';
 import { useState } from 'react';
 
 export default function MenuItemListPage() {
+  const { data: user, isLoading: userLoading, isError: userError } = useCurrentUser();
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const { data, isLoading, error } = useMenuItems(page, pageSize);
   const deleteMutation = useDeleteMenuItem();
   const updateAvailabilityMutation = useUpdateMenuItemAvailability();
+
+  if (userLoading) return <div>Loading user...</div>;
+  if (userError || !user) return <div>Failed to load user.</div>;
+
   const handleDelete = async (menuItemId: number) => {
     deleteMutation.mutate(menuItemId);
   };
@@ -100,6 +106,7 @@ export default function MenuItemListPage() {
               onEdit={handleEdit}
               onDelete={handleDelete}
               onToggleAvailability={handleToggleAvailability}
+              userRole={user.role}
             />
 
               <div className="mt-6">
