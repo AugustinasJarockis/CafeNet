@@ -22,19 +22,23 @@ import { useDeleteLocation } from '@/hooks/useDeleteLocation';
 import { useLocations } from '@/hooks/useLocations';
 import { Location } from '@/services/locationService';
 import { useState } from 'react';
+import { useUpdateLocation } from '@/hooks/useUpdateLocation';
 
 export default function LocationsPage() {
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const { data, isLoading, error } = useLocations(page, pageSize);
   const deleteMutation = useDeleteLocation();
+  const updateLocationMutation = useUpdateLocation();
 
   const handleDelete = async (locationId: number) => {
     deleteMutation.mutate(locationId);
   };
 
-  const handleEdit = (location: Location) => {
-    console.log('Editing location: ' + location);
+  const handleEdit = (updatedLocation: Location) => {
+    updateLocationMutation.mutate({
+      data: updatedLocation,
+    });
   };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;

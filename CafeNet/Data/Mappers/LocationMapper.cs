@@ -14,8 +14,19 @@ namespace CafeNet.Data.Mappers
             return new LocationDTO
             {
                 Id = location.Id,
-                Address = location.Address
+                Address = location.Address,
+                Version = location.Version
             };
         }
-}
+
+        public static Location ToLocation(this UpdateLocationRequest request)
+        {
+            return new()
+            {
+                Id = request.Id,
+                Address = request.Address,
+                Version = request.Version
+            };
+        }
+    }
 }
