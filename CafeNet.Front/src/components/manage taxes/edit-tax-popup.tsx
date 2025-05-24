@@ -22,12 +22,12 @@ interface EditTaxPopupProps {
 export function EditTaxPopup({ tax, onSubmit }: EditTaxPopupProps) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState('');
-  const [percentage, setPercentage] = useState('');
+  const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
     if (tax) {
       setType(tax.type);
-      setPercentage(String(tax.percent));
+      setPercentage(tax.percent);
     }
   }, [tax]);
 
@@ -35,7 +35,7 @@ export function EditTaxPopup({ tax, onSubmit }: EditTaxPopupProps) {
     const payload: Tax = {
       id: tax.id,
       type,
-      percent: parseFloat(percentage),
+      percent: percentage,
       version: tax.version,
     };
 
@@ -57,9 +57,10 @@ export function EditTaxPopup({ tax, onSubmit }: EditTaxPopupProps) {
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <div className="grid gap-3">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Type</Label>
             <Input
               id="type"
+              type="text"
               value={type}
               onChange={(e) => setType(e.target.value)}
               required
@@ -72,7 +73,7 @@ export function EditTaxPopup({ tax, onSubmit }: EditTaxPopupProps) {
               id="percentage"
               type="number"
               value={percentage}
-              onChange={(e) => setPercentage(e.target.value)}
+              onChange={(e) => setPercentage(parseInt(e.target.value))}
               step="0.01"
               required
             />

@@ -30,7 +30,7 @@ export function EditDiscountPopup({
         setPercent(discount.percent);
         setAmount(discount.amount);
     }
-  }, [open, discount]);
+  }, [discount]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
