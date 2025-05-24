@@ -2,6 +2,7 @@
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Services;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Extensions;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,24 @@ namespace CafeNet.Controllers
             await _menuItemService.DeleteAsync(id);
 
             return Ok(new { message = "Menu item deleted successfully" });
+        }
+
+        [HttpPatch("availability/{id:long}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> UpdateAvailability(long id, [FromBody] UpdateItemAvailabilityRequest updateItemAvailabilityRequest)
+        {
+            var targetTaxId = id;
+            var currentUserRole = HttpContext.GetUserRole();
+
+            if (targetTaxId != updateItemAvailabilityRequest.Id)
+                return BadRequest("ID and route does not match ID in request");
+
+            if (currentUserRole != "ADMIN")
+                return Forbid();
+
+            var updatedAvailabilityItem = await _menuItemService.UpdateAvailabilityAsync(updateItemAvailabilityRequest);
+
+            return Ok(updatedAvailabilityItem);
         }
     }
 }

@@ -45,6 +45,7 @@ namespace CafeNet.Data.Mappers
                 ImgPath = menuItem.ImgPath,
                 TaxId = menuItem.TaxId,
                 Tax = menuItem.Tax,
+                Version = menuItem.Version,
                 MenuItemVariations = menuItem.MenuItemVariations?
                     .Select(v => v.ToMenuVariationDto())
                     .ToList() ?? []

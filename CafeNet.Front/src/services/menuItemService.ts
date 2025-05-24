@@ -96,17 +96,19 @@ export async function deleteMenuItem(menuItemId: number) {
 }
 
 
-export async function updateMenuItemAvailability({
-  id,
-  available,
-}: UpdateAvailabilityPayload): Promise<void> {
-  const response = await fetch(`/api/menu-items/${id}/availability`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ available }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to update availability");
+export const updateMenuItemAvailability = async (
+  data: UpdateAvailabilityPayload
+): Promise<MenuItem> => {
+  try {
+    const response = await apiClient.patch(`menuitem/availability/${data.id}`, data);
+    return response.data;
+  } catch (error) {
+    let message = "An unexpected error occurred.";
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
   }
-}
+};

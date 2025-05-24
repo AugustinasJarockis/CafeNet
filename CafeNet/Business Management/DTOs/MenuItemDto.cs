@@ -10,7 +10,7 @@ namespace CafeNet.Business_Management.DTOs
         public bool Available { get; set; }
         public string? ImgPath { get; set; }
         public long TaxId { get; set; }
-        public required string Version { get; set; }
+        public uint Version { get; set; }
         public ICollection<MenuItemVariationDto> MenuItemVariations { get; set; }
         public Tax Tax { get; set; }
     }

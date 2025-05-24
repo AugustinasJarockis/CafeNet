@@ -1,4 +1,5 @@
-﻿using CafeNet.Data.Models;
+﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Data.Models;
 
 namespace CafeNet.Data.Repositories
 {
@@ -9,5 +10,6 @@ namespace CafeNet.Data.Repositories
         public Task<int> CountMenuItemsAsync();
         public Task<MenuItem> GetByIdAsync(long id);
         public void DeleteById(long id);
+        public Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request);
     }
 }

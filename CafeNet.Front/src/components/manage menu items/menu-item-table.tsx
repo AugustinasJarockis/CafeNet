@@ -30,21 +30,22 @@ interface MenuItemTableProps {
 
 export default function MenuItemTable({
   menuItems,
-  //isAvailable,
   onEdit,
   onDelete,
+  onToggleAvailability,
 }: MenuItemTableProps) {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
   const [isDetailCardOpen, setIsDetailCardOpen] = useState(false)
 
   const handleRowClick = (menuItem: MenuItem, event: React.MouseEvent) => {
-    // Don't open card if clicking on action buttons
-    if ((event.target as HTMLElement).closest("button")) {
-      return
-    }
-    setSelectedItem(menuItem)
-    setIsDetailCardOpen(true)
+  const target = event.target as HTMLElement;
+  if (target.closest("button") || target.closest("input[type='checkbox']")) {
+    return;
   }
+  setSelectedItem(menuItem);
+  setIsDetailCardOpen(true);
+};
+
 
   const handleCloseCard = () => {
     setIsDetailCardOpen(false)
@@ -81,14 +82,12 @@ export default function MenuItemTable({
               <TableCell>{menuItem.title}</TableCell>
               <TableCell>{menuItem.price}</TableCell>
               <TableCell>{menuItem.taxId}</TableCell>
-              <TableCell>
-              <Checkbox
-                checked={menuItem.available}
-                onCheckedChange={(checked) => {
-                  onToggleAvailability(menuItem.id, !!checked);
-                }}
-                onClick={(e) => e.stopPropagation()}
-              />
+              <TableCell className="pointer-events-auto">
+                <Checkbox
+                  checked={menuItem.available}
+                  onCheckedChange={(checked) => onToggleAvailability(menuItem.id, !!checked)}
+                  onClick={(e) => e.stopPropagation()}
+                />
               </TableCell>
               <TableCell className="text-right space-x-2">
                 <Button

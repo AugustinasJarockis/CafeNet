@@ -8,6 +8,7 @@ using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
 using CafeNet.Infrastructure.Pagination;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services
 {
@@ -88,6 +89,19 @@ namespace CafeNet.Business_Management.Services
             {
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
+            }
+        }
+
+        [Loggable]
+        public async Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest updateItemAvailabilityRequest)
+        {
+            try
+            {
+                return await _menuItemRepository.UpdateAvailabilityAsync(updateItemAvailabilityRequest);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbUpdateConcurrencyException("Item availability was modified by another process.");
             }
         }
     }

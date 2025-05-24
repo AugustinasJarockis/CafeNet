@@ -1,4 +1,5 @@
-﻿using CafeNet.Data.Database;
+﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Data.Database;
 using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,5 +48,41 @@ namespace CafeNet.Data.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public async Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request)
+        {
+            var menuItem = await _context.MenuItems
+                .Include(m => m.MenuItemVariations)
+                .Include(m => m.Tax)
+                .FirstOrDefaultAsync(m => m.Id == request.Id);
+
+            if (menuItem == null)
+                throw new KeyNotFoundException($"Menu item with ID {request.Id} not found.");
+
+            menuItem.Available = request.Available;
+
+            await _context.SaveChangesAsync();
+
+            return new MenuItem
+            {
+                Id = menuItem.Id,
+                Title = menuItem.Title,
+                Price = menuItem.Price,
+                Available = menuItem.Available,
+                ImgPath = menuItem.ImgPath,
+                TaxId = menuItem.TaxId,
+                Version = menuItem.Version,
+                MenuItemVariations = menuItem.MenuItemVariations.Select(v => new MenuItemVariation
+                {
+                    Id = v.Id,
+                    MenuItemId = v.MenuItemId,
+                    Title = v.Title,
+                    PriceChange = v.PriceChange
+                }).ToList(),
+                Tax = menuItem.Tax
+            };
+        }
+
+
     }
 }
