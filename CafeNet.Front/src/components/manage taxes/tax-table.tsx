@@ -7,9 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash } from 'lucide-react';
-import { getTaxes, deleteTax } from '@/services/taxService';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Trash } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,33 +19,25 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { EditTaxPopup } from './edit-tax-popup';
+import { Tax } from '@/services/taxService';
 
-export default function TaxTable() {
-  const queryClient = useQueryClient();
+interface TaxTableProps {
+  taxes: Tax[];
+  onEdit: (taxId: number, data: Tax) => void;
+  onDelete: (taxId: number) => void;
+}
 
-  const { data: taxes, isLoading, error } = useQuery({
-    queryKey: ['taxes'],
-    queryFn: getTaxes,
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: deleteTax,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['taxes'] });
-    },
-  });
-
-  const handleEdit = () => {
-    // TODO: implement edit logic
-    console.log('Edit tax');
-  };
-
+export default function TaxTable({
+  taxes,
+  onEdit,
+  onDelete,
+}: TaxTableProps) {
   return (
     <>
-      {isLoading && <div>Loading taxes...</div>}
-      {error && <div className="text-red-500">Failed to load taxes.</div>}
-      {!isLoading && (!taxes || taxes.length === 0) && <div>No taxes found.</div>}
-      {!isLoading && taxes && taxes.length > 0 && (
+      {taxes.length === 0 ? (
+        <div>No taxes found.</div>
+      ) : (
         <Table>
           <TableHeader>
             <TableRow>
@@ -58,32 +48,20 @@ export default function TaxTable() {
           </TableHeader>
           <TableBody>
             {taxes.map((tax) => (
-              <TableRow key={tax.type + tax.percent}>
+              <TableRow key={tax.id}>
                 <TableCell>{tax.type}</TableCell>
                 <TableCell>{tax.percent}%</TableCell>
                 <TableCell className="text-right space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleEdit()}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
+                  <EditTaxPopup tax={tax} onSubmit={onEdit} />
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        disabled={deleteMutation.isPending}
-                      >
+                      <Button variant="destructive" size="icon">
                         <Trash className="h-4 w-4" />
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                         <AlertDialogDescription>
                           This action cannot be undone. This will permanently delete the tax.
                         </AlertDialogDescription>
@@ -92,7 +70,7 @@ export default function TaxTable() {
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           className="bg-red-600 hover:bg-red-700"
-                          onClick={() => deleteMutation.mutate(tax.id)}
+                          onClick={() => onDelete(tax.id)}
                         >
                           Delete
                         </AlertDialogAction>

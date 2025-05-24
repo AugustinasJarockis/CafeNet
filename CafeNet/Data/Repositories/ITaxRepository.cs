@@ -8,5 +8,6 @@ namespace CafeNet.Data.Repositories
         public List<Tax> GetTaxes();
         public Task<Tax> GetByIdAsync(long id);
         public void DeleteById(long id);
+        public Task<Tax> UpdateAsync(Tax tax);
     }
 }
