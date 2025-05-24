@@ -3,7 +3,6 @@ using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Database;
-using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
@@ -95,21 +94,17 @@ namespace CafeNet.Business_Management.Services
         [Loggable]
         public async Task<MenuItemDTO> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request)
         {
-            // Check if item exists
-            var menuItem = await _menuItemRepository.GetByIdAsync(request.Id);
-
-            if (menuItem == null)
-                throw new KeyNotFoundException($"Menu item with ID {request.Id} not found.");
+            if (!(await _menuItemRepository.MenuItemExistsAsync(request.Id)))
+                throw new NotFoundException("Menu item was not found.");
 
             try
             {
-                // Pass request with version info to repository update
                 var updatedMenuItem = await _menuItemRepository.UpdateAvailabilityAsync(request);
-                return MenuItemMapper.ToMenuItemDTO(updatedMenuItem);
+                return updatedMenuItem.ToMenuItemDTO();
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw new DbUpdateConcurrencyException("Item availability was modified by another process.");
+                throw new ConflictException("Item availability was modified in another session.");
             }
         }
 
