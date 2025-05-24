@@ -56,3 +56,13 @@ export const createMenuItem = async (request: CreateMenuItemRequest): Promise<Me
         return message;
     }
 };
+
+export const getMenuItemsByTax = async (
+    taxId: number
+): Promise<MenuItem[]> => {
+  const response = await apiClient.get('/menuItem/menuItemsByTax', {
+    params: { taxId },
+  });
+
+  return response.data;
+};

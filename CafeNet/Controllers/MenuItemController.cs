@@ -1,5 +1,6 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,15 @@ namespace CafeNet.Controllers
             catch (InvalidOperationException ex) {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpGet("menuItemsByTax")]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(IEnumerable<Tax>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMenuItemsByTax([FromQuery(Name = "taxId")] long taxId)
+        {
+            var result = await _menuItemService.GetMenuItemsByTaxIdAsync(taxId);
+            return Ok(result);
         }
     }
 }
