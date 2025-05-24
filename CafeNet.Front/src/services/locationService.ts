@@ -9,7 +9,7 @@ export interface CreateLocationRequest {
 export interface Location {
   id: number;
   address: string;
-  version?: number;
+  version?: string;
 }
 
 export const createLocation = async (request: CreateLocationRequest): Promise<Location | string> => {
@@ -67,3 +67,18 @@ export async function deleteLocation(locationId: number) {
     throw new Error(message);
   }
 }
+
+export const updateLocation = async (data: Location, locationId: number): Promise<Location> => {
+  try {
+    const response = await apiClient.put(`locations/${locationId}`, data);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
+  }
+};

@@ -10,5 +10,6 @@ namespace CafeNet.Business_Management.Interfaces
         public Task<Location> CreateAsync(CreateLocationRequest request);
         public Task<PagedResult<LocationDto>> GetLocationsAsync(int pageNumber, int pageSize);
         public Task DeleteAsync(long id);
+        public Task<Location> UpdateLocationAsync(UpdateLocationRequest patchLocationRequest);
     }
 }

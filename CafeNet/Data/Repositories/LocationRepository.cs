@@ -62,5 +62,12 @@ namespace CafeNet.Data.Repositories
             }
         }
 
+        public async Task<Location> UpdateAsync(Location location)
+        {
+            _context.Locations.Update(location);
+            await _context.SaveChangesAsync();
+            return location;
+        }
+
     }
 }

@@ -21,7 +21,7 @@ export interface Discount {
   code: string;
   percent?: number;
   amount?: number;
-  version?: number;
+  version?: string;
 }
 
 export const createDiscount = async (request: CreateDiscountRequest): Promise<Discount | string> => {

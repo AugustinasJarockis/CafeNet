@@ -10,7 +10,7 @@ export interface Tax {
   id: number;
   type: string;
   percent: number;
-  version?: number;
+  version?: string;
 }
 
 export const createTax = async (

@@ -23,7 +23,7 @@ export interface MenuItem {
   imgPath?: string;
   taxId: number;
   menuItemVariations: MenuItemVariation[];
-  version?: number;
+  version?: string;
 }
 
 export interface MenuItemVariation {
@@ -31,7 +31,7 @@ export interface MenuItemVariation {
     menuItemId: number;
     title: string;
     priceChange: number;
-    version?: number;
+    version?: string;
 }
 
 export const createMenuItem = async (request: CreateMenuItemRequest): Promise<MenuItem | string> => {

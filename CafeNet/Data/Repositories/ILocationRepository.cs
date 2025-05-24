@@ -12,5 +12,6 @@ namespace CafeNet.Data.Repositories
         public Task<int> CountLocationsAsync();
         public Task<Location?> GetFirstLocationExceptAsync(long excludedLocationId);
         public void DeleteById(long id);
+        public Task<Location> UpdateAsync(Location location);
     }
 }
