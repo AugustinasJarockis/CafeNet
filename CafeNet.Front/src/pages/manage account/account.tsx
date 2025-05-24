@@ -2,7 +2,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import AccountView from '@/components/manage account/account-view';
 
-import { AppSidebar } from '@/components/admin-sidebar';
+import { AdminSidebar } from '@/components/admin-sidebar';
 import { ClientSidebar } from '@/components/client-sidebar';
 import { BaristaSidebar } from '@/components/barista-sidebar';
 
@@ -15,7 +15,7 @@ export default function AccountPage() {
   let SidebarComponent;
   switch (user.role) {
     case 'ADMIN':
-      SidebarComponent = AppSidebar;
+      SidebarComponent = AdminSidebar;
       break;
     case 'BARISTA':
       SidebarComponent = BaristaSidebar;

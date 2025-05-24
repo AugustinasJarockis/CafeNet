@@ -1,4 +1,6 @@
-import { AppSidebar } from '@/components/admin-sidebar';
+import { AdminSidebar } from '@/components/admin-sidebar';
+import { BaristaSidebar } from '@/components/barista-sidebar';
+
 import MenuItemTable from '@/components/manage menu items/menu-item-table';
 import {
   Breadcrumb,
@@ -75,7 +77,13 @@ export default function MenuItemListPage() {
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      {user.role === 'BARISTA' ? (
+        <BaristaSidebar />
+      ) : user.role === 'ADMIN' ? (
+        <AdminSidebar />
+      ) : (
+        <div>Unsupported role</div>
+      )}
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
