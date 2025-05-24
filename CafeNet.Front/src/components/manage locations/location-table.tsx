@@ -6,7 +6,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { LocationRow } from './location-row';
-import type { Location } from '@/services/locationService'; // Adjust the import path as needed
+import type { Location } from '@/services/locationService';
 
 interface LocationTableProps {
   locations: Location[];
