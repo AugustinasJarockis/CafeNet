@@ -35,7 +35,7 @@ namespace CafeNet.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize]
         [ProducesResponseType(typeof(PagedResult<MenuItem>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMenuItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {

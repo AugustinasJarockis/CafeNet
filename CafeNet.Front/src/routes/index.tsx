@@ -28,6 +28,7 @@ export interface AppRoute {
 }
 
 const COMMON_ROLES: UserRole[] = ['ADMIN', 'BARISTA', 'CLIENT'];
+const EMPLOYEES_ONLY: UserRole[] = ['ADMIN', 'BARISTA'];
 const ADMIN_ONLY: UserRole[] = ['ADMIN'];
 const BARISTA_ONLY: UserRole[] = ['BARISTA'];
 const CLIENT_ONLY: UserRole[] = ['CLIENT'];
@@ -77,6 +78,6 @@ export const routeConfig: AppRoute[] = [
   { 
     path: '/items',
     element: <MenuItemListPage />, 
-    roles: ADMIN_ONLY 
+    roles: EMPLOYEES_ONLY 
   },
 ];
