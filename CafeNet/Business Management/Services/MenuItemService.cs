@@ -93,11 +93,12 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest updateItemAvailabilityRequest)
+        public async Task<MenuItemDto> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest updateItemAvailabilityRequest)
         {
             try
             {
-                return await _menuItemRepository.UpdateAvailabilityAsync(updateItemAvailabilityRequest);
+                var updatedMenuItem = await _menuItemRepository.UpdateAvailabilityAsync(updateItemAvailabilityRequest);
+                return MenuItemMapper.ToMenuItemDto(updatedMenuItem);
             }
             catch (DbUpdateConcurrencyException)
             {
