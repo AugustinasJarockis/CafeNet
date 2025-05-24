@@ -11,6 +11,7 @@ export const useDeleteMenuItem = () => {
     },
     onError: (error: Error) => {
       console.error('Delete failed:', error.message);
+      queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
     },
   });
 };

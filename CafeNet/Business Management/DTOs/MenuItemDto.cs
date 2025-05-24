@@ -2,7 +2,7 @@
 
 namespace CafeNet.Business_Management.DTOs
 {
-    public class MenuItemDto
+    public class MenuItemDTO
     {
         public long Id { get; set; }
         public string Title { get; set; }
@@ -11,7 +11,7 @@ namespace CafeNet.Business_Management.DTOs
         public string? ImgPath { get; set; }
         public long TaxId { get; set; }
         public uint Version { get; set; }
-        public ICollection<MenuItemVariationDto> MenuItemVariations { get; set; }
+        public ICollection<MenuItemVariationDTO> MenuItemVariations { get; set; }
         public Tax Tax { get; set; }
     }
 }

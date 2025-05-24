@@ -1,6 +1,6 @@
 ﻿namespace CafeNet.Business_Management.DTOs
 {
-    public class MenuItemVariationDto
+    public class MenuItemVariationDTO
     {
         public long Id { get; set; }
         public long MenuItemId { get; set; }

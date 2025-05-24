@@ -23,7 +23,7 @@ interface MenuItemTableProps {
   menuItems: MenuItem[];
   onEdit: (menuItem: MenuItem) => void;
   onDelete: (menuItemId: number) => void;
-  onToggleAvailability: (menuItemId: number, available: boolean) => void;
+  onToggleAvailability: (id: number, available: boolean, version?: string) => void;
 }
 
 export default function MenuItemTable({
@@ -83,7 +83,7 @@ export default function MenuItemTable({
               <TableCell className="pointer-events-auto">
                 <Checkbox
                   checked={menuItem.available}
-                  onCheckedChange={(checked) => onToggleAvailability(menuItem.id, !!checked)}
+                  onCheckedChange={(checked) => onToggleAvailability(menuItem.id, !!checked, menuItem.version)}
                   onClick={(e) => e.stopPropagation()}
                 />
               </TableCell>

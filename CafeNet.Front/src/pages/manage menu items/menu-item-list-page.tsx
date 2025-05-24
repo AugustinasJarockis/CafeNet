@@ -38,8 +38,13 @@ export default function MenuItemListPage() {
     console.log('Editing menu item: ' + menuItem);
   };
 
-  const handleToggleAvailability = (menuItemId: number, available: boolean) => {
-  updateAvailabilityMutation.mutate({ id: menuItemId, available });
+  const handleToggleAvailability = (id: number, available: boolean, version?: string) => {
+  if (!version) {
+    console.error("Missing version for concurrency control");
+    return;
+  }
+
+  updateAvailabilityMutation.mutate({ id, available, version });
 };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;

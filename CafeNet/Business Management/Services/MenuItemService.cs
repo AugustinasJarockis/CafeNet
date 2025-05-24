@@ -56,14 +56,14 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<PagedResult<MenuItemDto>> GetMenuItemsAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<MenuItemDTO>> GetMenuItemsAsync(int pageNumber, int pageSize)
         {
             var totalCount = await _menuItemRepository.CountMenuItemsAsync();
             var menuItems = await _menuItemRepository.GetMenuItemsPagedAsync(pageNumber, pageSize);
 
-            var items = menuItems.Select(MenuItemMapper.ToMenuItemDto).ToList();
+            var items = menuItems.Select(MenuItemMapper.ToMenuItemDTO).ToList();
 
-            return new PagedResult<MenuItemDto>
+            return new PagedResult<MenuItemDTO>
             {
                 Items = items,
                 TotalCount = totalCount,
@@ -93,18 +93,27 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<MenuItemDto> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest updateItemAvailabilityRequest)
+        public async Task<MenuItemDTO> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request)
         {
+            // Check if item exists
+            var menuItem = await _menuItemRepository.GetByIdAsync(request.Id);
+
+            if (menuItem == null)
+                throw new KeyNotFoundException($"Menu item with ID {request.Id} not found.");
+
             try
             {
-                var updatedMenuItem = await _menuItemRepository.UpdateAvailabilityAsync(updateItemAvailabilityRequest);
-                return MenuItemMapper.ToMenuItemDto(updatedMenuItem);
+                // Pass request with version info to repository update
+                var updatedMenuItem = await _menuItemRepository.UpdateAvailabilityAsync(request);
+                return MenuItemMapper.ToMenuItemDTO(updatedMenuItem);
             }
             catch (DbUpdateConcurrencyException)
             {
                 throw new DbUpdateConcurrencyException("Item availability was modified by another process.");
             }
         }
+
+
         [Loggable]
         public async Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id)
         {

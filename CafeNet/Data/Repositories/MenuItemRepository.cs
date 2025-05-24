@@ -54,33 +54,15 @@ namespace CafeNet.Data.Repositories
             var menuItem = await _context.MenuItems
                 .Include(m => m.MenuItemVariations)
                 .Include(m => m.Tax)
-                .FirstOrDefaultAsync(m => m.Id == request.Id);
+                .FirstAsync(m => m.Id == request.Id); 
 
-            if (menuItem == null)
-                throw new KeyNotFoundException($"Menu item with ID {request.Id} not found.");
+            _context.Entry(menuItem).Property(m => m.Version).OriginalValue = request.Version;
 
             menuItem.Available = request.Available;
 
             await _context.SaveChangesAsync();
 
-            return new MenuItem
-            {
-                Id = menuItem.Id,
-                Title = menuItem.Title,
-                Price = menuItem.Price,
-                Available = menuItem.Available,
-                ImgPath = menuItem.ImgPath,
-                TaxId = menuItem.TaxId,
-                Version = menuItem.Version,
-                MenuItemVariations = menuItem.MenuItemVariations.Select(v => new MenuItemVariation
-                {
-                    Id = v.Id,
-                    MenuItemId = v.MenuItemId,
-                    Title = v.Title,
-                    PriceChange = v.PriceChange
-                }).ToList(),
-                Tax = menuItem.Tax
-            };
+            return menuItem;
         }
 
 

@@ -23,9 +23,9 @@ namespace CafeNet.Data.Mappers
             };
         }
 
-        public static MenuItemVariationDto ToMenuVariationDto(this MenuItemVariation variation)
+        public static MenuItemVariationDTO ToMenuVariationDTO(this MenuItemVariation variation)
         {
-            return new MenuItemVariationDto
+            return new MenuItemVariationDTO
             {
                 Id = variation.Id,
                 Title = variation.Title,
@@ -34,9 +34,9 @@ namespace CafeNet.Data.Mappers
             };
         }
 
-        public static MenuItemDto ToMenuItemDto(this MenuItem menuItem)
+        public static MenuItemDTO ToMenuItemDTO(this MenuItem menuItem)
         {
-            return new MenuItemDto
+            return new MenuItemDTO
             {
                 Id = menuItem.Id,
                 Title = menuItem.Title,
@@ -47,7 +47,7 @@ namespace CafeNet.Data.Mappers
                 Tax = menuItem.Tax,
                 Version = menuItem.Version,
                 MenuItemVariations = menuItem.MenuItemVariations?
-                    .Select(v => v.ToMenuVariationDto())
+                    .Select(v => v.ToMenuVariationDTO())
                     .ToList() ?? []
             };
         }
