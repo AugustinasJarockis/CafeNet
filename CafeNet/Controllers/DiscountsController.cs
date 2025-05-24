@@ -39,6 +39,7 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateDiscount([FromBody] UpdateDiscountRequest request) {
             var discount = await _discountService.UpdateAsync(request);
+            Console.WriteLine(request.Version);
             return Ok(discount);
         }
 

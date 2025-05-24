@@ -55,13 +55,13 @@ namespace CafeNet.Business_Management.Services
                 if (!(request.Percent == null || request.Amount == null) || (request.Percent == null && request.Amount == null))
                     throw new BadRequestException();
 
-                var discount = await _discountRepository.GetByIdAsync(request.Id)
+                var discountCode = await _discountRepository.GetCodeById(request.Id)
                     ?? throw new NotFoundException("Discount not found");
 
-                if (request.Code != discount.Code && await _discountRepository.CodeExistsAsync(request.Code))
+                if (request.Code != discountCode && await _discountRepository.CodeExistsAsync(request.Code))
                     throw new ConflictException("Discount with specified code already exists");
 
-                discount.ToDiscount(request);
+                var discount = request.ToDiscount();
                 return (await _discountRepository.UpdateAsync(discount)).ToDiscountDTO();
             }
             catch (DbUpdateConcurrencyException) {
