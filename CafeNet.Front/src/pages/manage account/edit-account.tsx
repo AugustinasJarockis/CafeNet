@@ -3,7 +3,7 @@ import { EditAccountForm } from '@/components/manage account/edit-account-form';
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { UserRole } from "@/types/user/UserRoles";
 
-import { AppSidebar } from "@/components/admin-sidebar";
+import { AdminSidebar } from "@/components/admin-sidebar";
 import { ClientSidebar } from "@/components/client-sidebar";
 import { BaristaSidebar } from "@/components/barista-sidebar";
 export default function EditAccountPage() {
@@ -15,7 +15,7 @@ export default function EditAccountPage() {
   let SidebarComponent;
   switch (user.role) {
     case 'ADMIN':
-      SidebarComponent = AppSidebar;
+      SidebarComponent = AdminSidebar;
       break;
     case 'BARISTA':
       SidebarComponent = BaristaSidebar;

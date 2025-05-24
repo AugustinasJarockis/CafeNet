@@ -41,7 +41,7 @@ const data = {
       items: [
         {
           title: 'See the item list',
-          url: '#',
+          url: '/items',
         },
       ],
     },

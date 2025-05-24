@@ -1,4 +1,6 @@
-import { AppSidebar } from '@/components/admin-sidebar';
+import { AdminSidebar } from '@/components/admin-sidebar';
+import { BaristaSidebar } from '@/components/barista-sidebar';
+
 import MenuItemTable from '@/components/manage menu items/menu-item-table';
 import {
   Breadcrumb,
@@ -17,6 +19,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useDeleteMenuItem } from '@/hooks/useDeleteMenuItem';
 import { useUpdateMenuItemAvailability } from "@/hooks/useUpdateMenuItemAvailability";
@@ -25,11 +28,16 @@ import { MenuItem } from '@/services/menuItemService';
 import { useState } from 'react';
 
 export default function MenuItemListPage() {
+  const { data: user, isLoading: userLoading, isError: userError } = useCurrentUser();
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const { data, isLoading, error } = useMenuItems(page, pageSize);
   const deleteMutation = useDeleteMenuItem();
   const updateAvailabilityMutation = useUpdateMenuItemAvailability();
+
+  if (userLoading) return <div>Loading user...</div>;
+  if (userError || !user) return <div>Failed to load user.</div>;
+
   const handleDelete = async (menuItemId: number) => {
     deleteMutation.mutate(menuItemId);
   };
@@ -69,7 +77,13 @@ export default function MenuItemListPage() {
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      {user.role === 'BARISTA' ? (
+        <BaristaSidebar />
+      ) : user.role === 'ADMIN' ? (
+        <AdminSidebar />
+      ) : (
+        <div>Unsupported role</div>
+      )}
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
@@ -100,6 +114,7 @@ export default function MenuItemListPage() {
               onEdit={handleEdit}
               onDelete={handleDelete}
               onToggleAvailability={handleToggleAvailability}
+              userRole={user.role}
             />
 
               <div className="mt-6">
