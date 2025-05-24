@@ -8,6 +8,15 @@ namespace CafeNet.Data.Mappers
         public static Discount ToDiscount(this CreateDiscountRequest request) {
             return new() { Code = request.Code, Percent = request.Percent, Amount = request.Amount };
         }
+
+        public static Discount ToDiscount(this Discount discount, UpdateDiscountRequest request) {
+            discount.Id = request.Id;
+            discount.Code = request.Code;
+            discount.Amount = request.Amount;
+            discount.Percent = request.Percent;
+            discount.Version = request.Version;
+            return discount;
+        }
         public static DiscountDto ToDiscountDto(this Discount discount)
         {
             return new DiscountDto

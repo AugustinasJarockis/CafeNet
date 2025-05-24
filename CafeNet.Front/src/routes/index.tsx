@@ -69,10 +69,10 @@ export const routeConfig: AppRoute[] = [
     roles: ADMIN_ONLY,
   },
   { path: '/discounts', element: <DiscountsPage />, roles: ADMIN_ONLY },
-  { 
+  {
     path: '/items/create',
-    element: <CreateMenuItemPage />, 
-    roles: ADMIN_ONLY 
+    element: <CreateMenuItemPage />,
+    roles: ADMIN_ONLY,
   },
   { 
     path: '/items',

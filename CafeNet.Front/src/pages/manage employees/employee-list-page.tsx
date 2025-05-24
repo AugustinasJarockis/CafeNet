@@ -20,7 +20,8 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useDeleteEmployee } from '@/hooks/useDeleteEmployee';
 import { useEmployees } from '@/hooks/useEmployee';
-import { User } from '@/services/employeeService';
+import { useUpdateEmployee } from '@/hooks/useUpdateEmployee';
+import { UpdateUserPayload } from '@/types/user/UpdateUserPayload';
 import { useState } from 'react';
 
 export default function EmployeesPage() {
@@ -28,13 +29,14 @@ export default function EmployeesPage() {
   const pageSize = 8;
   const { data, isLoading, error } = useEmployees(page, pageSize);
   const deleteMutation = useDeleteEmployee();
+  const updateMutation = useUpdateEmployee();
 
   const handleDelete = async (userId: number) => {
     deleteMutation.mutate(userId);
   };
 
-  const handleEdit = (user: User) => {
-    console.log('Editing user: ' + user);
+  const handleEdit = async (payload: UpdateUserPayload, userId: number) => {
+    updateMutation.mutate({userId, data: payload});
   };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;
