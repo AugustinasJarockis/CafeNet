@@ -8,7 +8,7 @@ public interface IUserService
 {
     Task<User> GetByIdAsync(long id);
     Task<User> GetByUsernameAsync(string username);
-    Task<PagedResult<UserDto>> GetEmployeesAsync(int pageNumber, int pageSize);
+    Task<PagedResult<UserDTO>> GetEmployeesAsync(int pageNumber, int pageSize);
     Task<User> CreateAsync(User user);
     Task<User> PatchOwnProfileAsync(long id, PatchOwnProfileRequest patchOwnProfileRequest);
     Task<User> AdminPatchUserAsync(long targetUserId, long currentUserId, PatchUserRequest patchUserRequest);

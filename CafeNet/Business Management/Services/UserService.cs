@@ -80,16 +80,16 @@ public class UserService : IUserService
     }
 
     [Loggable]
-    public async Task<PagedResult<UserDto>> GetEmployeesAsync(int pageNumber, int pageSize)
+    public async Task<PagedResult<UserDTO>> GetEmployeesAsync(int pageNumber, int pageSize)
     {
         var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN };
 
         var totalCount = await _userRepository.CountByRolesAsync(employeeRoles);
         var users = await _userRepository.GetByRolesPagedAsync(employeeRoles, pageNumber, pageSize);
 
-        var items = users.Select(UserMapper.ToUserDto).ToList();
+        var items = users.Select(UserMapper.ToUserDTO).ToList();
 
-        return new PagedResult<UserDto>
+        return new PagedResult<UserDTO>
         {
             Items = items,
             TotalCount = totalCount,

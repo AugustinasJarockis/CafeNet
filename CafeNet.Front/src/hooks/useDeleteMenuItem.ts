@@ -1,17 +1,17 @@
-import { deleteEmployee } from '@/services/employeeService';
+import { deleteMenuItem } from '@/services/menuItemService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const useDeleteEmployee = () => {
+export const useDeleteMenuItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteEmployee,
+    mutationFn: deleteMenuItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employees'] });
+      queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
     },
     onError: (error: Error) => {
-      queryClient.invalidateQueries({ queryKey: ['employees'] });
       console.error('Delete failed:', error.message);
+      queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
     },
   });
 };

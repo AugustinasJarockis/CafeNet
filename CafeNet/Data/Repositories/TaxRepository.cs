@@ -17,6 +17,10 @@ namespace CafeNet.Data.Repositories
             await _context.SaveChangesAsync();
             return tax;
         }
+
+        public async Task<bool> TaxExistsAsync(long id) {
+            return await _context.Taxes.AnyAsync(tax => tax.Id == id);
+        }
         public List<Tax> GetTaxes()
         {
             return [.._context.Taxes];

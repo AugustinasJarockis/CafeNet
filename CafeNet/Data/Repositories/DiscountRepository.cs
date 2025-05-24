@@ -28,7 +28,15 @@ namespace CafeNet.Data.Repositories
             return await _context.Discounts.AnyAsync(d => d.Code == code);
         }
 
-        public async Task<Discount> GetByIdAsync(long id)
+        public async Task<string?> GetCodeById(long id) {
+            return await _context.Discounts
+                .AsNoTracking()
+                .Where(discount => discount.Id == id)
+                .Select(discount => discount.Code)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Discount?> GetByIdAsync(long id)
         {
             return await _context.Discounts.FirstOrDefaultAsync(discount => discount.Id == id);
         }
