@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '@/services/authService';
+import { useAuth } from '@/context/authContext'; 
 
 export function LoginForm({
   className,
@@ -23,6 +24,7 @@ export function LoginForm({
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const handleLogin = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,6 +43,8 @@ export function LoginForm({
       }
 
       const decoded = jwtDecode<DecodedToken>(response.token);
+      setAuth(response.token, decoded);
+
       const role = decoded.role;
 
       if (role === 'ADMIN') {
