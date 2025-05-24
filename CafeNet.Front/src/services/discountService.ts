@@ -13,7 +13,7 @@ export interface UpdateDiscountRequest {
   code: string;
   percent?: number;
   amount?: number;
-  version: number;
+  version: string;
 }
 
 export interface Discount {

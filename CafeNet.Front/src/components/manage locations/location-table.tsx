@@ -8,26 +8,18 @@ import {
 
 import { LocationRow } from './location-row';
 import type { Location } from '@/services/locationService';
-import { useUpdateLocation } from '@/hooks/useUpdateLocation';
 
 interface LocationTableProps {
   locations: Location[];
+  onEdit: (locationId: number, location: Location) => void;
   onDelete: (locationId: number) => void;
 }
 
 export default function LocationTable({
   locations,
+  onEdit,
   onDelete,
 }: LocationTableProps) {
-  const updateLocationMutation = useUpdateLocation();
-
-  const handleEdit = (locationId: number, updatedLocation: Location) => {
-    updateLocationMutation.mutate({
-      locationId,
-      data: updatedLocation,
-    });
-  };
-
   return (
     <Table>
       <TableHeader>
@@ -41,7 +33,7 @@ export default function LocationTable({
           <LocationRow
             key={location.id}
             location={location}
-            onEdit={handleEdit}
+            onEdit={onEdit}
             onDelete={onDelete}
           />
         ))}
