@@ -7,12 +7,12 @@ import { CreateMenuItemVariationDTO } from '@/services/menuItemService';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { PlusIcon } from 'lucide-react';
 
-interface AddDiscountFormProps {
+interface AddMenuItemVariationFormProps {
     className?: string | undefined,
     handleSubmit: (payload: CreateMenuItemVariationDTO) => void
 }
 
-export function AddMenuItemVariationForm(props: AddDiscountFormProps) {
+export function AddMenuItemVariationForm(props: AddMenuItemVariationFormProps) {
   const [title, setTitle] = useState<string>('');
   const [priceChange, setPriceChange] = useState<string>();
 

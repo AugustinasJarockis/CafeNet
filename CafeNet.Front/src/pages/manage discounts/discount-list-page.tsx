@@ -20,7 +20,6 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useDeleteDiscount } from '@/hooks/useDeleteDiscount';
 import { useDiscounts } from '@/hooks/useDiscounts';
-import { Discount } from '@/services/discountService';
 import { useState } from 'react';
 
 export default function DiscountsPage() {
@@ -31,10 +30,6 @@ export default function DiscountsPage() {
 
   const handleDelete = async (discountId: number) => {
     deleteMutation.mutate(discountId);
-  };
-
-  const handleEdit = (discount: Discount) => {
-    console.log('Editing discount: ' + discount);
   };
 
   const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;
@@ -87,7 +82,6 @@ export default function DiscountsPage() {
             <>
               <DiscountTable
                 discounts={data.items}
-                onEdit={handleEdit}
                 onDelete={handleDelete}
               />
 
