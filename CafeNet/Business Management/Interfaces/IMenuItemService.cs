@@ -6,5 +6,6 @@ namespace CafeNet.Business_Management.Interfaces
     public interface IMenuItemService
     {
         Task<MenuItem> CreateAsync(CreateMenuItemRequest request);
+        Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id);
     }
 }
