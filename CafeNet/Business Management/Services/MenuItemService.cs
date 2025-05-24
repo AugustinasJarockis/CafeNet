@@ -50,5 +50,10 @@ namespace CafeNet.Business_Management.Services
                 throw;
             }
         }
+        [Loggable]
+        public async Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id)
+        {
+            return await _menuItemRepository.GetByTaxIdAsync(id);
+        }
     }
 }

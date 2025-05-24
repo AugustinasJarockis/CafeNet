@@ -121,14 +121,18 @@ public static class DbSeeder
 
         foreach (var taxesItem in taxesItems)
         {
-            var request = new CreateTaxRequest
+            if (!context.Taxes.Any(t => t.Type == taxesItem.GetRequiredConfigValue("Type")))
             {
-                Type = taxesItem.GetRequiredConfigValue("Type"),
-                Percent = byte.Parse(taxesItem.GetRequiredConfigValue("Percent"))            
-            };
+                var request = new CreateTaxRequest
+                {
+                    Type = taxesItem.GetRequiredConfigValue("Type"),
+                    Percent = byte.Parse(taxesItem.GetRequiredConfigValue("Percent"))
+                };
 
-            var tax = TaxMapper.ToTax(request);
-            context.Taxes.Add(tax);
+                var tax = TaxMapper.ToTax(request);
+
+                context.Taxes.Add(tax);
+            }
         }
 
         context.SaveChanges();
