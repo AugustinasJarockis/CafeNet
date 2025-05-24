@@ -19,7 +19,11 @@ namespace CafeNet.Data.Repositories
             return item;
         }
 
-        public async Task<MenuItem> GetByIdAsync(long id)
+        public async Task<bool> MenuItemExistsAsync(long id) {
+            return await _context.MenuItems.AnyAsync(item => item.Id == id);
+        }
+
+        public async Task<MenuItem?> GetByIdAsync(long id)
         {
             return await _context.MenuItems.FirstOrDefaultAsync(menuItem => menuItem.Id == id);
         }
@@ -52,14 +56,14 @@ namespace CafeNet.Data.Repositories
         public async Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request)
         {
             var menuItem = await _context.MenuItems
+                .AsNoTracking()
                 .Include(m => m.MenuItemVariations)
                 .Include(m => m.Tax)
-                .FirstAsync(m => m.Id == request.Id); 
-
-            _context.Entry(menuItem).Property(m => m.Version).OriginalValue = request.Version;
-
+                .FirstAsync(m => m.Id == request.Id);
             menuItem.Available = request.Available;
+            menuItem.Version = request.Version;
 
+            _context.MenuItems.Update(menuItem);
             await _context.SaveChangesAsync();
 
             return menuItem;
