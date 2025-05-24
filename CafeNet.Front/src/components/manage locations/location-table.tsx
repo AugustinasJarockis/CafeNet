@@ -11,7 +11,7 @@ import type { Location } from '@/services/locationService';
 
 interface LocationTableProps {
   locations: Location[];
-  onEdit: (locationId: number, location: Location) => void;
+  onEdit: (location: Location) => void;
   onDelete: (locationId: number) => void;
 }
 

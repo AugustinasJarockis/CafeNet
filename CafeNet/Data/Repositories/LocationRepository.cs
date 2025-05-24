@@ -39,6 +39,11 @@ namespace CafeNet.Data.Repositories
             return _context.Locations.Any(location => location.Address == address);
         }
 
+        public async Task<bool> LocationExistsAsync(long id)
+        {
+            return await _context.Locations.AnyAsync(location => location.Id == id);
+        }
+
         public async Task<IEnumerable<Location>> GetLocationsPagedAsync(int pageNumber, int pageSize)
         {
             return await _context.Locations

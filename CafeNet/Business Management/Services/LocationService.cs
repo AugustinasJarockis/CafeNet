@@ -96,6 +96,9 @@ namespace CafeNet.Business_Management.Services
             {
                 var location = updateLocationRequest.ToLocation();
 
+                if (!(await _locationRepository.LocationExistsAsync(location.Id)))
+                    throw new NotFoundException($"Location not found.");
+
                 if (_locationRepository.AddressAlreadyRegistered(location.Address))
                     throw new ConflictException("A location with this address already exists");
 

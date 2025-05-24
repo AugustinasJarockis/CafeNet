@@ -8,6 +8,7 @@ namespace CafeNet.Data.Repositories
         public Task<Location> CreateAsync(Location location);
         public Task<Location> GetByIdAsync(long id);
         public bool AddressAlreadyRegistered(string address);
+        public Task<bool> LocationExistsAsync(long id);
         public Task<IEnumerable<Location>> GetLocationsPagedAsync(int pageNumber, int pageSize);
         public Task<int> CountLocationsAsync();
         public Task<Location?> GetFirstLocationExceptAsync(long excludedLocationId);

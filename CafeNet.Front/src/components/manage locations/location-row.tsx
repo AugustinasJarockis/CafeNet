@@ -19,7 +19,7 @@ import { EditLocationPopup} from './edit-location-popup';
 
 interface LocationRowProps {
   location: Location;
-  onEdit: (locationId: number, location: Location) => void;
+  onEdit: ( location: Location) => void;
   onDelete: (locationId: number) => void;
 }
 

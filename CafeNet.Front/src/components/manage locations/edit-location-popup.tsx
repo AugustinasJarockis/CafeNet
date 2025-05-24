@@ -16,7 +16,7 @@ import { Location } from '@/services/locationService';
 
 interface EditLocationDialogProps {
   location: Location;
-  onSubmit: (locationId: number, payload: Location ) => void;
+  onSubmit: ( payload: Location ) => void;
 }
 
 export function EditLocationPopup({ 
@@ -38,7 +38,7 @@ export function EditLocationPopup({
       address,
       version: location.version,
     };
-    onSubmit(location.id, payload);
+    onSubmit(payload);
     setOpen(false);
   };
 

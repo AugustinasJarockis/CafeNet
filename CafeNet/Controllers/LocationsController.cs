@@ -62,15 +62,11 @@ namespace CafeNet.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Update(long id, [FromBody] UpdateLocationRequest updateLocationRequest)
+        public async Task<IActionResult> Update( [FromBody] UpdateLocationRequest updateLocationRequest)
         {
-            var targetLocationId = id;
             var currentUserRole = HttpContext.GetUserRole();
-
-            if (targetLocationId != updateLocationRequest.Id)
-                return BadRequest("ID and route does not match ID in request");
 
             if (currentUserRole != "ADMIN")
                 return Forbid();

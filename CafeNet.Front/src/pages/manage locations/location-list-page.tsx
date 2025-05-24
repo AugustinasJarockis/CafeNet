@@ -35,9 +35,8 @@ export default function LocationsPage() {
     deleteMutation.mutate(locationId);
   };
 
-  const handleEdit = (locationId: number, updatedLocation: Location) => {
+  const handleEdit = (updatedLocation: Location) => {
     updateLocationMutation.mutate({
-      locationId,
       data: updatedLocation,
     });
   };

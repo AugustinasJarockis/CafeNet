@@ -9,7 +9,7 @@ export interface CreateLocationRequest {
 export interface Location {
   id: number;
   address: string;
-  version?: string;
+  version: string;
 }
 
 export const createLocation = async (request: CreateLocationRequest): Promise<Location | string> => {
@@ -68,9 +68,9 @@ export async function deleteLocation(locationId: number) {
   }
 }
 
-export const updateLocation = async (data: Location, locationId: number): Promise<Location> => {
+export const updateLocation = async (data: Location): Promise<Location> => {
   try {
-    const response = await apiClient.put(`locations/${locationId}`, data);
+    const response = await apiClient.put('/locations', data);
     return response.data;
   } catch (error) {
     let message = 'An unexpected error occurred.';
