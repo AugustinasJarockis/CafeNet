@@ -33,7 +33,7 @@ export function AddEmployeeForm({
   const mutation = useMutation({
     mutationFn: (data: AddEmployeeRequest) => addEmployee(data),
     onSuccess: () => {
-      navigate('/menu-admin');
+      navigate('/employees');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err)) {

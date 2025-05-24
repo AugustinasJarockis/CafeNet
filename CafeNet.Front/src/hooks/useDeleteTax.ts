@@ -10,6 +10,7 @@ export function useDeleteTax() {
       queryClient.invalidateQueries({ queryKey: ['taxes'] });
     },
     onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['taxes'] });
       console.error('Failed to delete tax:', error.message);
     },
   });

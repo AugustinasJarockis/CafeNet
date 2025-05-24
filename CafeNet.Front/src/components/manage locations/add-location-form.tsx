@@ -27,7 +27,7 @@ export function AddLocationForm({
   const mutation = useMutation({
     mutationFn: (data: CreateLocationRequest) => createLocation(data),
     onSuccess: () => {
-      navigate('/menu-admin');
+      navigate('/locations');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err)) {

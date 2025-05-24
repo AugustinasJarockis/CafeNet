@@ -11,6 +11,7 @@ export function useUpdateTax() {
       queryClient.invalidateQueries({ queryKey: ['taxes'] });
     },
     onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['taxes'] });
       console.error('Update failed:', error.message);
     },
   });

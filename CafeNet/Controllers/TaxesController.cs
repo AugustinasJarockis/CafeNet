@@ -64,7 +64,7 @@ namespace CafeNet.Controllers
             var currentUserRole = HttpContext.GetUserRole();
 
             if (targetTaxId != updateTaxRequest.Id)
-                return BadRequest("ID ir route does not match ID in request");
+                return BadRequest("ID and route does not match ID in request");
 
             if (currentUserRole != "ADMIN")
                 return Forbid();
