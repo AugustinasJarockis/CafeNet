@@ -1,10 +1,14 @@
 ﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
+using CafeNet.Infrastructure.Pagination;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services
 {
@@ -50,6 +54,66 @@ namespace CafeNet.Business_Management.Services
                 throw;
             }
         }
+
+        [Loggable]
+        public async Task<PagedResult<MenuItemDTO>> GetMenuItemsAsync(int pageNumber, int pageSize)
+        {
+            var totalCount = await _menuItemRepository.CountMenuItemsAsync();
+            var menuItems = await _menuItemRepository.GetMenuItemsPagedAsync(pageNumber, pageSize);
+
+            var items = menuItems.Select(MenuItemMapper.ToMenuItemDTO).ToList();
+
+            return new PagedResult<MenuItemDTO>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
+
+        [Loggable]
+        public async Task DeleteAsync(long id)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var menuItem = await _menuItemRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+
+                _menuItemRepository.DeleteById(menuItem.Id);
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
+        }
+
+        [Loggable]
+        public async Task<MenuItemDTO> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request)
+        {
+            // Check if item exists
+            var menuItem = await _menuItemRepository.GetByIdAsync(request.Id);
+
+            if (menuItem == null)
+                throw new KeyNotFoundException($"Menu item with ID {request.Id} not found.");
+
+            try
+            {
+                // Pass request with version info to repository update
+                var updatedMenuItem = await _menuItemRepository.UpdateAvailabilityAsync(request);
+                return MenuItemMapper.ToMenuItemDTO(updatedMenuItem);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbUpdateConcurrencyException("Item availability was modified by another process.");
+            }
+        }
+
+
         [Loggable]
         public async Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id)
         {
