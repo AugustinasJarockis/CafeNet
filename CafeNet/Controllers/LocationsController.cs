@@ -1,6 +1,8 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Services;
 using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Extensions;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +59,20 @@ namespace CafeNet.Controllers
             await _locationService.DeleteAsync(id);
 
             return Ok(new { message = "Location deleted successfully" });
+        }
+
+
+        [HttpPut]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Update( [FromBody] UpdateLocationRequest updateLocationRequest)
+        {
+            var currentUserRole = HttpContext.GetUserRole();
+
+            if (currentUserRole != "ADMIN")
+                return Forbid();
+
+            var updatedLocation = await _locationService.UpdateLocationAsync(updateLocationRequest);
+            return Ok(updatedLocation);
         }
     }
 }

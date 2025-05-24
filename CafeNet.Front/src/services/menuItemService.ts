@@ -41,7 +41,7 @@ export interface MenuItemVariation {
     menuItemId: number;
     title: string;
     priceChange: number;
-    version?: number;
+    version?: string;
 }
 
 export const createMenuItem = async (request: CreateMenuItemRequest): Promise<MenuItem | string> => {

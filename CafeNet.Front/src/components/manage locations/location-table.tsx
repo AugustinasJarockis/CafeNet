@@ -5,6 +5,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+
 import { LocationRow } from './location-row';
 import type { Location } from '@/services/locationService';
 
