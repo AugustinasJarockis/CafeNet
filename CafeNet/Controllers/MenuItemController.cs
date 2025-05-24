@@ -1,5 +1,8 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Business_Management.Services;
+using CafeNet.Data.Models;
+using CafeNet.Infrastructure.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +30,24 @@ namespace CafeNet.Controllers
             catch (InvalidOperationException ex) {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ADMIN")]
+        [ProducesResponseType(typeof(PagedResult<MenuItem>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMenuItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _menuItemService.GetMenuItemsAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _menuItemService.DeleteAsync(id);
+
+            return Ok(new { message = "Menu item deleted successfully" });
         }
     }
 }

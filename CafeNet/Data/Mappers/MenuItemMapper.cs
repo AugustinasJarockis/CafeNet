@@ -22,5 +22,33 @@ namespace CafeNet.Data.Mappers
                 PriceChange = variationDTO.PriceChange
             };
         }
+
+        public static MenuItemVariationDto ToMenuVariationDto(this MenuItemVariation variation)
+        {
+            return new MenuItemVariationDto
+            {
+                Id = variation.Id,
+                Title = variation.Title,
+                PriceChange = variation.PriceChange,
+                MenuItemId = variation.MenuItemId
+            };
+        }
+
+        public static MenuItemDto ToMenuItemDto(this MenuItem menuItem)
+        {
+            return new MenuItemDto
+            {
+                Id = menuItem.Id,
+                Title = menuItem.Title,
+                Price = menuItem.Price,
+                Available = menuItem.Available,
+                ImgPath = menuItem.ImgPath,
+                TaxId = menuItem.TaxId,
+                Tax = menuItem.Tax,
+                MenuItemVariations = menuItem.MenuItemVariations?
+                    .Select(v => v.ToMenuVariationDto())
+                    .ToList() ?? []
+            };
+        }
     }
 }
