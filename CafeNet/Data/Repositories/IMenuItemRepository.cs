@@ -13,5 +13,6 @@ namespace CafeNet.Data.Repositories
         public void DeleteById(long id);
         public Task<MenuItem> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request);
         public Task<List<MenuItem>> GetByTaxIdAsync(long id);
+        public Task<MenuItem> UpdateAsync(MenuItem menuItem);
     }
 }

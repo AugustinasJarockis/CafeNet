@@ -74,21 +74,8 @@ namespace CafeNet.Business_Management.Services
         [Loggable]
         public async Task DeleteAsync(long id)
         {
-            await _unitOfWork.BeginTransactionAsync();
-            try
-            {
-                var menuItem = await _menuItemRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-
-                _menuItemRepository.DeleteById(menuItem.Id);
-
-                await _unitOfWork.SaveChangesAsync();
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch
-            {
-                await _unitOfWork.RollbackTransactionAsync();
-                throw;
-            }
+            var menuItem = await _menuItemRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+            _menuItemRepository.DeleteById(menuItem.Id);
         }
 
         [Loggable]
@@ -114,5 +101,36 @@ namespace CafeNet.Business_Management.Services
         {
             return await _menuItemRepository.GetByTaxIdAsync(id);
         }
+
+        [Loggable]
+        public async Task<MenuItem> UpdateAsync(MenuItemDTO menuItemDTO)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var menuItem = menuItemDTO.ToMenuItem();
+
+                if (!await _menuItemRepository.MenuItemExistsAsync(menuItem.Id))
+                    throw new NotFoundException("Menu item not found");
+
+                var updatedItem = await _menuItemRepository.UpdateAsync(menuItem); 
+
+                await _unitOfWork.SaveChangesAsync(); 
+                await _unitOfWork.CommitTransactionAsync(); 
+
+                return updatedItem;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw new ConflictException("Menu item was modified in another session.");
+            }
+            catch
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
+        }
+
     }
 }

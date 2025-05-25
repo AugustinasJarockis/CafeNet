@@ -74,5 +74,63 @@ namespace CafeNet.Data.Repositories
         {
             return await _context.MenuItems.Where(t => t.TaxId == id).ToListAsync();
         }
+
+        public async Task<MenuItem> UpdateAsync(MenuItem updatedMenuItem)
+        {
+            var existingMenuItem = await _context.MenuItems
+                .Include(m => m.MenuItemVariations)
+                .FirstOrDefaultAsync(m => m.Id == updatedMenuItem.Id);
+
+            if (existingMenuItem == null)
+            {
+                throw new Exception($"MenuItem with ID {updatedMenuItem.Id} not found.");
+            }
+
+            // Update scalar properties
+            existingMenuItem.Title = updatedMenuItem.Title;
+            existingMenuItem.Price = updatedMenuItem.Price;
+            existingMenuItem.Available = updatedMenuItem.Available;
+            existingMenuItem.ImgPath = updatedMenuItem.ImgPath;
+            existingMenuItem.TaxId = updatedMenuItem.TaxId;
+
+            // --- Handle Variations ---
+            // Remove variations not in updated list
+            var updatedVariationIds = updatedMenuItem.MenuItemVariations.Select(v => v.Id).ToList();
+            var variationsToRemove = existingMenuItem.MenuItemVariations
+                .Where(v => !updatedVariationIds.Contains(v.Id))
+                .ToList();
+
+            foreach (var variation in variationsToRemove)
+            {
+                _context.MenuItemVariations.Remove(variation);
+            }
+
+            // Add or update variations
+            foreach (var updatedVariation in updatedMenuItem.MenuItemVariations)
+            {
+                var existingVariation = existingMenuItem.MenuItemVariations
+                    .FirstOrDefault(v => v.Id == updatedVariation.Id);
+
+                if (existingVariation != null)
+                {
+                    // Update
+                    existingVariation.Title = updatedVariation.Title;
+                    existingVariation.PriceChange = updatedVariation.PriceChange;
+                }
+                else
+                {
+                    // Add new
+                    existingMenuItem.MenuItemVariations.Add(new MenuItemVariation
+                    {
+                        Title = updatedVariation.Title,
+                        PriceChange = updatedVariation.PriceChange,
+                        MenuItemId = existingMenuItem.Id
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return existingMenuItem;
+        }
     }
 }

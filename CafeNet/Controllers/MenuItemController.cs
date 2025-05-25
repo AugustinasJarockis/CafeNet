@@ -78,5 +78,23 @@ namespace CafeNet.Controllers
             var result = await _menuItemService.GetMenuItemsByTaxIdAsync(taxId);
             return Ok(result);
         }
+
+        [HttpPut("{id:long}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Update(long id, [FromBody] MenuItemDTO menuItemDTO)
+        {
+            var targetMenuItemId = id;
+            var currentUserRole = HttpContext.GetUserRole();
+
+            if (targetMenuItemId != menuItemDTO.Id)
+                return BadRequest("ID and route does not match ID in request");
+
+            if (currentUserRole != "ADMIN")
+                return Forbid();
+
+            var updatedTax = await _menuItemService.UpdateAsync(menuItemDTO);
+
+            return Ok(updatedTax);
+        }
     }
 }
