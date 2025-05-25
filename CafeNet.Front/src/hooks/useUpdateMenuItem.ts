@@ -11,8 +11,9 @@ export function useUpdateMenuItem() {
       queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
     },
     onError: (error: Error) => {
-      queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
       console.error('Update failed:', error.message);
+      alert(`Update failed: ${error.message}`);
+      queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
     },
   });
 }

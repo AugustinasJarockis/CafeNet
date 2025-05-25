@@ -7,6 +7,7 @@ using CafeNet.Infrastructure.Pagination;
 using CafeNet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CafeNet.Data.Mappers;
 
 namespace CafeNet.Controllers
 {
@@ -93,8 +94,9 @@ namespace CafeNet.Controllers
                 return Forbid();
 
             var updatedMenuItem = await _menuItemService.UpdateAsync(updateMenuItemRequest);
+            var updatedMenuItemDTO = updatedMenuItem.ToMenuItemDTO(); 
 
-            return Ok(updatedMenuItem);
+            return Ok(updatedMenuItemDTO);
         }
     }
 }
