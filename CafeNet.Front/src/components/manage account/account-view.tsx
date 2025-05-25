@@ -8,6 +8,7 @@ export default function AccountView({
     user
 } : { user: User }) {
     const navigate = useNavigate();
+
     return (
         <div className="flex justify-center mt-10">
             <Card className="w-full max-w-md">
