@@ -1,60 +1,60 @@
 ﻿{
   "SeedData": {
-      "AdminUsers": [
-        {
-          "Name": "Admin User",
-          "Username": "admin",
-          "Password": "admin123",
-          "Role": "ADMIN",
-          "Location": {
-            "Address": "123 Dev St"
-          }
-        },
-        {
-          "Name": "Admin One",
-          "Username": "admin1",
-          "Password": "admin123",
-          "Role": "ADMIN",
-          "Location": {
-            "Address": "123 Dev St"
-          }
-        },
-        {
-          "Name": "Admin Two",
-          "Username": "admin2",
-          "Password": "admin456",
-          "Role": "ADMIN",
-          "Location": {
-            "Address": "456 Dev St"
-          }
-        },
-        {
-          "Name": "Admin Three",
-          "Username": "admin3",
-          "Password": "admin789",
-          "Role": "ADMIN",
-          "Location": {
-            "Address": "789 Admin Rd"
-          }
-        },
-        {
-          "Name": "Admin Four",
-          "Username": "admin4",
-          "Password": "securepass",
-          "Role": "ADMIN",
-          "Location": {
-            "Address": "1010 Admin Plaza"
-          }
-        },
-        {
-          "Name": "Admin Five",
-          "Username": "admin5",
-          "Password": "strongpassword",
-          "Role": "ADMIN",
-          "Location": {
-            "Address": "2020 Control Center"
-          }
+    "AdminUsers": [
+      {
+        "Name": "Admin User",
+        "Username": "admin",
+        "Password": "admin123",
+        "Role": "ADMIN",
+        "Location": {
+          "Address": "123 Dev St"
         }
+      },
+      {
+        "Name": "Admin One",
+        "Username": "admin1",
+        "Password": "admin123",
+        "Role": "ADMIN",
+        "Location": {
+          "Address": "123 Dev St"
+        }
+      },
+      {
+        "Name": "Admin Two",
+        "Username": "admin2",
+        "Password": "admin456",
+        "Role": "ADMIN",
+        "Location": {
+          "Address": "456 Dev St"
+        }
+      },
+      {
+        "Name": "Admin Three",
+        "Username": "admin3",
+        "Password": "admin789",
+        "Role": "ADMIN",
+        "Location": {
+          "Address": "789 Admin Rd"
+        }
+      },
+      {
+        "Name": "Admin Four",
+        "Username": "admin4",
+        "Password": "securepass",
+        "Role": "ADMIN",
+        "Location": {
+          "Address": "1010 Admin Plaza"
+        }
+      },
+      {
+        "Name": "Admin Five",
+        "Username": "admin5",
+        "Password": "strongpassword",
+        "Role": "ADMIN",
+        "Location": {
+          "Address": "2020 Control Center"
+        }
+      }
     ],
     "BaristaUsers": [
       {
@@ -197,6 +197,68 @@
       {
         "Type": "Tobacco Products",
         "Percent": 30
+      }
+    ],
+    "MenuItems": [
+      {
+        "Title": "Americano",
+        "Price": 2.50,
+        "Available": true,
+        "ImgPath": "images/menu/americano.png",
+        "TaxType": "Drinks"
+      },
+      {
+        "Title": "Cappuccino",
+        "Price": 3.00,
+        "Available": true,
+        "ImgPath": "images/menu/cappuccino.png",
+        "TaxType": "Drinks"
+      },
+      {
+        "Title": "Blueberry Muffin",
+        "Price": 2.00,
+        "Available": true,
+        "ImgPath": "images/menu/blueberry_muffin.png",
+        "TaxType": "Drinks"
+      }
+    ],
+    "MenuItemVariations": [
+      {
+        "MenuItemTitle": "Cappuccino",
+        "Title": "Large Size",
+        "PriceChange": 0.50
+      },
+      {
+        "MenuItemTitle": "Cappuccino",
+        "Title": "Extra Shot",
+        "PriceChange": 0.75
+      },
+      {
+        "MenuItemTitle": "Americano",
+        "Title": "Oat Milk",
+        "PriceChange": 0.30
+      },
+      {
+        "MenuItemTitle": "Blueberry Muffin",
+        "Title": "Warm Up",
+        "PriceChange": 0.00
+      }
+    ],
+    "Discounts": [
+      {
+        "Code": "WELCOME10",
+        "Percent": 10,
+        "Amount": null
+      },
+      {
+        "Code": "FIVEOFF",
+        "Percent": null,
+        "Amount": 5.00
+      },
+      {
+        "Code": "FREEMUFFIN",
+        "Percent": null,
+        "Amount": 2.00
       }
     ]
   }
