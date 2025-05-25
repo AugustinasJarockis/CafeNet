@@ -27,11 +27,16 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<MenuItem> CreateAsync(CreateMenuItemRequest request) {
+        public async Task<MenuItem> CreateAsync(CreateMenuItemRequest request)
+        {
             var menuItem = request.ToMenuItem();
-            
+
+            if (await _menuItemRepository.IsTitleTakenAsync(menuItem.Title))
+                throw new ConflictException($"A menu item with the title '{menuItem.Title}' already exists.");
+
             await _unitOfWork.BeginTransactionAsync();
-            try {
+            try
+            {
                 ICollection<MenuItemVariation> variations = menuItem.MenuItemVariations;
                 menuItem.MenuItemVariations = [];
 
@@ -48,11 +53,13 @@ namespace CafeNet.Business_Management.Services
 
                 return menuItem;
             }
-            catch {
+            catch
+            {
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
             }
         }
+
 
         [Loggable]
         public async Task<PagedResult<MenuItemDTO>> GetMenuItemsAsync(int pageNumber, int pageSize)
@@ -74,21 +81,8 @@ namespace CafeNet.Business_Management.Services
         [Loggable]
         public async Task DeleteAsync(long id)
         {
-            await _unitOfWork.BeginTransactionAsync();
-            try
-            {
-                var menuItem = await _menuItemRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-
-                _menuItemRepository.DeleteById(menuItem.Id);
-
-                await _unitOfWork.SaveChangesAsync();
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch
-            {
-                await _unitOfWork.RollbackTransactionAsync();
-                throw;
-            }
+            var menuItem = await _menuItemRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+            _menuItemRepository.DeleteById(menuItem.Id);
         }
 
         [Loggable]
@@ -114,5 +108,39 @@ namespace CafeNet.Business_Management.Services
         {
             return await _menuItemRepository.GetByTaxIdAsync(id);
         }
+
+        [Loggable]
+        public async Task<MenuItem> UpdateAsync(UpdateMenuItemRequest updateMenuItemRequest)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var menuItem = updateMenuItemRequest.ToMenuItem();
+
+                if (!await _menuItemRepository.MenuItemExistsAsync(menuItem.Id))
+                    throw new NotFoundException("Menu item not found");
+
+                if (await _menuItemRepository.IsTitleTakenAsync(menuItem.Title, menuItem.Id))
+                    throw new ConflictException($"A different menu item with the title '{menuItem.Title}' already exists.");
+
+                var updatedItem = await _menuItemRepository.UpdateAsync(menuItem);
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitTransactionAsync();
+
+                return updatedItem;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw new ConflictException("Menu item was modified in another session.");
+            }
+            catch
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
+        }
+
     }
 }

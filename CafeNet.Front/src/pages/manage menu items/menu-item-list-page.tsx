@@ -23,8 +23,9 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useDeleteMenuItem } from '@/hooks/useDeleteMenuItem';
 import { useUpdateMenuItemAvailability } from "@/hooks/useUpdateMenuItemAvailability";
+import { useUpdateMenuItem } from "@/hooks/useUpdateMenuItem";
 import { useMenuItems } from '@/hooks/useMenuItems';
-import { MenuItem } from '@/services/menuItemService';
+import { CreateMenuItemRequestPopup } from '@/services/menuItemService';
 import { useState } from 'react';
 
 export default function MenuItemListPage() {
@@ -34,6 +35,7 @@ export default function MenuItemListPage() {
   const { data, isLoading, error } = useMenuItems(page, pageSize);
   const deleteMutation = useDeleteMenuItem();
   const updateAvailabilityMutation = useUpdateMenuItemAvailability();
+  const updateMutation = useUpdateMenuItem();
 
   if (userLoading) return <div>Loading user...</div>;
   if (userError || !user) return <div>Failed to load user.</div>;
@@ -42,8 +44,14 @@ export default function MenuItemListPage() {
     deleteMutation.mutate(menuItemId);
   };
 
-  const handleEdit = (menuItem: MenuItem) => {
-    console.log('Editing menu item: ' + menuItem);
+  const handleEdit = (menuItem: CreateMenuItemRequestPopup) => {
+  updateMutation.mutate({
+    menuItemId: menuItem.id,
+    data: {
+      ...menuItem,
+      version: menuItem.version
+    },
+  });
   };
 
   const handleToggleAvailability = (id: number, available: boolean, version?: string) => {

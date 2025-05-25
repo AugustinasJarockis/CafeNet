@@ -7,6 +7,7 @@ using CafeNet.Infrastructure.Pagination;
 using CafeNet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CafeNet.Data.Mappers;
 
 namespace CafeNet.Controllers
 {
@@ -77,6 +78,25 @@ namespace CafeNet.Controllers
         {
             var result = await _menuItemService.GetMenuItemsByTaxIdAsync(taxId);
             return Ok(result);
+        }
+
+        [HttpPut("{id:long}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Update(long id, [FromBody] UpdateMenuItemRequest updateMenuItemRequest)
+        {
+            var targetMenuItemId = id;
+            var currentUserRole = HttpContext.GetUserRole();
+
+            if (targetMenuItemId != updateMenuItemRequest.Id)
+                return BadRequest("ID and route does not match ID in request");
+
+            if (currentUserRole != "ADMIN")
+                return Forbid();
+
+            var updatedMenuItem = await _menuItemService.UpdateAsync(updateMenuItemRequest);
+            var updatedMenuItemDTO = updatedMenuItem.ToMenuItemDTO(); 
+
+            return Ok(updatedMenuItemDTO);
         }
     }
 }

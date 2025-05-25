@@ -11,5 +11,6 @@ namespace CafeNet.Business_Management.Interfaces
         Task DeleteAsync(long id);
         Task<MenuItemDTO> UpdateAvailabilityAsync(UpdateItemAvailabilityRequest request);
         Task<List<MenuItem>> GetMenuItemsByTaxIdAsync(long id);
+        Task<MenuItem> UpdateAsync(UpdateMenuItemRequest updateMenuItemRequest);
     }
 }

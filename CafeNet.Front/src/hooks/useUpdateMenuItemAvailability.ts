@@ -13,5 +13,9 @@ export const useUpdateMenuItemAvailability = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["MenuItem"] }); 
     },
+    onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: ['MenuItem'] });
+      console.error('Update failed:', error.message);
+    },
   });
 };

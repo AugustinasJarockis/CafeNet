@@ -51,5 +51,33 @@ namespace CafeNet.Data.Mappers
                     .ToList() ?? []
             };
         }
+
+        public static MenuItem ToMenuItem(this UpdateMenuItemRequest dto)
+        {
+            return new MenuItem
+            {
+                Id = dto.Id,
+                Title = dto.Title,
+                Price = dto.Price,
+                Available = dto.Available,
+                ImgPath = dto.ImgPath,
+                TaxId = dto.TaxId,
+                Version = dto.Version,
+                MenuItemVariations = dto.MenuItemVariations?
+                    .Select(variation => variation.ToMenuItemVariation())
+                    .ToList() ?? new List<MenuItemVariation>()
+            };
+        }
+
+        public static MenuItemVariation ToMenuItemVariation(this MenuItemVariationDTO dto)
+        {
+            return new MenuItemVariation
+            {
+                Id = dto.Id,
+                MenuItemId = dto.MenuItemId,
+                Title = dto.Title,
+                PriceChange = dto.PriceChange
+            };
+        }
     }
 }
