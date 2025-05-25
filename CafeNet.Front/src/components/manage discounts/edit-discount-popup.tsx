@@ -65,9 +65,9 @@ export function EditDiscountPopup({
         </DialogTrigger>
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>Create new menu item variation</DialogTitle>
+                <DialogTitle>Edit the discount</DialogTitle>
                 <DialogDescription>
-                    Specify the item variation details.
+                    Make changes to the selected discount.
                 </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit}>
