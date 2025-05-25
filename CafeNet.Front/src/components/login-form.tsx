@@ -53,8 +53,6 @@ export function LoginForm({
         navigate('/menu-barista');
       } else if (role === 'CLIENT') {
         navigate('/menu-client');
-      } else {
-        navigate('/Welcome');
       }
     } catch (err) {
       setError(

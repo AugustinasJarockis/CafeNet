@@ -33,5 +33,14 @@ namespace CafeNet.Business_Management.Validators
                 return true;
             return false;
         }
+        public static bool IsValidPhone(this string str)
+        {
+            if (str == null || str.Length == 0 || str.Length > 40)
+                return false;
+            Regex validatePhoneRegex = new Regex(@"^(\+?[0-9 -]+)$");
+            if (validatePhoneRegex.IsMatch(str))
+                return true;
+            return false;
+        }
     }
 }

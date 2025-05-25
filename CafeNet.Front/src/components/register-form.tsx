@@ -22,6 +22,7 @@ export function RegisterForm({
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [locationId, setLocationId] = useState('');
   const [locations, setLocations] = useState<Location[]>([]);
@@ -57,6 +58,7 @@ useEffect(() => {
         username,
         password,
         locationId,
+        phoneNumber,
       };
 
       const response = await register(registerRequest as RegisterRequest);
@@ -101,6 +103,16 @@ useEffect(() => {
                   id="username"
                   type="text"
                   onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Input
+                  id="phoneNumber"
+                  type="tel"
+                  placeholder="+1234567890"
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   required
                 />
               </div>

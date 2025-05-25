@@ -63,8 +63,8 @@ export default function MenuItemListPage() {
   updateAvailabilityMutation.mutate({ id, available, version });
 };
 
-  const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;
-
+  const totalPages = data && data.totalCount !== 0 ? Math.ceil(data.totalCount / pageSize) : 1;
+  
   const renderPageNumbers = () => {
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -113,7 +113,7 @@ export default function MenuItemListPage() {
         </header>
         <div className="p-6">
           {isLoading && <p>Loading...</p>}
-          {error && <p>Error loading employees</p>}
+          {error && <p>Error loading menu items</p>}
 
           {data && (
             <>
