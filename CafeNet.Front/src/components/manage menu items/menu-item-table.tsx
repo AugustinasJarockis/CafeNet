@@ -23,7 +23,7 @@ import type { CreateMenuItemRequestPopup } from "@/services/menuItemService";
 
 interface MenuItemTableProps {
   menuItems: MenuItem[];
-  onEdit: (menuItem: CreateMenuItemRequestPopup) => void; // <- update this
+  onEdit: (menuItem: CreateMenuItemRequestPopup) => void;
   onDelete: (menuItemId: number) => void;
   onToggleAvailability: (id: number, available: boolean, version?: string) => void;
   userRole: string;
