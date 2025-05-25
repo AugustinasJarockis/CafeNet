@@ -5,7 +5,7 @@ namespace CafeNet.Business_Management.DTOs
     public class UpdateMenuItemRequest
     {
         public long Id { get; set; }
-        public string Title { get; set; }
+        public required string Title { get; set; }
         public decimal Price { get; set; }
         public bool Available { get; set; }
         public string? ImgPath { get; set; }
