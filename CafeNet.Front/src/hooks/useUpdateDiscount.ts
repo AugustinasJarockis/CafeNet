@@ -13,6 +13,7 @@ export const useUpdateDiscount = () => {
     onError: (error: Error) => {
       queryClient.invalidateQueries({ queryKey: ['discounts'] });
       console.error('Update failed:', error.message);
+      alert(`Update failed: ${error.message}`);
     },
   });
 };

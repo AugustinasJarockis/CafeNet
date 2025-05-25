@@ -10,5 +10,9 @@ export const useUpdateCurrentUser = () => {
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(['currentUser'], updatedUser);
     },
+    onError: (error: Error) => {
+      console.error('Update failed:', error.message);
+      alert(`Update failed: ${error.message}`);
+    },
   });
 };

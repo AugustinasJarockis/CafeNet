@@ -22,7 +22,9 @@ export type User = {
   password: string;
   role: string;
   locationId?: number;
+  phoneNumber?: string;
   locationAddress: string;
+  location?: Location;
   version: string;
 };
 

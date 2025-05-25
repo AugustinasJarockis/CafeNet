@@ -11,6 +11,7 @@ export interface RegisterRequest {
   username: string;
   password: string;
   locationId: string;
+  phoneNumber: string;
 }
 
 export interface LoginResponse {

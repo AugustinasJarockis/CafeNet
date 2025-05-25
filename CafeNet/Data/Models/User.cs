@@ -11,6 +11,7 @@ namespace CafeNet.Data.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public UserRoles Role { get; set; }
+        public string? PhoneNumber { get; set; }
         public long? LocationId { get; set; }
 
         public ICollection<Order> Orders { get; set; }
