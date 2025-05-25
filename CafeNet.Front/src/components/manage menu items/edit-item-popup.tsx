@@ -41,8 +41,8 @@ export default function EditMenuItemPopup({
   const handleVariationSubmit = (variation: CreateMenuItemVariationDTO) => {
   const fullVariation: MenuItemVariationDTO = {
     ...variation,
-    id: 0, // temporary ID for new item
-    menuItemId: edited?.id ?? 0, // fallback to 0 if edited is null
+    id: 0, 
+    menuItemId: edited?.id ?? 0, 
   };
   setNewVariations((prev) => [...prev, fullVariation]);
 };
