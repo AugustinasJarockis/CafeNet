@@ -8,7 +8,7 @@ import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@
 
 import { useTaxes } from "@/hooks/useTaxes";
 import { AddMenuItemVariationForm } from "./add-menu-item-variation-form";
-import type { MenuItem, CreateMenuItemRequestPopup, MenuItemVariationDTO, CreateMenuItemVariationDTO } from "@/services/menuItemService";
+import type { MenuItem, CreateMenuItemRequestPopup, CreateMenuItemVariationDTO, MenuItemVariation } from "@/services/menuItemService";
 
 
 interface EditMenuItemPopupProps {
@@ -28,7 +28,7 @@ export default function EditMenuItemPopup({
 
   const [edited, setEdited] = useState<MenuItem | null>(menuItem);
   const [existingVariations, setExistingVariations] = useState<MenuItem["menuItemVariations"]>([]);
-  const [newVariations, setNewVariations] = useState<MenuItemVariationDTO[]>([]);
+  const [newVariations, setNewVariations] = useState<MenuItemVariation[]>([]);
 
   useEffect(() => {
   if (open && menuItem) {
@@ -39,15 +39,16 @@ export default function EditMenuItemPopup({
 }, [open, menuItem]);
 
   const handleVariationSubmit = (variation: CreateMenuItemVariationDTO) => {
-  const fullVariation: MenuItemVariationDTO = {
+  const fullVariation: MenuItemVariation = {
     ...variation,
     id: 0, 
-    menuItemId: edited?.id ?? 0, 
+    menuItemId: edited?.id ?? 0,
+    version: "0",
   };
   setNewVariations((prev) => [...prev, fullVariation]);
 };
 
-  const removeVariation = (variation: MenuItemVariationDTO | MenuItem["menuItemVariations"][0]) => {
+  const removeVariation = (variation: MenuItemVariation | MenuItem["menuItemVariations"][0]) => {
     if ("id" in variation) {
       setExistingVariations((prev) => prev.filter((v) => v.id !== variation.id));
     } else {
