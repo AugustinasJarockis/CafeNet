@@ -15,6 +15,7 @@ namespace CafeNet.Data.Repositories
         public async Task<Order> CreateAsync(Order order)
         {
             _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
             return order;
         }
 

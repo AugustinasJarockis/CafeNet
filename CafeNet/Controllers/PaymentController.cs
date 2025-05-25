@@ -18,13 +18,13 @@ public class PaymentController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentRequest request)
+    public async Task<ActionResult<CreatePaymentResult>> CreatePayment([FromBody] CreatePaymentRequest request)
     {
         var result = await _paymentWorkflowService.CreatePaymentWithOrderAsync(request);
 
         if (!result.IsSuccess)
-            return BadRequest(result.ErrorMessage);
+            return BadRequest(result); // returns CreatePaymentResult with error
 
-        return Created();
+        return Created(string.Empty, result); // HTTP 201 with CreatePaymentResult in body
     }
 }

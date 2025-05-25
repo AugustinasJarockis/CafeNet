@@ -34,8 +34,6 @@ public class OrderService : IOrderService
             OrderItems = new List<OrderItem>()
         };
 
-        await _orderRepository.CreateAsync(order);
-
         foreach (var itemDto in createOrderDTO.OrderItems)
         {
             var orderItem = new OrderItem
@@ -55,12 +53,12 @@ public class OrderService : IOrderService
                 };
 
                 orderItem.OrderItemVariations.Add(variation);
-                await _variationRepository.CreateAsync(variation);
             }
 
             order.OrderItems.Add(orderItem);
-            await _orderItemRepository.CreateAsync(orderItem);
         }
+
+        await _orderRepository.CreateAsync(order);
 
         return order.Id;
     }

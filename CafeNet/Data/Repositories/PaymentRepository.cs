@@ -15,6 +15,7 @@ namespace CafeNet.Data.Repositories
         public async Task<Payment> CreateAsync(Payment payment)
         {
             _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
             return payment;
         }
     }

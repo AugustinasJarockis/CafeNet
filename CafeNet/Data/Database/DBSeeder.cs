@@ -137,4 +137,89 @@ public static class DbSeeder
 
         context.SaveChanges();
     }
+
+    public static void SeedMenuItems(CafeNetDbContext context, IConfiguration config)
+    {
+        var menuItems = config.GetSection("SeedData:MenuItems").GetChildren();
+
+        foreach (var menuItem in menuItems)
+        {
+            var title = menuItem.GetRequiredConfigValue("Title");
+
+            if (!context.MenuItems.Any(m => m.Title == title))
+            {
+                var taxType = menuItem.GetRequiredConfigValue("TaxType");
+                var tax = context.Taxes.FirstOrDefault(t => t.Type == taxType);
+                if (tax == null)
+                    continue;
+
+                var newItem = new MenuItem
+                {
+                    Title = title,
+                    Price = decimal.Parse(menuItem.GetRequiredConfigValue("Price")),
+                    Available = bool.Parse(menuItem.GetRequiredConfigValue("Available")),
+                    ImgPath = menuItem["ImgPath"],
+                    TaxId = tax.Id
+                };
+
+                context.MenuItems.Add(newItem);
+            }
+        }
+
+        context.SaveChanges();
+    }
+
+    public static void SeedMenuItemVariations(CafeNetDbContext context, IConfiguration config)
+    {
+        var variations = config.GetSection("SeedData:MenuItemVariations").GetChildren();
+
+        foreach (var variation in variations)
+        {
+            var title = variation.GetRequiredConfigValue("Title");
+            var menuItemTitle = variation.GetRequiredConfigValue("MenuItemTitle");
+
+            var menuItem = context.MenuItems.FirstOrDefault(m => m.Title == menuItemTitle);
+            if (menuItem == null)
+                continue;
+
+            if (!context.MenuItemVariations.Any(v => v.Title == title && v.MenuItemId == menuItem.Id))
+            {
+                var newVariation = new MenuItemVariation
+                {
+                    Title = title,
+                    PriceChange = decimal.Parse(variation.GetRequiredConfigValue("PriceChange")),
+                    MenuItemId = menuItem.Id
+                };
+
+                context.MenuItemVariations.Add(newVariation);
+            }
+        }
+
+        context.SaveChanges();
+    }
+
+
+    public static void SeedDiscounts(CafeNetDbContext context, IConfiguration config)
+    {
+        var discountSection = config.GetSection("SeedData:Discounts").GetChildren();
+
+        foreach (var discount in discountSection)
+        {
+            var code = discount.GetRequiredConfigValue("Code");
+
+            if (!context.Discounts.Any(d => d.Code == code))
+            {
+                var newDiscount = new Discount
+                {
+                    Code = code,
+                    Percent = string.IsNullOrWhiteSpace(discount["Percent"]) ? null : byte.Parse(discount["Percent"]),
+                    Amount = string.IsNullOrWhiteSpace(discount["Amount"]) ? null : decimal.Parse(discount["Amount"])
+                };
+
+                context.Discounts.Add(newDiscount);
+            }
+        }
+
+        context.SaveChanges();
+    }
 }

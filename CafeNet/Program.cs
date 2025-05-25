@@ -149,6 +149,9 @@ using (var scope = app.Services.CreateScope())
         DbSeeder.SeedBaristaUsers(context, config);
         DbSeeder.SeedCustomers(context, config);
         DbSeeder.SeedTaxes(context, config);
+        DbSeeder.SeedMenuItems(context, config);
+        DbSeeder.SeedMenuItemVariations(context, config);
+        DbSeeder.SeedDiscounts(context, config);
     }
 }
 
