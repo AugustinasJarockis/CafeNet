@@ -18,6 +18,9 @@ namespace CafeNet.Business_Management.Validators
 
             if (string.IsNullOrWhiteSpace(request.Password) || !request.Password.IsValidPassword())
                 throw new BadRequestException("Password is not valid.");
+
+            if ((request.PhoneNumber != null) && !request.PhoneNumber.IsValidPhone())
+                throw new BadRequestException("Phone is not valid.");
         }
 
         public static void ValidateUpdateUserRequest(PatchUserRequest request)
@@ -45,6 +48,9 @@ namespace CafeNet.Business_Management.Validators
 
             if (!string.IsNullOrWhiteSpace(request.Password) && !request.Password.IsValidPassword())
                 throw new BadRequestException("Password is not valid.");
+
+            if ((request.PhoneNumber != null) && !request.PhoneNumber.IsValidPhone())
+                throw new BadRequestException("Phone is not valid.");
         }
     }
 }

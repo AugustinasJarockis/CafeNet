@@ -23,6 +23,7 @@ export function EditAccountForm({
   const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || '');
   const [locationId, setLocationId] = useState(user.locationId ?? '');
   const [locations, setLocations] = useState<Location[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +49,7 @@ export function EditAccountForm({
         name,
         username,
         password: password || undefined,
+        phoneNumber: role === 'CLIENT' ? phoneNumber : undefined,
         locationId: role === 'CLIENT' ? Number(locationId) : undefined,
         version: String(user.version),
       },
@@ -85,6 +87,19 @@ export function EditAccountForm({
               required
             />
           </div>
+          {role === 'CLIENT' && (
+            <div>
+              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="+1234567890"
+                required
+              />
+            </div>
+          )}
           <div>
             <Label htmlFor="password">Password</Label>
             <Input

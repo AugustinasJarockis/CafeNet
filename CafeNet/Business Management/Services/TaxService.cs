@@ -33,21 +33,8 @@ namespace CafeNet.Business_Management.Services
         [Loggable]
         public async Task DeleteAsync(long id)
         {
-            await _unitOfWork.BeginTransactionAsync();
-            try
-            {
-                var tax = await _taxRepository.GetByIdAsync(id) ?? throw new NotFoundException();
-
-                _taxRepository.DeleteById(tax.Id);
-
-                await _unitOfWork.SaveChangesAsync();
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch
-            {
-                await _unitOfWork.RollbackTransactionAsync();
-                throw;
-            }
+            var tax = await _taxRepository.GetByIdAsync(id) ?? throw new NotFoundException();
+            _taxRepository.DeleteById(tax.Id);
         }
 
         [Loggable]

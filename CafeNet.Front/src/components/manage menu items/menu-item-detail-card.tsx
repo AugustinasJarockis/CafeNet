@@ -6,12 +6,13 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
 interface MenuItemDetailCardProps {
-  menuItem: MenuItem
-  onClose: () => void
-  userRole: string
+  menuItem: MenuItem;
+  onClose: () => void;
+  onEdit: (menuItem: MenuItem) => void;
+  userRole: string;
 }
 
-export function MenuItemDetailCard({ menuItem, onClose, userRole }: MenuItemDetailCardProps) {
+export function MenuItemDetailCard({ menuItem, onClose, onEdit, userRole }: MenuItemDetailCardProps) {
   return (
     <Card
       className={`w-[450px] max-w-[90vw] max-h-[90vh] overflow-auto ${
@@ -83,7 +84,14 @@ export function MenuItemDetailCard({ menuItem, onClose, userRole }: MenuItemDeta
         Close
       </Button>
       {userRole !== "BARISTA" && (
-        <Button onClick={() => window.alert("Feature not implemented")}>Edit</Button>
+        <Button
+          onClick={() => {
+            onClose();      
+            onEdit(menuItem);
+          }}
+        >
+          Edit
+        </Button>
       )}
     </CardFooter>
       </Card>

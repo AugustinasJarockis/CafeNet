@@ -14,6 +14,11 @@ using Castle.DynamicProxy;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Infrastructure.Swagger;
 using CafeNet.Infrastructure.Extensions;
+using CafeNet.Business_Management.Interfaces.Workflows;
+using CafeNet.Business_Management.Services.Workflows;
+using Amazon.SimpleNotificationService;
+using Amazon;
+using CafeNet.Infrastructure.Notifications_Management;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -115,6 +120,11 @@ builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 builder.Services.AddScoped<IMenuItemVariationRepository, MenuItemVariationRepository>();
 builder.Services.AddScoped<ITaxRepository, TaxRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IOrderItemVariationRepository, OrderItemVariationRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
 
 builder.Services.AddInterceptedService<IAuthService, AuthService>();
 builder.Services.AddInterceptedService<IDiscountService, DiscountService>();
@@ -122,6 +132,22 @@ builder.Services.AddInterceptedService<ILocationService, LocationService>();
 builder.Services.AddInterceptedService<IMenuItemService, MenuItemService>();
 builder.Services.AddInterceptedService<ITaxService, TaxService>();
 builder.Services.AddInterceptedService<IUserService, UserService>();
+builder.Services.AddInterceptedService<IOrderService, OrderService>();
+builder.Services.AddInterceptedService<IPaymentService, PaymentService>();
+builder.Services.AddInterceptedService<IPaymentWorkflowService, PaymentWorkflowService>();
+
+builder.Services.AddSingleton<IAmazonSimpleNotificationService>(sp =>
+{
+    return new AmazonSimpleNotificationServiceClient(
+        builder.Configuration["Aws:AccessKey"],
+        builder.Configuration["Aws:SecretKey"],
+        new AmazonSimpleNotificationServiceConfig
+        {
+            RegionEndpoint = RegionEndpoint.GetBySystemName(builder.Configuration["Aws:Region"])
+        }
+    );
+});
+builder.Services.AddScoped<SMSService>();
 
 var app = builder.Build();
 
@@ -139,6 +165,9 @@ using (var scope = app.Services.CreateScope())
         DbSeeder.SeedBaristaUsers(context, config);
         DbSeeder.SeedCustomers(context, config);
         DbSeeder.SeedTaxes(context, config);
+        DbSeeder.SeedMenuItems(context, config);
+        DbSeeder.SeedMenuItemVariations(context, config);
+        DbSeeder.SeedDiscounts(context, config);
     }
 }
 

@@ -14,6 +14,7 @@ namespace CafeNet.Data.Mappers
                 Username = request.Username,
                 Password = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password, 13),
                 Role = request.Role ?? UserRoles.CLIENT,
+                PhoneNumber = request.PhoneNumber,
                 LocationId = request.LocationId
             };
         }
@@ -32,6 +33,7 @@ namespace CafeNet.Data.Mappers
             user.Name = request.Name ?? user.Name;
             user.Username = request.Username ?? user.Username;
             user.LocationId = request.LocationId ?? user.LocationId;
+            user.PhoneNumber = request.PhoneNumber;
 
             if (request.Password is not null)
                 user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password, 13);
@@ -47,6 +49,7 @@ namespace CafeNet.Data.Mappers
             Username = user.Username,
             Password = user.Password,
             Role = user.Role.ToString(),
+            PhoneNumber = user.PhoneNumber,
             LocationId = user.LocationId,
             LocationAddress = user.Location?.Address ?? "Unassigned",
             Version = user.Version.ToString(),
