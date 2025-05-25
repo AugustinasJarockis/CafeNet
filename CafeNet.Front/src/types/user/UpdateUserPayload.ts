@@ -3,6 +3,7 @@ export type UpdateCurrentUserPayload = {
   username?: string;
   password?: string;
   locationId?: number;
+  phoneNumber?: string;
   version: string;
 };
 

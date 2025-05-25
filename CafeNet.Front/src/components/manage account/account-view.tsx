@@ -22,9 +22,14 @@ export default function AccountView({
                         <strong>Username:</strong> {user.username}
                     </div>
                     {user.role === 'CLIENT' && (
-                        <div className="mb-4">
-                        <strong>Location:</strong> {user.locationAddress}
-                        </div>
+                        <>
+                            <div className="mb-4">
+                                <strong>Location:</strong> {user.location?.address || 'No location set'}
+                            </div>
+                            <div className="mb-4">
+                                <strong>Phone Number:</strong> {user.phoneNumber || 'Not provided'}
+                            </div>
+                        </>
                     )}
                     <Button className="mt-4" onClick={() => navigate('/account/edit')}>
                         Edit

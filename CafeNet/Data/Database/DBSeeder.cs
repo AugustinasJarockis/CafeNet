@@ -86,6 +86,7 @@ public static class DbSeeder
                     Username = username,
                     Password = customerSection.GetRequiredConfigValue("Password"),
                     Role = Enum.Parse<UserRoles>(customerSection.GetRequiredConfigValue("Role")),
+                    PhoneNumber = customerSection.GetRequiredConfigValue("PhoneNumber"),
                     LocationId = context.Locations.First().Id
                 };
 
