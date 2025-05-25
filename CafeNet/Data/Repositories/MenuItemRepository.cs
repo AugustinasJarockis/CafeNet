@@ -2,6 +2,7 @@
 using CafeNet.Data.Database;
 using CafeNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CafeNet.Data.Repositories
 {
@@ -26,6 +27,11 @@ namespace CafeNet.Data.Repositories
         public async Task<MenuItem?> GetByIdAsync(long id)
         {
             return await _context.MenuItems.FirstOrDefaultAsync(menuItem => menuItem.Id == id);
+        }
+        public async Task<bool> IsTitleTakenAsync(string title, long? excludeId = null)
+        {
+            return await _context.MenuItems
+                .AnyAsync(m => m.Title == title && (!excludeId.HasValue || m.Id != excludeId.Value));
         }
 
         public async Task<IEnumerable<MenuItem>> GetMenuItemsPagedAsync(int pageNumber, int pageSize)
@@ -77,60 +83,80 @@ namespace CafeNet.Data.Repositories
 
         public async Task<MenuItem> UpdateAsync(MenuItem updatedMenuItem)
         {
-            var existingMenuItem = await _context.MenuItems
-                .Include(m => m.MenuItemVariations)
-                .FirstOrDefaultAsync(m => m.Id == updatedMenuItem.Id);
+            var existingMenuItem = await GetExistingMenuItemAsync(updatedMenuItem.Id);
 
-            if (existingMenuItem == null)
-            {
-                throw new Exception($"MenuItem with ID {updatedMenuItem.Id} not found.");
-            }
-
-            // Update scalar properties
-            existingMenuItem.Title = updatedMenuItem.Title;
-            existingMenuItem.Price = updatedMenuItem.Price;
-            existingMenuItem.Available = updatedMenuItem.Available;
-            existingMenuItem.ImgPath = updatedMenuItem.ImgPath;
-            existingMenuItem.TaxId = updatedMenuItem.TaxId;
-
-            // --- Handle Variations ---
-            // Remove variations not in updated list
-            var updatedVariationIds = updatedMenuItem.MenuItemVariations.Select(v => v.Id).ToList();
-            var variationsToRemove = existingMenuItem.MenuItemVariations
-                .Where(v => !updatedVariationIds.Contains(v.Id))
-                .ToList();
-
-            foreach (var variation in variationsToRemove)
-            {
-                _context.MenuItemVariations.Remove(variation);
-            }
-
-            // Add or update variations
-            foreach (var updatedVariation in updatedMenuItem.MenuItemVariations)
-            {
-                var existingVariation = existingMenuItem.MenuItemVariations
-                    .FirstOrDefault(v => v.Id == updatedVariation.Id);
-
-                if (existingVariation != null)
-                {
-                    // Update
-                    existingVariation.Title = updatedVariation.Title;
-                    existingVariation.PriceChange = updatedVariation.PriceChange;
-                }
-                else
-                {
-                    // Add new
-                    existingMenuItem.MenuItemVariations.Add(new MenuItemVariation
-                    {
-                        Title = updatedVariation.Title,
-                        PriceChange = updatedVariation.PriceChange,
-                        MenuItemId = existingMenuItem.Id
-                    });
-                }
-            }
+            UpdateScalarProperties(existingMenuItem, updatedMenuItem);
+            UpdateVariations(existingMenuItem, updatedMenuItem.MenuItemVariations);
 
             await _context.SaveChangesAsync();
             return existingMenuItem;
+        }
+
+        private async Task<MenuItem> GetExistingMenuItemAsync(long id)
+        {
+            var item = await _context.MenuItems
+                .Include(m => m.MenuItemVariations)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (item == null)
+            {
+                throw new Exception($"MenuItem with ID {id} not found.");
+            }
+
+            return item;
+        }
+
+        private void UpdateScalarProperties(MenuItem existing, MenuItem updated)
+        {
+            existing.Title = updated.Title;
+            existing.Price = updated.Price;
+            existing.Available = updated.Available;
+            existing.ImgPath = updated.ImgPath;
+            existing.TaxId = updated.TaxId;
+        }
+
+        private void UpdateVariations(MenuItem existing, ICollection<MenuItemVariation> updatedVariations)
+        {
+            var updatedIds = updatedVariations.Select(v => v.Id).ToList();
+
+            RemoveObsoleteVariations(existing, updatedIds);
+            AddOrUpdateVariations(existing, updatedVariations);
+        }
+
+        private void RemoveObsoleteVariations(MenuItem existing, List<long> updatedIds)
+        {
+            var toRemove = existing.MenuItemVariations
+                .Where(v => !updatedIds.Contains(v.Id))
+                .ToList();
+
+            foreach (var variation in toRemove)
+            {
+                _context.MenuItemVariations.Remove(variation);
+            }
+        }
+
+        private void AddOrUpdateVariations(MenuItem existing, ICollection<MenuItemVariation> updatedVariations)
+        {
+            foreach (var updated in updatedVariations)
+            {
+                var existingVariation = existing.MenuItemVariations
+                    .FirstOrDefault(v => v.Id == updated.Id);
+
+                if (existingVariation != null)
+                {
+                    existingVariation.Title = updated.Title;
+                    existingVariation.PriceChange = updated.PriceChange;
+                }
+                else
+                {
+                    existing.MenuItemVariations.Add(new MenuItemVariation
+                    {
+                        Title = updated.Title,
+                        PriceChange = updated.PriceChange,
+                        MenuItemId = existing.Id
+                    });
+                }
+            }
         }
     }
 }

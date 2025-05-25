@@ -65,16 +65,10 @@ export default function EditMenuItemPopup({
       ...existingVariations,
       ...newVariations.map((v) => ({
         ...v,
-        id: 0, // For new items
+        id: 0,
         menuItemId: edited.id,
       })),
     ],
-    tax: edited.tax ?? {
-      id: edited.taxId,
-      code: '',
-      type: '',
-      percent: 0,
-    },
   };
 
   onSubmit(finalMenuItem);

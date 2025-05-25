@@ -19,7 +19,7 @@ import {
 } from "../ui/alert-dialog"
 import { MenuItemDetailCard } from "./menu-item-detail-card"
 import EditMenuItemPopup from "./edit-item-popup"
-import type { CreateMenuItemRequestPopup, MenuItemVariationDTO } from "@/services/menuItemService";
+import type { CreateMenuItemRequestPopup } from "@/services/menuItemService";
 
 interface MenuItemTableProps {
   menuItems: MenuItem[];

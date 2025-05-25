@@ -25,7 +25,7 @@ import { useDeleteMenuItem } from '@/hooks/useDeleteMenuItem';
 import { useUpdateMenuItemAvailability } from "@/hooks/useUpdateMenuItemAvailability";
 import { useUpdateMenuItem } from "@/hooks/useUpdateMenuItem";
 import { useMenuItems } from '@/hooks/useMenuItems';
-import { MenuItem, CreateMenuItemRequest, CreateMenuItemRequestPopup } from '@/services/menuItemService';
+import { CreateMenuItemRequestPopup } from '@/services/menuItemService';
 import { useState } from 'react';
 
 export default function MenuItemListPage() {

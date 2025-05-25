@@ -81,18 +81,18 @@ namespace CafeNet.Controllers
 
         [HttpPut("{id:long}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Update(long id, [FromBody] MenuItemDTO menuItemDTO)
+        public async Task<IActionResult> Update(long id, [FromBody] UpdateMenuItemRequest updateMenuItemRequest)
         {
             var targetMenuItemId = id;
             var currentUserRole = HttpContext.GetUserRole();
 
-            if (targetMenuItemId != menuItemDTO.Id)
+            if (targetMenuItemId != updateMenuItemRequest.Id)
                 return BadRequest("ID and route does not match ID in request");
 
             if (currentUserRole != "ADMIN")
                 return Forbid();
 
-            var updatedMenuItem = await _menuItemService.UpdateAsync(menuItemDTO);
+            var updatedMenuItem = await _menuItemService.UpdateAsync(updateMenuItemRequest);
 
             return Ok(updatedMenuItem);
         }

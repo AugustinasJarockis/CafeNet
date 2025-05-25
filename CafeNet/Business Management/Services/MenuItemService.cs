@@ -27,11 +27,16 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<MenuItem> CreateAsync(CreateMenuItemRequest request) {
+        public async Task<MenuItem> CreateAsync(CreateMenuItemRequest request)
+        {
             var menuItem = request.ToMenuItem();
-            
+
+            if (await _menuItemRepository.IsTitleTakenAsync(menuItem.Title))
+                throw new ConflictException($"A menu item with the title '{menuItem.Title}' already exists.");
+
             await _unitOfWork.BeginTransactionAsync();
-            try {
+            try
+            {
                 ICollection<MenuItemVariation> variations = menuItem.MenuItemVariations;
                 menuItem.MenuItemVariations = [];
 
@@ -48,11 +53,13 @@ namespace CafeNet.Business_Management.Services
 
                 return menuItem;
             }
-            catch {
+            catch
+            {
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
             }
         }
+
 
         [Loggable]
         public async Task<PagedResult<MenuItemDTO>> GetMenuItemsAsync(int pageNumber, int pageSize)
@@ -103,20 +110,23 @@ namespace CafeNet.Business_Management.Services
         }
 
         [Loggable]
-        public async Task<MenuItem> UpdateAsync(MenuItemDTO menuItemDTO)
+        public async Task<MenuItem> UpdateAsync(UpdateMenuItemRequest updateMenuItemRequest)
         {
             await _unitOfWork.BeginTransactionAsync();
             try
             {
-                var menuItem = menuItemDTO.ToMenuItem();
+                var menuItem = updateMenuItemRequest.ToMenuItem();
 
                 if (!await _menuItemRepository.MenuItemExistsAsync(menuItem.Id))
                     throw new NotFoundException("Menu item not found");
 
-                var updatedItem = await _menuItemRepository.UpdateAsync(menuItem); 
+                if (await _menuItemRepository.IsTitleTakenAsync(menuItem.Title, menuItem.Id))
+                    throw new ConflictException($"A different menu item with the title '{menuItem.Title}' already exists.");
 
-                await _unitOfWork.SaveChangesAsync(); 
-                await _unitOfWork.CommitTransactionAsync(); 
+                var updatedItem = await _menuItemRepository.UpdateAsync(menuItem);
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitTransactionAsync();
 
                 return updatedItem;
             }

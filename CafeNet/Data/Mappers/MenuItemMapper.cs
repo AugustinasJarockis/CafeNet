@@ -52,7 +52,7 @@ namespace CafeNet.Data.Mappers
             };
         }
 
-        public static MenuItem ToMenuItem(this MenuItemDTO dto)
+        public static MenuItem ToMenuItem(this UpdateMenuItemRequest dto)
         {
             return new MenuItem
             {
@@ -63,7 +63,6 @@ namespace CafeNet.Data.Mappers
                 ImgPath = dto.ImgPath,
                 TaxId = dto.TaxId,
                 Version = dto.Version,
-                Tax = dto.Tax, // Note: Caution - this may cause EF tracking issues if not handled properly
                 MenuItemVariations = dto.MenuItemVariations?
                     .Select(variation => variation.ToMenuItemVariation())
                     .ToList() ?? new List<MenuItemVariation>()

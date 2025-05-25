@@ -61,12 +61,6 @@ export interface CreateMenuItemRequestPopup {
   taxId: number;
   version?: string;
   menuItemVariations: MenuItemVariationDTO[];
-  tax: {
-    id: number;
-    type: string;
-    code: string;
-    percent: number;
-  };
 }
 
 export const createMenuItem = async (request: CreateMenuItemRequest): Promise<MenuItem | string> => {
@@ -148,7 +142,7 @@ export const getMenuItemsByTax = async (
   return response.data;
 };
 
-export const updateMenuItem = async (data: MenuItem, menuItemId: number): Promise<MenuItem> => {
+export const updateMenuItem = async (data: CreateMenuItemRequestPopup, menuItemId: number): Promise<MenuItem> => {
   try {
     const response = await apiClient.put(`menuItem/${menuItemId}`, data);
     return response.data;
