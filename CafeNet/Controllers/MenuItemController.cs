@@ -92,9 +92,9 @@ namespace CafeNet.Controllers
             if (currentUserRole != "ADMIN")
                 return Forbid();
 
-            var updatedTax = await _menuItemService.UpdateAsync(menuItemDTO);
+            var updatedMenuItem = await _menuItemService.UpdateAsync(menuItemDTO);
 
-            return Ok(updatedTax);
+            return Ok(updatedMenuItem);
         }
     }
 }

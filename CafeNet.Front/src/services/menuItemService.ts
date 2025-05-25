@@ -44,6 +44,31 @@ export interface MenuItemVariation {
     version?: string;
 }
 
+export interface MenuItemVariationDTO {
+  id: number;
+  menuItemId: number;
+  title: string;
+  priceChange: number;
+}
+
+export interface CreateMenuItemRequestPopup {
+  id: number;
+  title: string;
+  code: string;
+  price: number;
+  available: boolean;
+  imgPath?: string;
+  taxId: number;
+  version?: string;
+  menuItemVariations: MenuItemVariationDTO[];
+  tax: {
+    id: number;
+    type: string;
+    code: string;
+    percent: number;
+  };
+}
+
 export const createMenuItem = async (request: CreateMenuItemRequest): Promise<MenuItem | string> => {
     try {
         const response = await apiClient.post<MenuItem | { message: string }>('/menuItem', request);
@@ -121,4 +146,19 @@ export const getMenuItemsByTax = async (
   });
 
   return response.data;
+};
+
+export const updateMenuItem = async (data: MenuItem, menuItemId: number): Promise<MenuItem> => {
+  try {
+    const response = await apiClient.put(`menuItem/${menuItemId}`, data);
+    return response.data;
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    throw new Error(message);
+  }
 };
