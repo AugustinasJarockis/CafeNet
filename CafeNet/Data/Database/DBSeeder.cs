@@ -86,6 +86,7 @@ public static class DbSeeder
                     Username = username,
                     Password = customerSection.GetRequiredConfigValue("Password"),
                     Role = Enum.Parse<UserRoles>(customerSection.GetRequiredConfigValue("Role")),
+                    PhoneNumber = customerSection.GetRequiredConfigValue("PhoneNumber"),
                     LocationId = context.Locations.First().Id
                 };
 
@@ -156,7 +157,7 @@ public static class DbSeeder
                 var newItem = new MenuItem
                 {
                     Title = title,
-                    Price = decimal.Parse(menuItem.GetRequiredConfigValue("Price")),
+                    Price = decimal.Parse(menuItem.GetRequiredConfigValue("Price"), System.Globalization.CultureInfo.InvariantCulture),
                     Available = bool.Parse(menuItem.GetRequiredConfigValue("Available")),
                     ImgPath = menuItem["ImgPath"],
                     TaxId = tax.Id
@@ -187,7 +188,7 @@ public static class DbSeeder
                 var newVariation = new MenuItemVariation
                 {
                     Title = title,
-                    PriceChange = decimal.Parse(variation.GetRequiredConfigValue("PriceChange")),
+                    PriceChange = decimal.Parse(variation.GetRequiredConfigValue("PriceChange"), System.Globalization.CultureInfo.InvariantCulture),
                     MenuItemId = menuItem.Id
                 };
 
@@ -213,7 +214,7 @@ public static class DbSeeder
                 {
                     Code = code,
                     Percent = string.IsNullOrWhiteSpace(discount["Percent"]) ? null : byte.Parse(discount["Percent"]),
-                    Amount = string.IsNullOrWhiteSpace(discount["Amount"]) ? null : decimal.Parse(discount["Amount"])
+                    Amount = string.IsNullOrWhiteSpace(discount["Amount"]) ? null : decimal.Parse(discount["Amount"], System.Globalization.CultureInfo.InvariantCulture)
                 };
 
                 context.Discounts.Add(newDiscount);

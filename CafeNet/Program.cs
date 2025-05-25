@@ -16,6 +16,9 @@ using CafeNet.Infrastructure.Swagger;
 using CafeNet.Infrastructure.Extensions;
 using CafeNet.Business_Management.Interfaces.Workflows;
 using CafeNet.Business_Management.Services.Workflows;
+using Amazon.SimpleNotificationService;
+using Amazon;
+using CafeNet.Infrastructure.Notifications_Management;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -132,6 +135,19 @@ builder.Services.AddInterceptedService<IUserService, UserService>();
 builder.Services.AddInterceptedService<IOrderService, OrderService>();
 builder.Services.AddInterceptedService<IPaymentService, PaymentService>();
 builder.Services.AddInterceptedService<IPaymentWorkflowService, PaymentWorkflowService>();
+
+builder.Services.AddSingleton<IAmazonSimpleNotificationService>(sp =>
+{
+    return new AmazonSimpleNotificationServiceClient(
+        builder.Configuration["Aws:AccessKey"],
+        builder.Configuration["Aws:SecretKey"],
+        new AmazonSimpleNotificationServiceConfig
+        {
+            RegionEndpoint = RegionEndpoint.GetBySystemName(builder.Configuration["Aws:Region"])
+        }
+    );
+});
+builder.Services.AddScoped<SMSService>();
 
 var app = builder.Build();
 

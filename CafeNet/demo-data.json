@@ -126,19 +126,22 @@
         "Name": "Client 1",
         "Username": "client1",
         "Password": "ilovecoffee",
-        "Role": "CLIENT"
+        "Role": "CLIENT",
+        "PhoneNumber": "+37062010623"
       },
       {
         "Name": "Client 2",
         "Username": "client2",
         "Password": "ilovetea",
-        "Role": "CLIENT"
+        "Role": "CLIENT",
+        "PhoneNumber": null
       },
       {
         "Name": "Client 3",
         "Username": "client3",
         "Password": "ilovetea",
-        "Role": "CLIENT"
+        "Role": "CLIENT",
+        "PhoneNumber": null
       }
     ],
     "Locations": [
