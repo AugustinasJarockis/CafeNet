@@ -83,14 +83,9 @@ export default function MenuItemListPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbPage>Menu items</BreadcrumbPage>
+                  <BreadcrumbPage>Orders</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/items/create">
-                    Create
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
