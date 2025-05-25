@@ -13,6 +13,7 @@ interface AddMenuItemVariationFormProps {
 }
 
 export function AddMenuItemVariationForm(props: AddMenuItemVariationFormProps) {
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState<string>('');
   const [priceChange, setPriceChange] = useState<string>();
 
@@ -23,10 +24,11 @@ export function AddMenuItemVariationForm(props: AddMenuItemVariationFormProps) {
     };
 
     props.handleSubmit(payload);
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
             <Button size="icon">
                 <PlusIcon className="h-4 w-4" />

@@ -27,7 +27,7 @@ const data = {
       items: [
         {
           title: 'Add a new order',
-          url: '#',
+          url: '/orders/create',
         },
         {
           title: 'Active orders',

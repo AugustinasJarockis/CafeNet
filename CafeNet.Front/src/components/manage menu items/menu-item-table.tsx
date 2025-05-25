@@ -57,7 +57,7 @@ export default function MenuItemTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Image</TableHead>
+            <TableHead></TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Tax</TableHead>
@@ -82,7 +82,7 @@ export default function MenuItemTable({
               </TableCell>
               <TableCell>{menuItem.title}</TableCell>
               <TableCell>{menuItem.price}</TableCell>
-              <TableCell>{menuItem.tax.type}</TableCell>
+              <TableCell>{menuItem.tax.type} ({menuItem.tax.percent}%)</TableCell>
 
               {!isBarista && (
                 <TableCell className="pointer-events-auto">

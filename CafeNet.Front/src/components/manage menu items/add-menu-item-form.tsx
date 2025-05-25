@@ -36,7 +36,7 @@ export function AddMenuItemForm({
   const mutation = useMutation({
     mutationFn: (data: CreateMenuItemRequest) => createMenuItem(data),
     onSuccess: () => {
-      navigate('/menu-admin');
+      navigate('/items');
     },
     onError: (err: unknown) => {
       if (axios.isAxiosError(err)) {
@@ -177,7 +177,7 @@ export function AddMenuItemForm({
                       ))}
                   </TableBody>
                 ) : (
-                    <p>No variation available</p>
+                    <p>No variations available</p>
                 )}
                 </Table>
                 
