@@ -11,7 +11,7 @@ namespace CafeNet.Business_Management.DTOs
         public long? DiscountId { get; set; }
         public long LocationId { get; set; }
         public long UserId { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<OrderItemDTO> OrderItems { get; set; }
         public uint Version { get; set; }
     }
 }

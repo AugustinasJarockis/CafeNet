@@ -9,7 +9,7 @@ namespace CafeNet.Business_Management.DTOs
         public bool Refunded { get; set; }
         public long OrderId { get; set; }
         public long MenuItemId { get; set; }
-        public ICollection<OrderItemVariation> OrderItemVariations { get; set; }
+        public ICollection<OrderItemVariationDTO> OrderItemVariations { get; set; }
         public uint Version { get; set; }
     }
 }

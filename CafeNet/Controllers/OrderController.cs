@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CafeNet.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;
