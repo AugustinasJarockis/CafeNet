@@ -41,7 +41,7 @@ export default function LocationsPage() {
     });
   };
 
-  const totalPages = data ? Math.ceil(data.totalCount / pageSize) : 1;
+  const totalPages = data && data.totalCount !== 0 ? Math.ceil(data.totalCount / pageSize) : 1;
 
   const renderPageNumbers = () => {
     const pages = [];
