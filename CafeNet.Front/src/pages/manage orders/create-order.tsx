@@ -21,21 +21,26 @@ import { useState } from 'react';
 import { ClientSidebar } from '@/components/client-sidebar';
 import ClientItemTable from '@/components/manage menu items/client-menu-item-table';
 import { MenuItem, MenuItemVariation } from '@/services/menuItemService';
+import { CreateOrderItemRequest } from '@/types/dto/create-order-request';
+import { usePayment } from '@/context/payment-context';
 
 export default function CreateOrderPage() {
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const { data, isLoading, error } = useMenuItems(page, pageSize);
-  const [orderItems, setOrderItems] = useState<MenuItem[]>([]);
+  const { dispatch } = usePayment();
 
   const totalPages = data && data.totalCount !== 0 ? Math.ceil(data.totalCount / pageSize) : 1;
-  const totalOrderPages = data && data.totalCount !== 0 ? Math.ceil(orderItems.length / pageSize) : 1;
-  
+
   const handleAddToOrder = (menuItem: MenuItem, variations: MenuItemVariation[]) => {
-    const newOrderItem = menuItem;
-    newOrderItem.menuItemVariations = variations;
-    setOrderItems(orderItems => [...orderItems, newOrderItem]);
-  }
+    const orderItem: CreateOrderItemRequest = {
+      itemId: menuItem.id,
+      quantity: 1,
+      variationIds: variations.map(v => v.id),
+    };
+
+    dispatch({ type: 'ADD_ORDER_ITEM', item: orderItem });
+  };
 
   const renderPageNumbers = () => {
     const pages = [];
@@ -57,9 +62,9 @@ export default function CreateOrderPage() {
 
   return (
     <SidebarProvider>
-      <ClientSidebar/>
+      <ClientSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -69,92 +74,35 @@ export default function CreateOrderPage() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/orders/create">
-                    Create
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="/orders/create">Create</BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
+
         <div className="p-6">
           {isLoading && <p>Loading...</p>}
           {error && <p>Error loading menu items</p>}
 
           {data && (
             <>
-              <ClientItemTable
-                menuItems={data.items}
-                onAddToOrder={handleAddToOrder}
-                />
+              <ClientItemTable menuItems={data.items} onAddToOrder={handleAddToOrder} />
 
               <div className="mt-6">
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem className="cursor-pointer">
                       <PaginationPrevious
-                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        className={
-                          page === 1 ? 'pointer-events-none opacity-50' : ''
-                        }
+                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                        className={page === 1 ? 'pointer-events-none opacity-50' : ''}
                       />
                     </PaginationItem>
-
                     {renderPageNumbers()}
-
                     <PaginationItem className="cursor-pointer">
                       <PaginationNext
-                        onClick={() =>
-                          setPage((prev) => Math.min(prev + 1, totalPages))
-                        }
-                        className={
-                          page === totalPages
-                            ? 'pointer-events-none opacity-50'
-                            : ''
-                        }
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="p-6">
-          {isLoading && <p>Loading...</p>}
-          {error && <p>Error loading order items</p>}
-
-          {data && (
-            <>
-              <ClientItemTable
-                menuItems={orderItems}
-                onAddToOrder={handleAddToOrder}
-                />
-
-              <div className="mt-6">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem className="cursor-pointer">
-                      <PaginationPrevious
-                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        className={
-                          page === 1 ? 'pointer-events-none opacity-50' : ''
-                        }
-                      />
-                    </PaginationItem>
-
-                    {renderPageNumbers()}
-
-                    <PaginationItem className="cursor-pointer">
-                      <PaginationNext
-                        onClick={() =>
-                          setPage((prev) => Math.min(prev + 1, totalOrderPages))
-                        }
-                        className={
-                          page === totalOrderPages
-                            ? 'pointer-events-none opacity-50'
-                            : ''
-                        }
+                        onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                        className={page === totalPages ? 'pointer-events-none opacity-50' : ''}
                       />
                     </PaginationItem>
                   </PaginationContent>

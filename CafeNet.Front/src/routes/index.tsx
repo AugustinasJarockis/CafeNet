@@ -20,6 +20,7 @@ import DiscountsPage from '@/pages/manage discounts/discount-list-page';
 import CreateMenuItemPage from '@/pages/manage menu items/create-menu-item';
 import MenuItemListPage from '@/pages/manage menu items/menu-item-list-page';
 import CreateOrderPage from '@/pages/manage orders/create-order';
+import OrderCart from '@/pages/manage orders/order-cart';
 
 export interface AppRoute {
   path: string;
@@ -75,14 +76,19 @@ export const routeConfig: AppRoute[] = [
     element: <CreateMenuItemPage />,
     roles: ADMIN_ONLY,
   },
-  { 
+  {
     path: '/items',
-    element: <MenuItemListPage />, 
-    roles: EMPLOYEES_ONLY 
+    element: <MenuItemListPage />,
+    roles: EMPLOYEES_ONLY,
   },
-  { 
+  {
     path: '/orders/create',
-    element: <CreateOrderPage />, 
-    roles: CLIENT_ONLY 
+    element: <CreateOrderPage />,
+    roles: CLIENT_ONLY,
+  },
+  {
+    path: '/orders/cart',
+    element: <OrderCart />,
+    roles: CLIENT_ONLY,
   },
 ];
