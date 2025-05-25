@@ -23,8 +23,8 @@ public class PaymentController : ControllerBase
         var result = await _paymentWorkflowService.CreatePaymentWithOrderAsync(request);
 
         if (!result.IsSuccess)
-            return BadRequest(result); // returns CreatePaymentResult with error
+            return BadRequest(result);
 
-        return Created(string.Empty, result); // HTTP 201 with CreatePaymentResult in body
+        return Created(string.Empty, result);
     }
 }

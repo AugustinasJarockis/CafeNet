@@ -66,7 +66,7 @@ namespace CafeNet.Business_Management.Services.Workflows
                 return new CreatePaymentResult
                 {
                     IsSuccess = false,
-                    ErrorMessage = $"An error occurred while processing the payment: {ex.Message}"
+                    ErrorMessage = "An error occurred while processing the payment"
                 };
             }
         }

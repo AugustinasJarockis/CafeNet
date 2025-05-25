@@ -9,17 +9,10 @@ namespace CafeNet.Business_Management.Services;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IOrderItemRepository _orderItemRepository;
-    private readonly IOrderItemVariationRepository _variationRepository;
 
-    public OrderService(
-        IOrderRepository orderRepository,
-        IOrderItemRepository orderItemRepository,
-        IOrderItemVariationRepository variationRepository)
+    public OrderService(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
-        _orderItemRepository = orderItemRepository;
-        _variationRepository = variationRepository;
     }
 
     [Loggable]
@@ -34,17 +27,17 @@ public class OrderService : IOrderService
             OrderItems = new List<OrderItem>()
         };
 
-        foreach (var itemDto in createOrderDTO.OrderItems)
+        foreach (var itemDTO in createOrderDTO.OrderItems)
         {
             var orderItem = new OrderItem
             {
-                MenuItemId = itemDto.MenuItemId,
+                MenuItemId = itemDTO.MenuItemId,
                 Refunded = false,
                 Order = order,
                 OrderItemVariations = new List<OrderItemVariation>(),
             };
 
-            foreach (var variationId in itemDto.MenuItemVariationIds)
+            foreach (var variationId in itemDTO.MenuItemVariationIds)
             {
                 var variation = new OrderItemVariation
                 {
