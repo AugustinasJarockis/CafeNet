@@ -31,12 +31,12 @@ export default function EditMenuItemPopup({
   const [newVariations, setNewVariations] = useState<MenuItemVariationDTO[]>([]);
 
   useEffect(() => {
-    if (menuItem) {
-      setEdited(menuItem);
-      setExistingVariations(menuItem.menuItemVariations || []);
-      setNewVariations([]);
-    }
-  }, [menuItem]);
+  if (open && menuItem) {
+    setEdited(menuItem);
+    setExistingVariations(menuItem.menuItemVariations || []);
+    setNewVariations([]);
+  }
+}, [open, menuItem]);
 
   const handleVariationSubmit = (variation: CreateMenuItemVariationDTO) => {
   const fullVariation: MenuItemVariationDTO = {
