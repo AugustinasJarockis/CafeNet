@@ -12,5 +12,7 @@ export const useOrdersClient = (
     queryFn: () => getOrdersByClientId(clientId!, page, pageSize),
     enabled: !!clientId,
     keepPreviousData: true,
+    refetchInterval: 5000, 
+    refetchIntervalInBackground: false,
   } as UseQueryOptions<PagedResult<Order>, Error>);
 };
