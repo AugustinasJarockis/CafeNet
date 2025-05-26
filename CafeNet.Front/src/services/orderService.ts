@@ -35,7 +35,7 @@ export interface Order {
 
 export enum PaymentStatus {
   PENDING = "PENDING",
-  PAID = "PAID",
+  DONE = "DONE",
   REFUNDED = "REFUNDED"
 }
 

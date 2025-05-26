@@ -180,37 +180,50 @@ export default function OrderTable({
               )}
 
               {order.status === OrderStatus.DONE && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
-                      Mark as delivered
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Mark this order as delivered?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Are you sure you want to mark Order #{order.id} as delivered?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={async () => {
-                          try {
-                            await updateOrderStatus(order.id, OrderStatus.TAKEN, order.version);
-                            onRefresh();
-                          } catch (err) {
-                            console.error("Failed to mark as delivered:", err);
-                          }
-                        }}
-                      >
-                        Confirm
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              )}
+  order.paymentStatus === PaymentStatus.DONE ? (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+          Mark as delivered
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Mark this order as delivered?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to mark Order #{order.id} as delivered?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={async () => {
+              try {
+                await updateOrderStatus(order.id, OrderStatus.TAKEN, order.version);
+                onRefresh();
+              } catch (err) {
+                console.error("Failed to mark as delivered:", err);
+              }
+            }}
+          >
+            Confirm
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  ) : (
+    <Button
+      variant="secondary"
+      size="sm"
+      disabled
+      onClick={(e) => e.stopPropagation()}
+      title="Cannot mark as delivered until payment is confirmed"
+    >
+      Mark as delivered
+    </Button>
+  )
+)}
+
             </TableCell>
 
 
