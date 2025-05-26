@@ -23,6 +23,14 @@ import CartPage from '@/pages/manage orders/order-cart';
 import ClientLayout from '@/components/client-layout';
 import DiscountsPage from '@/pages/manage discounts/discount-list-page';
 import ProtectedRoute from '@/components/protected-route';
+import OrderistPage from '@/pages/manage orders/order-list-page';
+
+export interface AppRoute {
+  path: string;
+  element: ReactElement;
+  public?: boolean;
+  roles?: UserRole[];
+}
 
 const COMMON_ROLES: UserRole[] = ['ADMIN', 'BARISTA', 'CLIENT'];
 const ADMIN_ONLY: UserRole[] = ['ADMIN'];
@@ -39,26 +47,62 @@ export const routeConfig = [
   { path: '/register', element: <RegisterPage /> },
 
   { path: '/account', element: withProtection(<AccountPage />, COMMON_ROLES) },
-  { path: '/account/edit', element: withProtection(<EditAccountPage />, COMMON_ROLES) },
+  {
+    path: '/account/edit',
+    element: withProtection(<EditAccountPage />, COMMON_ROLES),
+  },
 
-  { path: '/menu-client', element: withProtection(<ClientMenu />, CLIENT_ONLY) },
-  { path: '/menu-barista', element: withProtection(<BaristaMenu />, BARISTA_ONLY) },
+  {
+    path: '/menu-client',
+    element: withProtection(<ClientMenu />, CLIENT_ONLY),
+  },
+  {
+    path: '/menu-barista',
+    element: withProtection(<BaristaMenu />, BARISTA_ONLY),
+  },
   { path: '/menu-admin', element: withProtection(<AdminMenu />, ADMIN_ONLY) },
 
-  { path: '/locations/create', element: withProtection(<CreateLocationPage />, ADMIN_ONLY) },
-  { path: '/locations', element: withProtection(<LocationListPage />, ADMIN_ONLY) },
+  {
+    path: '/locations/create',
+    element: withProtection(<CreateLocationPage />, ADMIN_ONLY),
+  },
+  {
+    path: '/locations',
+    element: withProtection(<LocationListPage />, ADMIN_ONLY),
+  },
 
-  { path: '/employees/create', element: withProtection(<CreateEmployeePage />, ADMIN_ONLY) },
-  { path: '/employees', element: withProtection(<EmployeeListPage />, ADMIN_ONLY) },
+  {
+    path: '/employees/create',
+    element: withProtection(<CreateEmployeePage />, ADMIN_ONLY),
+  },
+  {
+    path: '/employees',
+    element: withProtection(<EmployeeListPage />, ADMIN_ONLY),
+  },
 
-  { path: '/taxes/create', element: withProtection(<CreateTaxPage />, ADMIN_ONLY) },
+  {
+    path: '/taxes/create',
+    element: withProtection(<CreateTaxPage />, ADMIN_ONLY),
+  },
   { path: '/taxes', element: withProtection(<TaxListPage />, ADMIN_ONLY) },
 
-  { path: '/discounts/create', element: withProtection(<CreateDiscountPage />, ADMIN_ONLY) },
-  { path: '/discounts', element: withProtection(<DiscountsPage />, ADMIN_ONLY) },
+  {
+    path: '/discounts/create',
+    element: withProtection(<CreateDiscountPage />, ADMIN_ONLY),
+  },
+  {
+    path: '/discounts',
+    element: withProtection(<DiscountsPage />, ADMIN_ONLY),
+  },
 
-  { path: '/items/create', element: withProtection(<CreateMenuItemPage />, ADMIN_ONLY) },
-  { path: '/items', element: withProtection(<MenuItemListPage />, EMPLOYEES_ONLY) },
+  {
+    path: '/items/create',
+    element: withProtection(<CreateMenuItemPage />, ADMIN_ONLY),
+  },
+  {
+    path: '/items',
+    element: withProtection(<MenuItemListPage />, EMPLOYEES_ONLY),
+  },
 
   {
     path: '/orders',
@@ -68,5 +112,10 @@ export const routeConfig = [
       { path: 'cart', element: <CartPage /> },
       { index: true, element: <Navigate to="create" replace /> },
     ],
+  },
+  {
+    path: '/orders',
+    element: <OrderistPage />,
+    roles: BARISTA_ONLY,
   },
 ];

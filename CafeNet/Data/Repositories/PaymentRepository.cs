@@ -1,5 +1,7 @@
 ﻿using CafeNet.Data.Database;
+using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Data.Repositories
 {
@@ -17,6 +19,22 @@ namespace CafeNet.Data.Repositories
             _context.Payments.Add(payment);
             await _context.SaveChangesAsync();
             return payment;
+        }
+
+        public async Task<bool> MarkPaymentAsPaidAsync(long orderId)
+        {
+            var payment = await _context.Payments
+                .FirstOrDefaultAsync(p => p.OrderId == orderId);
+
+            if (payment == null)
+                return false;
+
+            payment.Status = PaymentStatus.DONE;
+
+            _context.Payments.Update(payment);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

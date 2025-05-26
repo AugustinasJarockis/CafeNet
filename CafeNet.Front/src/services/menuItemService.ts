@@ -43,13 +43,6 @@ export interface MenuItemVariation {
   version?: string;
 }
 
-export interface MenuItemVariationDTO {
-  id: number;
-  menuItemId: number;
-  title: string;
-  priceChange: number;
-}
-
 export interface CreateMenuItemRequestPopup {
   id: number;
   title: string;
@@ -59,7 +52,7 @@ export interface CreateMenuItemRequestPopup {
   imgPath?: string;
   taxId: number;
   version?: string;
-  menuItemVariations: MenuItemVariationDTO[];
+  menuItemVariations: MenuItemVariation[];
 }
 
 export const createMenuItem = async (

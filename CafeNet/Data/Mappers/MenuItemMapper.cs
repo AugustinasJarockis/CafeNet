@@ -30,7 +30,8 @@ namespace CafeNet.Data.Mappers
                 Id = variation.Id,
                 Title = variation.Title,
                 PriceChange = variation.PriceChange,
-                MenuItemId = variation.MenuItemId
+                MenuItemId = variation.MenuItemId,
+                Version = variation.Version
             };
         }
 
@@ -76,7 +77,21 @@ namespace CafeNet.Data.Mappers
                 Id = dto.Id,
                 MenuItemId = dto.MenuItemId,
                 Title = dto.Title,
-                PriceChange = dto.PriceChange
+                PriceChange = dto.PriceChange,
+                Version = dto.Version
+            };
+        }
+        public static MenuItemOrderListDTO ToMenuItemOrderListDTO(this MenuItem menuItem)
+        {
+            return new MenuItemOrderListDTO
+            {
+                Id = menuItem.Id,
+                Title = menuItem.Title,
+                Price = menuItem.Price,
+                Available = menuItem.Available,
+                TaxId = menuItem.TaxId,
+                Tax = menuItem.Tax,
+                Version = menuItem.Version
             };
         }
     }

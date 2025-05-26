@@ -46,7 +46,7 @@ namespace CafeNet.Business_Management.Services.Workflows
                     TotalPrice = request.TotalPrice,
                     UsedCredits = request.UsedCredits,
                     Method = request.Method,
-                    Status = PaymentStatus.DONE
+                    Status = PaymentStatus.PENDING
                 });
 
                 await _unitOfWork.SaveChangesAsync();
