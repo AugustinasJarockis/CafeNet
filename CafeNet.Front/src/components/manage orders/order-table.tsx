@@ -17,7 +17,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog"
 import type { Order } from "@/services/orderService"
-import { OrderStatus, updateOrderStatus, confirmPayment} from "@/services/orderService"
+import { OrderStatus, updateOrderStatus, confirmPayment, PaymentStatus} from "@/services/orderService"
 import { OrderDetailCard } from "./order-detail-card"
 
 interface OrderTableProps {
@@ -68,7 +68,7 @@ export default function OrderTable({
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+         <TableBody>
           
           {orders.map((order) => (
             <TableRow
@@ -87,158 +87,140 @@ export default function OrderTable({
               <TableCell>{OrderStatus[order.status]}</TableCell>
 
               <TableCell className="text-right space-x-2">
+              {order.paymentStatus === PaymentStatus.PENDING && order.status !== OrderStatus.TAKEN && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="secondary" size="sm" onClick={(e) => e.stopPropagation()}>
+                      Confirm payment
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Pay for this order?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will mark Order #{order.id} as paid. Continue?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await confirmPayment(order.id);
+                            console.log("Order paid:", order.id);
+                            onRefresh();
+                          } catch (error) {
+                            console.error("Failed to mark payment as paid:", error);
+                          }
+                        }}
+                      >
+                        Confirm
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
 
-              {/* Take Order Confirmation */}
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Start order
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Start order this order?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to start this Order #{order.id}?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                    onClick={async () => {
-                      try {
-                        await updateOrderStatus(order.id, OrderStatus.IN_PROGRESS, order.version);
-                        onRefresh();
-                        console.log("Order started:", order.id);
-                        // Optional: refresh orders list or update state
-                      } catch (err) {
-                        console.error("Failed to start order:", err);
-                      }
-                    }}
-                  >
-                    Confirm
-                  </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              {order.status === OrderStatus.OPEN && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+                      Start order
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Start this order?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to start Order #{order.id}?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await updateOrderStatus(order.id, OrderStatus.IN_PROGRESS, order.version);
+                            onRefresh();
+                          } catch (err) {
+                            console.error("Failed to start order:", err);
+                          }
+                        }}
+                      >
+                        Confirm
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Mark as done
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Mark this order done?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to mark this Order #{order.id} done?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={async () => {
-                        try {
-                          await updateOrderStatus(order.id, OrderStatus.DONE, order.version);
-                          await onRefresh();
-                          console.log("Refetch triggered");
-                          console.log("Order started:", order.id);
-                          // Optional: refresh orders list or update state
-                        } catch (err) {
-                          console.error("Failed to start order:", err);
-                        }
-                      }}
-                    >
-                      Confirm
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              {order.status === OrderStatus.IN_PROGRESS && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+                      Mark as done
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Mark this order as done?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to mark Order #{order.id} done?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await updateOrderStatus(order.id, OrderStatus.DONE, order.version);
+                            onRefresh();
+                          } catch (err) {
+                            console.error("Failed to mark order as done:", err);
+                          }
+                        }}
+                      >
+                        Confirm
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Mark as delivered
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Mark this order as delivered?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to mark this Order #{order.id} as delivered?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                    onClick={async () => {
-                      try {
-                        await updateOrderStatus(order.id, OrderStatus.TAKEN, order.version);
-                        onRefresh();
-                        console.log("Order started:", order.id);
-                        // Optional: refresh orders list or update state
-                      } catch (err) {
-                        console.error("Failed to start order:", err);
-                      }
-                    }}
-                  >
-                    Confirm
-                  </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-
-              {/* Pay Confirmation */}
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Confirm payment
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Pay for this order?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will mark Order #{order.id} as paid. Continue?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                    onClick={async () => {
-                      try {
-                        await confirmPayment(order.id);
-                        console.log("Order paid:", order.id);
-                        onRefresh();
-                      } catch (error) {
-                        console.error("Failed to mark payment as paid:", error);
-                      }
-                    }}
-                  >
-                    Confirm
-                  </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-
+              {order.status === OrderStatus.DONE && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+                      Mark as delivered
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Mark this order as delivered?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to mark Order #{order.id} as delivered?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await updateOrderStatus(order.id, OrderStatus.TAKEN, order.version);
+                            onRefresh();
+                          } catch (err) {
+                            console.error("Failed to mark as delivered:", err);
+                          }
+                        }}
+                      >
+                        Confirm
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </TableCell>
+
 
             </TableRow>
           ))}
