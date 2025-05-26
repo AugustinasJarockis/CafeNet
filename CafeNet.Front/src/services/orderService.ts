@@ -80,7 +80,7 @@ export const updateOrderStatus = async (
   id: number,
   status: OrderStatus,
   version: string
-): Promise<any> => {
+): Promise<Order> => {
   const response = await apiClient.patch(`/order/status/${id}`, {
     id,
     status,
