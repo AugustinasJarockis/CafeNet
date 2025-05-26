@@ -81,5 +81,18 @@ namespace CafeNet.Data.Mappers
                 Version = dto.Version
             };
         }
+        public static MenuItemOrderListDTO ToMenuItemOrderListDTO(this MenuItem menuItem)
+        {
+            return new MenuItemOrderListDTO
+            {
+                Id = menuItem.Id,
+                Title = menuItem.Title,
+                Price = menuItem.Price,
+                Available = menuItem.Available,
+                TaxId = menuItem.TaxId,
+                Tax = menuItem.Tax,
+                Version = menuItem.Version
+            };
+        }
     }
 }

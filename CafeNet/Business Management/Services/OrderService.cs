@@ -1,18 +1,25 @@
 ﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.Data.Enums;
+using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
+using CafeNet.Infrastructure.Pagination;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Business_Management.Services;
 
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IPaymentRepository _paymentRepository;
 
-    public OrderService(IOrderRepository orderRepository)
+    public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository)
     {
         _orderRepository = orderRepository;
+        _paymentRepository = paymentRepository;
     }
 
     [Loggable]
@@ -54,6 +61,45 @@ public class OrderService : IOrderService
         await _orderRepository.CreateAsync(order);
 
         return order.Id;
+    }
+
+    [Loggable]
+    public async Task<PagedResult<OrderDTO>> GetOrdersByLocationAsync(long id, int pageNumber, int pageSize)
+    {
+        var totalCount = await _orderRepository.CountOrdersAsync();
+        var orders = await _orderRepository.GetOrdersByLocationPagedAsync(id, pageNumber, pageSize);
+
+        var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
+
+        return new PagedResult<OrderDTO>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    [Loggable]
+    public async Task<OrderDTO> UpdateOrderStatusAsync(UpdateOrderStatusRequest request)
+    {
+        if (!(await _orderRepository.OrderExistsAsync(request.Id)))
+            throw new NotFoundException("Order was not found.");
+
+        try
+        {
+            var updatedOrder = await _orderRepository.UpdateOrderStatusAsync(request);
+            return updatedOrder.ToOrderDTO();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConflictException("Order status was modified in another session.");
+        }
+    }
+
+    public async Task<bool> MarkPaymentAsPaidAsync(long orderId)
+    {
+        return await _paymentRepository.MarkPaymentAsPaidAsync(orderId);
     }
 }
 
