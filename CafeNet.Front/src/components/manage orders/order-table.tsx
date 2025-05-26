@@ -17,7 +17,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog"
 import type { Order } from "@/services/orderService"
-import {OrderStatus} from "@/services/orderService"
+import { OrderStatus, updateOrderStatus, confirmPayment} from "@/services/orderService"
 import { OrderDetailCard } from "./order-detail-card"
 
 interface OrderTableProps {
@@ -25,6 +25,7 @@ interface OrderTableProps {
   onDelete: (menuItemId: number) => void;
   onToggleAvailability: (id: number, available: boolean, version?: string) => void;
   userRole: string;
+  onRefresh: () => void;
 }
 
 export default function OrderTable({
@@ -32,6 +33,7 @@ export default function OrderTable({
   onDelete,
   onToggleAvailability,
   userRole,
+  onRefresh
 }: OrderTableProps) {
   const isBarista = userRole === "BARISTA";
   const [selectedItem, setSelectedItem] = useState<Order | null>(null);
@@ -61,6 +63,7 @@ export default function OrderTable({
             <TableHead>Order</TableHead>
             <TableHead>Item count</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Payment</TableHead> 
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -80,6 +83,7 @@ export default function OrderTable({
               <TableCell>{order.id}</TableCell>
               <TableCell>{order.orderItems.length}</TableCell>
               <TableCell>{order.status}</TableCell>
+              <TableCell>{order.paymentStatus}</TableCell> 
               <TableCell>{OrderStatus[order.status]}</TableCell>
 
               <TableCell className="text-right space-x-2">
@@ -105,13 +109,19 @@ export default function OrderTable({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        console.log("Order taken:", order.id)
-                        // Call your actual takeOrder() function here
-                      }}
-                    >
-                      Confirm
-                    </AlertDialogAction>
+                    onClick={async () => {
+                      try {
+                        await updateOrderStatus(order.id, OrderStatus.IN_PROGRESS, order.version);
+                        onRefresh();
+                        console.log("Order started:", order.id);
+                        // Optional: refresh orders list or update state
+                      } catch (err) {
+                        console.error("Failed to start order:", err);
+                      }
+                    }}
+                  >
+                    Confirm
+                  </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -136,9 +146,16 @@ export default function OrderTable({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        console.log("Order done:", order.id)
-                        // Call your actual takeOrder() function here
+                      onClick={async () => {
+                        try {
+                          await updateOrderStatus(order.id, OrderStatus.DONE, order.version);
+                          await onRefresh();
+                          console.log("Refetch triggered");
+                          console.log("Order started:", order.id);
+                          // Optional: refresh orders list or update state
+                        } catch (err) {
+                          console.error("Failed to start order:", err);
+                        }
                       }}
                     >
                       Confirm
@@ -167,13 +184,19 @@ export default function OrderTable({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        console.log("Order delivered:", order.id)
-                        // Call your actual takeOrder() function here
-                      }}
-                    >
-                      Confirm
-                    </AlertDialogAction>
+                    onClick={async () => {
+                      try {
+                        await updateOrderStatus(order.id, OrderStatus.TAKEN, order.version);
+                        onRefresh();
+                        console.log("Order started:", order.id);
+                        // Optional: refresh orders list or update state
+                      } catch (err) {
+                        console.error("Failed to start order:", err);
+                      }
+                    }}
+                  >
+                    Confirm
+                  </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -199,13 +222,18 @@ export default function OrderTable({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        console.log("Order paid:", order.id)
-                        // Call your actual payOrder() function here
-                      }}
-                    >
-                      Confirm
-                    </AlertDialogAction>
+                    onClick={async () => {
+                      try {
+                        await confirmPayment(order.id);
+                        console.log("Order paid:", order.id);
+                        onRefresh();
+                      } catch (error) {
+                        console.error("Failed to mark payment as paid:", error);
+                      }
+                    }}
+                  >
+                    Confirm
+                  </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

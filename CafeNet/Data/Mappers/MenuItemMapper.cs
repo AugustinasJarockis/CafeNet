@@ -88,6 +88,7 @@ namespace CafeNet.Data.Mappers
                 Price = menuItem.Price,
                 Available = menuItem.Available,
                 TaxId = menuItem.TaxId,
+                Tax = menuItem.Tax,
                 Version = menuItem.Version
             };
         }

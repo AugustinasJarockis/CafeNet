@@ -1,6 +1,8 @@
 import apiClient from '@/api/apiClient';
 import { AxiosError } from 'axios';
 import { PagedResult } from '@/types/PagedResult';
+import { Tax } from '@/services/taxService';
+import { Discount } from '@/services/discountService';
 
 export interface MenuItemOrderList {
   id: number;
@@ -9,6 +11,7 @@ export interface MenuItemOrderList {
   available: boolean;
   taxId: number;
   version: string;
+  tax?: Tax; 
 }
 
 export interface MenuItemVariation {
@@ -26,6 +29,14 @@ export interface Order {
   userId: number;
   version: string;
   orderItems: OrderItem[];
+  discount?: Discount; 
+  paymentStatus: PaymentStatus;
+}
+
+export enum PaymentStatus {
+  UNPAID = 0,
+  PAID = 1,
+  REFUNDED = 2
 }
 
 export interface OrderItem {
@@ -64,3 +75,27 @@ export const getOrderListByLocation = async (
 
   return response.data;
 };
+
+export const updateOrderStatus = async (
+  id: number,
+  status: OrderStatus,
+  version: string
+): Promise<any> => {
+  const response = await apiClient.patch(`/order/status/${id}`, {
+    id,
+    status,
+    version,
+  });
+
+  return response.data;
+};
+
+export async function confirmPayment(orderId: number): Promise<void> {
+  try {
+    await apiClient.patch(`/order/paymentPaid/${orderId}`);
+  } catch (error) {
+    const err = error as AxiosError;
+    console.error("Error confirming payment:", err.message);
+    throw err;
+  }
+}

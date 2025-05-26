@@ -10,5 +10,6 @@ namespace CafeNet.Business_Management.DTOs
         public bool Available { get; set; }
         public long TaxId { get; set; }
         public uint Version { get; set; }
+        public Tax Tax { get; set; }
     }
 }

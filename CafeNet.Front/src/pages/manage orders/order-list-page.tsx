@@ -28,7 +28,7 @@ export default function MenuItemListPage() {
   const { data: user, isLoading: userLoading, isError: userError } = useCurrentUser();
   const [page, setPage] = useState(1);
   const pageSize = 8;
-  const { data, isLoading, error } = useOrders(page, pageSize, user?.locationId);
+  const { data, isLoading, error, refetch } = useOrders(page, pageSize, user?.locationId);
 
   if (userLoading) return <div>Loading user...</div>;
   if (userError || !user) return <div>Failed to load user.</div>;
@@ -36,7 +36,6 @@ export default function MenuItemListPage() {
   const handleDelete = async (menuItemId: number) => {
     
   };
-
 
 
   const handleToggleAvailability = (id: number, available: boolean, version?: string) => {
@@ -101,6 +100,7 @@ export default function MenuItemListPage() {
               onDelete={handleDelete}
               onToggleAvailability={handleToggleAvailability}
               userRole={user.role}
+              onRefresh={refetch}
             />
 
               <div className="mt-6">
