@@ -18,6 +18,7 @@ namespace CafeNet.Data.Database
         public DbSet<StripeReader> StripeReaders { get; set; }
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
 
         public CafeNetDbContext(DbContextOptions options) : base(options) { }
 
