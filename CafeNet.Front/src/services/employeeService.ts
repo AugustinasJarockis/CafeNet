@@ -31,6 +31,7 @@ export type User = {
 export const getCurrentUser = async (): Promise<User> => {
   try {
     const response = await apiClient.get('/users/profile');
+    console.log(response.data);
     return response.data;
   } catch (error) {
     let message = 'An unexpected error occurred.';

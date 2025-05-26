@@ -29,31 +29,36 @@ public class OrderService : IOrderService
 
         foreach (var itemDTO in createOrderDTO.OrderItems)
         {
-            var orderItem = new OrderItem
-            {
-                MenuItemId = itemDTO.MenuItemId,
-                Refunded = false,
-                Order = order,
-                OrderItemVariations = new List<OrderItemVariation>(),
-            };
+            int quantity = itemDTO.Quantity > 0 ? itemDTO.Quantity : 1;
 
-            foreach (var variationId in itemDTO.MenuItemVariationIds)
+            for (int i = 0; i < quantity; i++)
             {
-                var variation = new OrderItemVariation
+                var orderItem = new OrderItem
                 {
-                    MenuItemVariationId = variationId,
-                    OrderItem = orderItem
+                    MenuItemId = itemDTO.MenuItemId,
+                    Refunded = false,
+                    Order = order,
+                    OrderItemVariations = new List<OrderItemVariation>(),
                 };
 
-                orderItem.OrderItemVariations.Add(variation);
-            }
+                foreach (var variationId in itemDTO.MenuItemVariationIds)
+                {
+                    var variation = new OrderItemVariation
+                    {
+                        MenuItemVariationId = variationId,
+                        OrderItem = orderItem
+                    };
 
-            order.OrderItems.Add(orderItem);
+                    orderItem.OrderItemVariations.Add(variation);
+                }
+
+                order.OrderItems.Add(orderItem);
+            }
         }
 
         await _orderRepository.CreateAsync(order);
-
         return order.Id;
     }
+
 }
 

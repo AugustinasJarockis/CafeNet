@@ -11,7 +11,8 @@ type Action =
   | { type: 'SET_LOCATION_ID'; locationId: number }
   | { type: 'SET_DISCOUNT_ID'; discountId: number }
   | { type: 'ADD_ORDER_ITEM'; item: CreateOrderItemRequest }
-  | { type: 'REMOVE_ORDER_ITEM'; itemId: number }
+  | { type: 'REMOVE_ORDER_ITEM'; index: number }
+  | { type: 'UPDATE_ORDER_ITEM_QUANTITY'; index: number; quantity: number }
   | { type: 'RESET' };
 
 const initialState: CreatePaymentRequest = {
@@ -24,7 +25,10 @@ const initialState: CreatePaymentRequest = {
   orderItems: [],
 };
 
-function paymentReducer(state: CreatePaymentRequest, action: Action): CreatePaymentRequest {
+function paymentReducer(
+  state: CreatePaymentRequest,
+  action: Action
+): CreatePaymentRequest {
   switch (action.type) {
     case 'SET_TOTAL_PRICE':
       return { ...state, totalPrice: action.totalPrice };
@@ -43,7 +47,14 @@ function paymentReducer(state: CreatePaymentRequest, action: Action): CreatePaym
     case 'REMOVE_ORDER_ITEM':
       return {
         ...state,
-        orderItems: state.orderItems.filter((item) => item.itemId !== action.itemId),
+        orderItems: state.orderItems.filter((_, i) => i !== action.index),
+      };
+    case 'UPDATE_ORDER_ITEM_QUANTITY':
+      return {
+        ...state,
+        orderItems: state.orderItems.map((item, i) =>
+          i === action.index ? { ...item, quantity: action.quantity } : item
+        ),
       };
     case 'RESET':
       return initialState;

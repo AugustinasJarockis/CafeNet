@@ -9,6 +9,7 @@ namespace CafeNet.Business_Management.Interfaces
         Task<DiscountDTO> CreateAsync(CreateDiscountRequest request);
         Task<PagedResult<DiscountDTO>> GetDiscountsAsync(int pageNumber, int pageSize);
         Task<DiscountDTO> GetDiscountAsync(long id);
+        Task<DiscountDTO> GetDiscountByCodeAsync(string code);
         Task<DiscountDTO> UpdateAsync(UpdateDiscountRequest request);
         Task DeleteAsync(long id);
     }

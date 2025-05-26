@@ -26,7 +26,10 @@ namespace CafeNet.Data.Repositories
 
         public async Task<MenuItem?> GetByIdAsync(long id)
         {
-            return await _context.MenuItems.FirstOrDefaultAsync(menuItem => menuItem.Id == id);
+            return await _context.MenuItems
+                                    .Include(m => m.MenuItemVariations)
+                                    .Include(m => m.Tax)
+                                    .FirstOrDefaultAsync(menuItem => menuItem.Id == id);
         }
         public async Task<bool> IsTitleTakenAsync(string title, long? excludeId = null)
         {

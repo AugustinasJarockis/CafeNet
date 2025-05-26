@@ -1,12 +1,8 @@
-import { ClientSidebar } from "@/components/client-sidebar"
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { ClientSidebar } from '@/components/client-sidebar';
+import { Separator } from '@/components/ui/separator';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 export default function ClientMenu() {
-
   return (
     <SidebarProvider>
       <ClientSidebar />
@@ -28,5 +24,5 @@ export default function ClientMenu() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

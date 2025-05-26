@@ -8,42 +8,42 @@ export interface CreateDiscountRequest {
   amount?: number;
 }
 
-
 export interface Discount {
   id: number;
   code: string;
   percent?: number;
   amount?: number;
   version: string;
-
 }
 
-export const createDiscount = async (request: CreateDiscountRequest): Promise<Discount | string> => {
-    try {
-        const response = await apiClient.post<Discount | { message: string }>('/discounts', request);
+export const createDiscount = async (
+  request: CreateDiscountRequest
+): Promise<Discount | string> => {
+  try {
+    const response = await apiClient.post<Discount | { message: string }>(
+      '/discounts',
+      request
+    );
 
-        if (response.status === 201) {
-            return response.data as Discount;
-        } else {
-            return (response.data as {message: string}).message;
-        }
+    if (response.status === 201) {
+      return response.data as Discount;
+    } else {
+      return (response.data as { message: string }).message;
     }
-    catch (error) {
-        let message = 'An unexpected error occurred.';
-        
-        if (error instanceof AxiosError && error.response?.data?.message) {
-            message = error.response.data.message;
-        } else if (error instanceof Error) {
-            message = error.message;
-        }
+  } catch (error) {
+    let message = 'An unexpected error occurred.';
 
-        return message;
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
     }
+
+    return message;
+  }
 };
 
-export const updateDiscount = async (
-  data: Discount
-): Promise<Discount> => {
+export const updateDiscount = async (data: Discount): Promise<Discount> => {
   try {
     const response = await apiClient.put('/discounts', data);
     return response.data;
@@ -69,9 +69,7 @@ export const getDiscounts = async (
   return response.data;
 };
 
-export const getDiscount = async (
-  id: number
-): Promise<Discount> => {
+export const getDiscount = async (id: number): Promise<Discount> => {
   const response = await apiClient.get(`/discounts/${id}`);
 
   return response.data;
@@ -93,3 +91,9 @@ export async function deleteDiscount(discountId: number) {
     throw new Error(message);
   }
 }
+
+export const getDiscountByCode = async (code: string): Promise<Discount> => {
+  const response = await apiClient.get(`/discounts/code/${code}`);
+
+  return response.data;
+};

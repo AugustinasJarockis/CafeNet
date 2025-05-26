@@ -33,7 +33,7 @@ namespace CafeNet.Business_Management.Services.Workflows
                 var orderId = await _orderService.CreateOrderAsync(new CreateOrderDTO
                 {
                     UserId = request.UserId,
-                    LocationId = request.LocationId,
+                    LocationId = request.LocationId ,
                     OrderStatus = OrderStatus.OPEN,
                     DiscountId = request.DiscountId,
                     OrderItems = request.OrderItems

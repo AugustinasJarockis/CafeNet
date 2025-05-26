@@ -50,10 +50,17 @@ namespace CafeNet.Data.Repositories
                 _context.SaveChanges();
             }
         }
+
         public async Task<int> CountDiscountsAsync()
         {
             return await _context.Discounts.CountAsync();
         }
+
+        public async Task<Discount> GetByCodeAsync(string code)
+        {
+            return await _context.Discounts.FirstOrDefaultAsync(discount => discount.Code == code);
+        }
+
 
         public async Task<IEnumerable<Discount>> GetDiscountsPagedAsync(int pageNumber, int pageSize)
         {

@@ -1,10 +1,8 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Business_Management.Services;
 using CafeNet.Data.Models;
 using CafeNet.Infrastructure.Extensions;
 using CafeNet.Infrastructure.Pagination;
-using CafeNet.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CafeNet.Data.Mappers;
@@ -97,6 +95,16 @@ namespace CafeNet.Controllers
             var updatedMenuItemDTO = updatedMenuItem.ToMenuItemDTO(); 
 
             return Ok(updatedMenuItemDTO);
+        }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        [ProducesResponseType(typeof(MenuItemDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetMenuItem(long id)
+        {
+            var result = await _menuItemService.GetMenuItemAsync(id);
+            return Ok(result);
         }
     }
 }

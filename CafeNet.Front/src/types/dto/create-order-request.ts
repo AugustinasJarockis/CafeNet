@@ -1,5 +1,5 @@
 export interface CreateOrderItemRequest {
-  itemId: number;
+  menuItemId: number;
   variationIds: number[];
   quantity: number;
 }

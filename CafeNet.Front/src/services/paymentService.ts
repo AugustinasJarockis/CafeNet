@@ -8,7 +8,7 @@ export const createPayment = async (
 ): Promise<CreatePaymentResult> => {
   try {
     const response = await apiClient.post<CreatePaymentResult>(
-      '/payments',
+      '/payment',
       request
     );
 
