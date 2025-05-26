@@ -94,7 +94,7 @@ namespace CafeNet.Data.Repositories
                 .CountAsync();
         }
 
-        public async Task<Order> GetOrderByIdAsync(long orderId)
+        public async Task<Order?> GetOrderByIdAsync(long orderId)
         {
             return await _context.Orders
                 .Where(o => o.Id == orderId)
@@ -110,16 +110,23 @@ namespace CafeNet.Data.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        private async Task<Order?> GetOrderByIdNoTrackingAsync(long orderId) {
+            return await _context.Orders
+                .AsNoTracking()
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+        }
+
         public async Task<Order> UpdateOrderStatusAsync(UpdateOrderStatusRequest request)
         {
-            var order = await GetOrderByIdAsync(request.Id);
+            var order = await GetOrderByIdNoTrackingAsync(request.Id);
 
-            order.Status = request.Status;
+            order!.Status = request.Status;
+            order.Version = request.Version;
 
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
 
-            return order;
+            return (await GetOrderByIdAsync(request.Id))!;
         }
 
     }
