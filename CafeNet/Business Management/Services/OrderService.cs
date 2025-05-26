@@ -98,6 +98,9 @@ public class OrderService : IOrderService
         {
             throw new ConflictException("Order status was modified in another session.");
         }
+        catch (Exception ex) {
+            throw;
+        }
     }
 
     public async Task<bool> MarkPaymentAsPaidAsync(long orderId)

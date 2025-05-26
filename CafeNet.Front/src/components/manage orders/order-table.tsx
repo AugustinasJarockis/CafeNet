@@ -18,6 +18,7 @@ import type { Order } from "@/services/orderService"
 import { OrderStatus, updateOrderStatus, confirmPayment, PaymentStatus} from "@/services/orderService"
 import { OrderDetailCard } from "./order-detail-card"
 import { calculateOrderTotal } from "@/lib/orderUtils";
+import axios from "axios"
 
 interface OrderTableProps {
   orders: Order[];
@@ -133,6 +134,11 @@ export default function OrderTable({
                             onRefresh();
                           } catch (err) {
                             console.error("Failed to start order:", err);
+                            if (axios.isAxiosError(err) 
+                              && err.status == 409
+                              && err.response?.data?.message
+                            )
+                              alert(`Failed to start order: ${err.response.data.message}`);
                           }
                         }}
                       >
@@ -166,6 +172,11 @@ export default function OrderTable({
                             onRefresh();
                           } catch (err) {
                             console.error("Failed to mark order as done:", err);
+                            if (axios.isAxiosError(err) 
+                              && err.status == 409
+                              && err.response?.data?.message
+                            )
+                              alert(`Failed to mark order as done: ${err.response.data.message}`);
                           }
                         }}
                       >
@@ -200,6 +211,11 @@ export default function OrderTable({
                 onRefresh();
               } catch (err) {
                 console.error("Failed to mark as delivered:", err);
+                if (axios.isAxiosError(err) 
+                  && err.status == 409
+                  && err.response?.data?.message
+                )
+                  alert(`Failed to mark as delivered: ${err.response.data.message}`);
               }
             }}
           >
