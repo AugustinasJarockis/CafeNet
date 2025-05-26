@@ -21,7 +21,6 @@ export function ClientSidebar({
   const cartCount = state.orderItems.length;
   const navigate = useNavigate();
 
-  // Base nav items
   const navItems = [
     {
       title: 'Manage orders',

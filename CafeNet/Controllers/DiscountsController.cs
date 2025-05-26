@@ -68,15 +68,8 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDiscountByCode(string code)
         {
-            try
-            {
-                var result = await _discountService.GetDiscountByCodeAsync(code);
-                return Ok(result);
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
+            var result = await _discountService.GetDiscountByCodeAsync(code);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

@@ -100,11 +100,13 @@ public class OrderService : IOrderService
         }
     }
 
+    [Loggable]
     public async Task<bool> MarkPaymentAsPaidAsync(long orderId)
     {
         return await _paymentRepository.MarkPaymentAsPaidAsync(orderId);
     }
 
+    [Loggable]
     public async Task<PagedResult<OrderDTO>> GetOrdersByUserAsync(long id, int pageNumber, int pageSize)
     {
         var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
