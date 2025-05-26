@@ -23,13 +23,16 @@ namespace CafeNet.Data.Repositories
         public async Task<IEnumerable<Order>> GetOrdersByLocationPagedAsync(long id, int pageNumber, int pageSize)
         {
             return await _context.Orders
-                                 .Where(o => o.LocationId == id)
-                                 .Include(o => o.OrderItems)
-                                     .ThenInclude(oi => oi.OrderItemVariations)
-                                 .OrderBy(o => o.Id)
-                                 .Skip((pageNumber - 1) * pageSize)
-                                 .Take(pageSize)
-                                 .ToListAsync();
+                .Where(o => o.LocationId == id)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.MenuItem) // Include MenuItem here
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.OrderItemVariations)
+                        .ThenInclude(oiv => oiv.MenuItemVariation) // Include Variation details
+                .OrderBy(o => o.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<int> CountOrdersAsync()

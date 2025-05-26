@@ -10,6 +10,7 @@ namespace CafeNet.Business_Management.DTOs
         public long OrderId { get; set; }
         public long MenuItemId { get; set; }
         public ICollection<OrderItemVariationDTO> OrderItemVariations { get; set; }
+        public MenuItemOrderListDTO MenuItem { get; set; }
         public uint Version { get; set; }
     }
 }

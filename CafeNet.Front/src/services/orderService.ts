@@ -2,6 +2,22 @@ import apiClient from '@/api/apiClient';
 import { AxiosError } from 'axios';
 import { PagedResult } from '@/types/PagedResult';
 
+export interface MenuItemOrderList {
+  id: number;
+  title: string;
+  price: number;
+  available: boolean;
+  taxId: number;
+  version: string;
+}
+
+export interface MenuItemVariation {
+  id: number;
+  title: string;
+  priceChange: number;
+  menuItemId: number;
+}
+
 export interface Order {
   id: number;
   status: OrderStatus;
@@ -18,6 +34,7 @@ export interface OrderItem {
   orderId: number;
   menuItemId: number;
   version: string;
+  menuItem: MenuItemOrderList; 
   orderItemVariations: OrderItemVariation[];
 }
 
@@ -26,6 +43,7 @@ export interface OrderItemVariation {
   menuItemVariationId: number;
   orderItemId: number;
   version: string;
+  menuItemVariation?: MenuItemVariation;
 }
 
 export enum OrderStatus {

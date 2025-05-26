@@ -22,55 +22,88 @@ export function OrderDetailCard({ order, onClose, userRole }: OrderDetailCardPro
           size="icon"
           className="absolute right-2 top-2"
           onClick={(e) => {
-            e.stopPropagation()
-            onClose()
+            e.stopPropagation();
+            onClose();
           }}
         >
           <X className="h-4 w-4" />
         </Button>
-        <CardTitle>Order {order.id}</CardTitle>
-        <CardDescription>Do i need the text here?</CardDescription>
+        <CardTitle>Order #{order.id}</CardTitle>
       </CardHeader>
+
       <CardContent className="space-y-4">
-        {order.orderItems.map((item, index) => (
-          <div key={item.id} className="border rounded-lg p-4 space-y-2">
-            <div className="flex justify-between items-center">
-              <h4 className="font-semibold">Item #{index + 1}</h4>
-              {item.refunded && (
-                <Badge variant="destructive" className="text-xs">
-                  Refunded
-                </Badge>
-              )}
-            </div>
+        {order.orderItems.map((item, index) => {
+          const basePrice = item.menuItem?.price || 0;
+          const variationTotal = item.orderItemVariations.reduce((sum, v) => {
+            return sum + (v.menuItemVariation?.priceChange || 0);
+          }, 0);
+          const totalPrice = basePrice + variationTotal;
 
-            <div className="text-sm text-muted-foreground">
-              Menu Item ID: {item.menuItemId}
-            </div>
+          return (
+            <div key={item.id} className="border rounded-lg p-4 space-y-2">
+              <div className="flex justify-between items-center">
+                <h4 className="font-semibold">
+                  {item.menuItem?.title ?? `Item #${index + 1}`}
+                </h4>
+                {item.refunded && (
+                  <Badge variant="destructive" className="text-xs">
+                    Refunded
+                  </Badge>
+                )}
+              </div>
 
-            <div className="mt-2">
-              <p className="text-sm font-medium mb-1">Variations:</p>
-              <ul className="list-disc list-inside space-y-1">
-                {item.orderItemVariations.map((variation) => (
-                  <li key={variation.id} className="text-sm">
-                    Variation ID: {variation.menuItemVariationId}
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <div className="text-sm text-muted-foreground">
+                Base Price: €{basePrice.toFixed(2)}
+              </div>
 
-            <div className="mt-2 flex justify-between text-sm">
-              <span>Price:</span>
-              <span className="font-semibold">€--.--</span> {/* Placeholder */}
+              {item.orderItemVariations.length > 0 ? (
+              <div className="mt-2">
+                <p className="text-sm font-medium mb-1">Variations:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  {item.orderItemVariations.map((variation) => {
+                    const v = variation.menuItemVariation;
+                    return (
+                      <li key={variation.id} className="text-sm flex justify-between">
+                        {v ? (
+                          <>
+                            <span>{v.title}</span>
+                            <span className={v.priceChange > 0 ? "text-green-600" : "text-red-600"}>
+                              ({v.priceChange >= 0 ? "+" : "-"}€{Math.abs(v.priceChange).toFixed(2)})
+                            </span>
+                          </>
+                        ) : (
+                          `Variation ID: ${variation.menuItemVariationId}`
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              <div className="text-sm italic text-muted-foreground">No variations</div>
+            )}
+              <Separator />
+
+              <div className="mt-2 flex justify-between text-sm">
+                <span>Total Price:</span>
+                <span className="font-semibold">
+                  €{totalPrice.toFixed(2)}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </CardContent>
-      <CardFooter className={userRole === "BARISTA" ? "flex justify-end" : "flex justify-between"}>
-      <Button variant="outline" onClick={onClose}>
-        Close
-      </Button>
-      
-    </CardFooter>
-      </Card>
-  )
+
+      <CardFooter
+        className={
+          userRole === "BARISTA" ? "flex justify-end" : "flex justify-between"
+        }
+      >
+        <Button variant="outline" onClick={onClose}>
+          Close
+        </Button>
+      </CardFooter>
+    </Card>
+  );
 }

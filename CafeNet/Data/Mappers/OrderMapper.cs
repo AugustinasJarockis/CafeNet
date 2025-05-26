@@ -31,6 +31,7 @@ namespace CafeNet.Data.Mappers
                 OrderId = orderItem.OrderId,
                 MenuItemId = orderItem.MenuItemId,
                 Version = orderItem.Version,
+                MenuItem = orderItem.MenuItem?.ToMenuItemOrderListDTO(),
                 OrderItemVariations = (orderItem.OrderItemVariations?
                     .Select(oiv => oiv.ToOrderItemVariationDTO())
                     .ToList() ?? new List<OrderItemVariationDTO>())
@@ -44,7 +45,8 @@ namespace CafeNet.Data.Mappers
                 Id = variation.Id,
                 OrderItemId = variation.OrderItemId,
                 MenuItemVariationId = variation.MenuItemVariationId,
-                Version = variation.Version
+                Version = variation.Version,
+                MenuItemVariation = variation.MenuItemVariation.ToMenuVariationDTO()
             };
         }
     }
