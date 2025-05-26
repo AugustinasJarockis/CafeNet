@@ -1,6 +1,4 @@
 ﻿using CafeNet.Data.Enums;
-using CafeNet.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CafeNet.Business_Management.DTOs
 {
