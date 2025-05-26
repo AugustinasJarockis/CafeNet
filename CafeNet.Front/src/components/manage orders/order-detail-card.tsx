@@ -1,6 +1,6 @@
 import { X } from "lucide-react"
 import type { Order } from "@/services/orderService"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -25,7 +25,6 @@ export function OrderDetailCard({ order, onClose, userRole }: OrderDetailCardPro
     return orderSum + itemSubtotal + taxAmount;
   }, 0);
 
-  // Apply discount if any
   const discountAmount = order.discount
     ? order.discount.amount ?? (itemsTotal * (order.discount.percent ?? 0)) / 100
     : 0;

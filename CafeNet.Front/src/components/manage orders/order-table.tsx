@@ -3,8 +3,6 @@ import type React from "react"
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Pencil, Trash } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,27 +17,22 @@ import {
 import type { Order } from "@/services/orderService"
 import { OrderStatus, updateOrderStatus, confirmPayment, PaymentStatus} from "@/services/orderService"
 import { OrderDetailCard } from "./order-detail-card"
+import { calculateOrderTotal } from "@/lib/orderUtils";
 
 interface OrderTableProps {
   orders: Order[];
-  onDelete: (menuItemId: number) => void;
-  onToggleAvailability: (id: number, available: boolean, version?: string) => void;
   userRole: string;
   onRefresh: () => void;
 }
 
 export default function OrderTable({
   orders,
-  onDelete,
-  onToggleAvailability,
   userRole,
   onRefresh
 }: OrderTableProps) {
   const isBarista = userRole === "BARISTA";
   const [selectedItem, setSelectedItem] = useState<Order | null>(null);
   const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const handleRowClick = (order: Order, event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -69,10 +62,9 @@ export default function OrderTable({
           </TableRow>
         </TableHeader>
          <TableBody>
-          
           {orders.map((order) => (
             <TableRow
-            
+              
               key={order.id}
               className={`cursor-pointer ${isBarista && order.status === OrderStatus.TAKEN ? "opacity-50 text-gray-500" : ""}`}
 
@@ -82,7 +74,7 @@ export default function OrderTable({
 
               <TableCell>{order.id}</TableCell>
               <TableCell>{order.orderItems.length}</TableCell>
-              <TableCell>{order.status}</TableCell>
+              <TableCell>€{calculateOrderTotal(order).finalTotal.toFixed(2)}</TableCell>
               <TableCell>{order.paymentStatus}</TableCell> 
               <TableCell>{OrderStatus[order.status]}</TableCell>
 

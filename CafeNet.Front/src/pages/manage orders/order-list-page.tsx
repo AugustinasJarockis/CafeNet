@@ -5,7 +5,6 @@ import OrderTable from '@/components/manage orders/order-table';
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -33,18 +32,6 @@ export default function MenuItemListPage() {
   if (userLoading) return <div>Loading user...</div>;
   if (userError || !user) return <div>Failed to load user.</div>;
 
-  const handleDelete = async (menuItemId: number) => {
-    
-  };
-
-
-  const handleToggleAvailability = (id: number, available: boolean, version?: string) => {
-  if (!version) {
-    console.error("Missing version for concurrency control");
-    return;
-  }
-
-};
 
   const totalPages = data && data.totalCount !== 0 ? Math.ceil(data.totalCount / pageSize) : 1;
   
@@ -97,8 +84,6 @@ export default function MenuItemListPage() {
             <>
               <OrderTable
               orders={data.items}
-              onDelete={handleDelete}
-              onToggleAvailability={handleToggleAvailability}
               userRole={user.role}
               onRefresh={refetch}
             />
