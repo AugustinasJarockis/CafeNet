@@ -9,7 +9,7 @@ public class CreatePaymentRequest
     public PaymentMethod Method { get; set; }
     public long UserId { get; set; }
     public long LocationId { get; set; }
-    public long DiscountId { get; set; }
+    public long? DiscountId { get; set; }
 
     public List<CreateOrderItemRequest> OrderItems { get; set; }
 }

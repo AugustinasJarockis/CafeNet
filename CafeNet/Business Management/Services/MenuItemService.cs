@@ -142,5 +142,12 @@ namespace CafeNet.Business_Management.Services
             }
         }
 
+        [Loggable]
+        public async Task<MenuItemDTO> GetMenuItemAsync(long id)
+        {
+            var menuItem = await _menuItemRepository.GetByIdAsync(id)
+                ?? throw new NotFoundException("Discount not found");
+            return menuItem.ToMenuItemDTO();
+        }
     }
 }

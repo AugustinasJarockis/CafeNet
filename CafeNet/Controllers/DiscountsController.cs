@@ -1,4 +1,5 @@
 ﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interfaces;
 using CafeNet.Data.Models;
 using CafeNet.Infrastructure.Pagination;
@@ -58,6 +59,16 @@ namespace CafeNet.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDiscount(long id) {
             var result = await _discountService.GetDiscountAsync(id);
+            return Ok(result);
+        }
+
+        [HttpGet("code/{code}")]
+        [Authorize]
+        [ProducesResponseType(typeof(DiscountDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetDiscountByCode(string code)
+        {
+            var result = await _discountService.GetDiscountByCodeAsync(code);
             return Ok(result);
         }
 

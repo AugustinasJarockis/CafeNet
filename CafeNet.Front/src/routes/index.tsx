@@ -1,7 +1,9 @@
+import { Navigate } from 'react-router-dom';
 import { ReactElement } from 'react';
-
 import { UserRole } from '../types/user/UserRoles';
+
 import LoginPage from '@/pages/login';
+import RegisterPage from '@/pages/register';
 import AccountPage from '@/pages/manage account/account';
 import EditAccountPage from '@/pages/manage account/edit-account';
 import CreateDiscountPage from '@/pages/manage discounts/create-discount';
@@ -10,15 +12,17 @@ import EmployeeListPage from '@/pages/manage employees/employee-list-page';
 import CreateLocationPage from '@/pages/manage locations/create-location';
 import LocationListPage from '@/pages/manage locations/location-list-page';
 import CreateTaxPage from '@/pages/manage taxes/create-tax';
-import AdminMenu from '@/pages/menu-admin';
-import ClientMenu from '@/pages/menu-client';
-import RegisterPage from '@/pages/register';
-
-import BaristaMenu from '@/pages/menu-barista';
 import TaxListPage from '@/pages/manage taxes/tax-list';
-import DiscountsPage from '@/pages/manage discounts/discount-list-page';
+import AdminMenu from '@/pages/menu-admin';
+import BaristaMenu from '@/pages/menu-barista';
+import ClientMenu from '@/pages/menu-client';
 import CreateMenuItemPage from '@/pages/manage menu items/create-menu-item';
 import MenuItemListPage from '@/pages/manage menu items/menu-item-list-page';
+import CreateOrderPage from '@/pages/manage orders/create-order';
+import CartPage from '@/pages/manage orders/order-cart';
+import ClientLayout from '@/components/client-layout';
+import DiscountsPage from '@/pages/manage discounts/discount-list-page';
+import ProtectedRoute from '@/components/protected-route';
 import OrderListPage from '@/pages/manage orders/order-list-page';
 import ClientOrderListPage from '@/pages/manage orders/order-list-client-page';
 
@@ -30,58 +34,87 @@ export interface AppRoute {
 }
 
 const COMMON_ROLES: UserRole[] = ['ADMIN', 'BARISTA', 'CLIENT'];
-const EMPLOYEES_ONLY: UserRole[] = ['ADMIN', 'BARISTA'];
 const ADMIN_ONLY: UserRole[] = ['ADMIN'];
 const BARISTA_ONLY: UserRole[] = ['BARISTA'];
 const CLIENT_ONLY: UserRole[] = ['CLIENT'];
+const EMPLOYEES_ONLY: UserRole[] = ['ADMIN', 'BARISTA'];
 
-export const routeConfig: AppRoute[] = [
-  { path: '/', element: <LoginPage />, public: true },
-  { path: '/register', element: <RegisterPage />, public: true },
-  { path: '/account', element: <AccountPage />, roles: COMMON_ROLES },
-  { path: '/account/edit', element: <EditAccountPage />, roles: COMMON_ROLES },
+const withProtection = (element: ReactElement, roles?: UserRole[]) => (
+  <ProtectedRoute allowedRoles={roles}>{element}</ProtectedRoute>
+);
+
+export const routeConfig = [
+  { path: '/', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
+
+  { path: '/account', element: withProtection(<AccountPage />, COMMON_ROLES) },
+  {
+    path: '/account/edit',
+    element: withProtection(<EditAccountPage />, COMMON_ROLES),
+  },
+
   {
     path: '/menu-client',
-    element: <ClientMenu />,
-    roles: CLIENT_ONLY,
+    element: withProtection(<ClientMenu />, CLIENT_ONLY),
   },
   {
     path: '/menu-barista',
-    element: <BaristaMenu />,
-    roles: BARISTA_ONLY,
+    element: withProtection(<BaristaMenu />, BARISTA_ONLY),
   },
-  { path: '/menu-admin', element: <AdminMenu />, roles: ADMIN_ONLY },
+  { path: '/menu-admin', element: withProtection(<AdminMenu />, ADMIN_ONLY) },
+
   {
     path: '/locations/create',
-    element: <CreateLocationPage />,
-    roles: ADMIN_ONLY,
+    element: withProtection(<CreateLocationPage />, ADMIN_ONLY),
   },
-  { path: '/locations', element: <LocationListPage />, roles: ADMIN_ONLY },
+  {
+    path: '/locations',
+    element: withProtection(<LocationListPage />, ADMIN_ONLY),
+  },
+
   {
     path: '/employees/create',
-    element: <CreateEmployeePage />,
-    roles: ADMIN_ONLY,
+    element: withProtection(<CreateEmployeePage />, ADMIN_ONLY),
   },
-  { path: '/employees', element: <EmployeeListPage />, roles: ADMIN_ONLY },
-  { path: '/taxes/create', element: <CreateTaxPage />, roles: ADMIN_ONLY },
-  { path: '/taxes', element: <TaxListPage />, roles: ADMIN_ONLY },
+  {
+    path: '/employees',
+    element: withProtection(<EmployeeListPage />, ADMIN_ONLY),
+  },
+
+  {
+    path: '/taxes/create',
+    element: withProtection(<CreateTaxPage />, ADMIN_ONLY),
+  },
+  { path: '/taxes', element: withProtection(<TaxListPage />, ADMIN_ONLY) },
+
   {
     path: '/discounts/create',
-    element: <CreateDiscountPage />,
-    roles: ADMIN_ONLY,
+    element: withProtection(<CreateDiscountPage />, ADMIN_ONLY),
   },
-  { path: '/discounts', element: <DiscountsPage />, roles: ADMIN_ONLY },
+  {
+    path: '/discounts',
+    element: withProtection(<DiscountsPage />, ADMIN_ONLY),
+  },
+
   {
     path: '/items/create',
-    element: <CreateMenuItemPage />,
-    roles: ADMIN_ONLY,
+    element: withProtection(<CreateMenuItemPage />, ADMIN_ONLY),
   },
-  { 
+  {
     path: '/items',
-    element: <MenuItemListPage />, 
-    roles: EMPLOYEES_ONLY 
+    element: withProtection(<MenuItemListPage />, EMPLOYEES_ONLY),
   },
-  { 
+
+  {
+    path: '/orders',
+    element: withProtection(<ClientLayout />, CLIENT_ONLY),
+    children: [
+      { path: 'create', element: <CreateOrderPage /> },
+      { path: 'cart', element: <CartPage /> },
+      { index: true, element: <Navigate to="create" replace /> },
+    ],
+  },
+  {
     path: '/orders',
     element: <OrderListPage />, 
     roles: BARISTA_ONLY 

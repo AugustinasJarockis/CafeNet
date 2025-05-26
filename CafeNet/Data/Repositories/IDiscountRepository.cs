@@ -9,6 +9,7 @@ namespace CafeNet.Data.Repositories
         public Task<bool> CodeExistsAsync(string code);
         public Task<string?> GetCodeById(long id);
         public Task<Discount?> GetByIdAsync(long id);
+        public Task<Discount> GetByCodeAsync(string code);
         public void DeleteById(long id);
         public Task<int> CountDiscountsAsync();
         public Task<IEnumerable<Discount>> GetDiscountsPagedAsync(int pageNumber, int pageSize);

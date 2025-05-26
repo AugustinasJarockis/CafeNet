@@ -44,11 +44,23 @@ namespace CafeNet.Business_Management.Services
                 PageSize = pageSize
             };
         }
+
+        [Loggable]
         public async Task<DiscountDTO> GetDiscountAsync(long id) {
             var discount = await _discountRepository.GetByIdAsync(id)
                 ?? throw new NotFoundException("Discount not found");
             return discount.ToDiscountDTO();
         }
+
+        [Loggable]
+        public async Task<DiscountDTO> GetDiscountByCodeAsync(string code)
+        {
+            var discount = await _discountRepository.GetByCodeAsync(code)
+                ?? throw new NotFoundException("Discount not found");
+            return discount.ToDiscountDTO();
+        }
+
+
         [Loggable]
         public async Task<DiscountDTO> UpdateAsync(UpdateDiscountRequest request) {
             try {

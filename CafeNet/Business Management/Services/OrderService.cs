@@ -2,7 +2,6 @@
 using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
@@ -36,55 +35,42 @@ public class OrderService : IOrderService
 
         foreach (var itemDTO in createOrderDTO.OrderItems)
         {
-            var orderItem = new OrderItem
-            {
-                MenuItemId = itemDTO.MenuItemId,
-                Refunded = false,
-                Order = order,
-                OrderItemVariations = new List<OrderItemVariation>(),
-            };
+            int quantity = itemDTO.Quantity > 0 ? itemDTO.Quantity : 1;
 
-            foreach (var variationId in itemDTO.MenuItemVariationIds)
+            for (int i = 0; i < quantity; i++)
             {
-                var variation = new OrderItemVariation
+                var orderItem = new OrderItem
                 {
-                    MenuItemVariationId = variationId,
-                    OrderItem = orderItem
+                    MenuItemId = itemDTO.MenuItemId,
+                    Refunded = false,
+                    Order = order,
+                    OrderItemVariations = new List<OrderItemVariation>(),
                 };
 
-                orderItem.OrderItemVariations.Add(variation);
-            }
+                foreach (var variationId in itemDTO.MenuItemVariationIds)
+                {
+                    var variation = new OrderItemVariation
+                    {
+                        MenuItemVariationId = variationId,
+                        OrderItem = orderItem
+                    };
 
-            order.OrderItems.Add(orderItem);
+                    orderItem.OrderItemVariations.Add(variation);
+                }
+
+                order.OrderItems.Add(orderItem);
+            }
         }
 
         await _orderRepository.CreateAsync(order);
-
         return order.Id;
     }
 
     [Loggable]
     public async Task<PagedResult<OrderDTO>> GetOrdersByLocationAsync(long id, int pageNumber, int pageSize)
     {
-        var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
+        var totalCount = await _orderRepository.CountOrdersAsync();
         var orders = await _orderRepository.GetOrdersByLocationPagedAsync(id, pageNumber, pageSize);
-
-        var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
-
-        return new PagedResult<OrderDTO>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
-        };
-    }
-
-    [Loggable]
-    public async Task<PagedResult<OrderDTO>> GetOrdersByUserAsync(long id, int pageNumber, int pageSize)
-    {
-        var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
-        var orders = await _orderRepository.GetOrdersByUserPagedAsync(id, pageNumber, pageSize);
 
         var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
 
@@ -117,9 +103,27 @@ public class OrderService : IOrderService
         }
     }
 
+    [Loggable]
     public async Task<bool> MarkPaymentAsPaidAsync(long orderId)
     {
         return await _paymentRepository.MarkPaymentAsPaidAsync(orderId);
+    }
+
+    [Loggable]
+    public async Task<PagedResult<OrderDTO>> GetOrdersByUserAsync(long id, int pageNumber, int pageSize)
+    {
+        var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
+        var orders = await _orderRepository.GetOrdersByUserPagedAsync(id, pageNumber, pageSize);
+
+        var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
+
+        return new PagedResult<OrderDTO>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 }
 
