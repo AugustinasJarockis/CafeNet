@@ -66,8 +66,25 @@ public class OrderService : IOrderService
     [Loggable]
     public async Task<PagedResult<OrderDTO>> GetOrdersByLocationAsync(long id, int pageNumber, int pageSize)
     {
-        var totalCount = await _orderRepository.CountOrdersAsync();
+        var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
         var orders = await _orderRepository.GetOrdersByLocationPagedAsync(id, pageNumber, pageSize);
+
+        var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
+
+        return new PagedResult<OrderDTO>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
+
+    [Loggable]
+    public async Task<PagedResult<OrderDTO>> GetOrdersByUserAsync(long id, int pageNumber, int pageSize)
+    {
+        var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
+        var orders = await _orderRepository.GetOrdersByUserPagedAsync(id, pageNumber, pageSize);
 
         var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
 

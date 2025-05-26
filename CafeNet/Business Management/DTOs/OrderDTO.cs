@@ -14,6 +14,7 @@ namespace CafeNet.Business_Management.DTOs
         public PaymentStatus PaymentStatus { get; set; }
         public ICollection<OrderItemDTO> OrderItems { get; set; }
         public DiscountDTO? Discount { get; set; }
+        public LocationDTO Location { get; set; }
         public uint Version { get; set; }
     }
 }

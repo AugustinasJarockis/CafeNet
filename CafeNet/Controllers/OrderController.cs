@@ -54,13 +54,20 @@ namespace CafeNet.Controllers
             if (currentUserRole != "BARISTA")
                 return Forbid();
 
-            // Call your service layer to mark the payment as paid
             var success = await _orderService.MarkPaymentAsPaidAsync(id);
 
             if (!success)
                 return NotFound(); 
 
             return NoContent(); 
+        }
+
+        [HttpGet("ordersUser/{id}")]
+        [Authorize(Roles = "CLIENT")]
+        public async Task<ActionResult<OrderDTO>> GetOrdersByUser(long id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _orderService.GetOrdersByUserAsync(id, pageNumber, pageSize);
+            return Ok(result);
         }
     }
 }

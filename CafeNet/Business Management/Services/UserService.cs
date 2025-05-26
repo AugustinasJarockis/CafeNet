@@ -82,7 +82,7 @@ public class UserService : IUserService
     [Loggable]
     public async Task<PagedResult<UserDTO>> GetEmployeesAsync(int pageNumber, int pageSize)
     {
-        var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN };
+        var employeeRoles = new[] { UserRoles.BARISTA, UserRoles.ADMIN, UserRoles.CLIENT};
 
         var totalCount = await _userRepository.CountByRolesAsync(employeeRoles);
         var users = await _userRepository.GetByRolesPagedAsync(employeeRoles, pageNumber, pageSize);

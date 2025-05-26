@@ -30,12 +30,8 @@ const data = {
           url: '#',
         },
         {
-          title: 'Active orders',
-          url: '#',
-        },
-        {
-          title: 'Previous orders',
-          url: '#',
+          title: 'All orders',
+          url: '/orderList',
         },
       ],
     },

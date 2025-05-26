@@ -151,15 +151,11 @@ export function OrderDetailCard({ order, onClose, userRole }: OrderDetailCardPro
         </div>
       </CardContent>
 
-      <CardFooter
-        className={
-          userRole === "BARISTA" ? "flex justify-end" : "flex justify-between"
-        }
-      >
-        <Button variant="outline" onClick={onClose}>
-          Close
-        </Button>
-      </CardFooter>
+      <CardFooter className="flex justify-end">
+      <Button variant="outline" onClick={onClose}>
+        Close
+      </Button>
+    </CardFooter>
     </Card>
   );
 }
