@@ -84,7 +84,6 @@ export default function OrderListPage() {
             <>
               <OrderTable
               orders={data.items}
-              userRole={user.role}
               onRefresh={refetch}
             />
 

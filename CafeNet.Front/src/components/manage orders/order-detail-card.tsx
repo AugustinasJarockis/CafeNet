@@ -8,10 +8,9 @@ import {OrderStatus} from "@/services/orderService"
 interface OrderDetailCardProps {
   order: Order;
   onClose: () => void;
-  userRole: string;
 }
 
-export function OrderDetailCard({ order, onClose, userRole }: OrderDetailCardProps) {
+export function OrderDetailCard({ order, onClose }: OrderDetailCardProps) {
   const itemsTotal = order.orderItems.reduce((orderSum, item) => {
     const basePrice = item.menuItem?.price || 0;
     const variationTotal = item.orderItemVariations.reduce((sum, v) => {
