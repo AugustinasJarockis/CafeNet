@@ -62,7 +62,6 @@ export default function ClientOrderTable({ orders }: ClientOrderTableProps) {
           <OrderDetailCard
             order={selectedOrder}
             onClose={handleCloseDetail}
-            userRole="CLIENT"
           />
         </div>
       )}
