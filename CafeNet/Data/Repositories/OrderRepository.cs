@@ -39,7 +39,12 @@ namespace CafeNet.Data.Repositories
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.OrderItemVariations)
                         .ThenInclude(oiv => oiv.MenuItemVariation)
-                .OrderBy(o => (o.Status == OrderStatus.OPEN || o.Status == OrderStatus.IN_PROGRESS) ? 0 : 1)
+                .OrderBy(o =>
+                    o.Status == OrderStatus.OPEN ? 0 :
+                    o.Status == OrderStatus.IN_PROGRESS ? 1 :
+                    o.Status == OrderStatus.DONE ? 2 :
+                    3)
+                .ThenByDescending(o => o.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
