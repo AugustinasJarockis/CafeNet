@@ -18,7 +18,6 @@ using CafeNet.Business_Management.Interfaces.Workflows;
 using CafeNet.Business_Management.Services.Workflows;
 using Amazon.SimpleNotificationService;
 using Amazon;
-using CafeNet.Infrastructure.Notifications_Management;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -147,7 +146,23 @@ builder.Services.AddSingleton<IAmazonSimpleNotificationService>(sp =>
         }
     );
 });
-builder.Services.AddScoped<SMSService>();
+
+var notificationSenderType = builder.Configuration["NotificationSender"] ?? "AWS";
+var useMessageTextDecorator = bool.TryParse(builder.Configuration["UseMessageTextDecorator"], out var decorator) && decorator;
+
+if (notificationSenderType == "Noop")
+{
+    builder.Services.AddScoped<INotificationSender, NoopNotificationSender>();
+}
+else
+{
+    builder.Services.AddScoped<INotificationSender, AwsNotificationSender>();
+}
+
+if (useMessageTextDecorator)
+{
+    builder.Services.Decorate<INotificationSender, MessageTextDecorator>();
+}
 
 var app = builder.Build();
 

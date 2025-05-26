@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CafeNet.Business_Management.DTOs;
-using CafeNet.Infrastructure.Notifications_Management;
 using Microsoft.AspNetCore.Authorization;
 using CafeNet.Infrastructure.Extensions;
 using CafeNet.Business_Management.Interfaces;
+using CafeNet.BusinessManagement.Interfaces;
+using CafeNet.Data.Models;
 
 namespace CafeNet.Controllers
 {
@@ -11,14 +12,14 @@ namespace CafeNet.Controllers
     [Route("api/[controller]")]
     public class NotificationsController : ControllerBase
     {
-        private readonly SMSService _smsService;
+        private readonly INotificationSender _notificationSender;
         private readonly IUserService _userService;
 
         public NotificationsController(
-            SMSService smsService,
+            INotificationSender notificationSender,
             IUserService userService )
         {
-            _smsService = smsService;
+            _notificationSender = notificationSender;
             _userService = userService;
         }
 
@@ -31,25 +32,9 @@ namespace CafeNet.Controllers
         {
             var user = await _userService.GetByIdAsync(HttpContext.GetUserId());
 
-            try
-            {
-                var messageId = await _smsService.SendSMSAsync(user.PhoneNumber ?? "", request.Message);
+            await _notificationSender.SendAsync(user, request.Message);
 
-                return Ok(new SendSmsResponse
-                {
-                    IsSuccess = true,
-                    MessageId = messageId,
-                    Message = "SMS sent successfully"
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new SendSmsResponse
-                {
-                    IsSuccess = false,
-                    Message = "Failed to send SMS: " + ex.Message
-                });
-            }
+            return Ok();
         }
     }
 }
