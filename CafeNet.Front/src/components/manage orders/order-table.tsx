@@ -21,16 +21,13 @@ import { calculateOrderTotal } from "@/lib/orderUtils";
 
 interface OrderTableProps {
   orders: Order[];
-  userRole: string;
   onRefresh: () => void;
 }
 
 export default function OrderTable({
   orders,
-  userRole,
   onRefresh
 }: OrderTableProps) {
-  const isBarista = userRole === "BARISTA";
   const [selectedItem, setSelectedItem] = useState<Order | null>(null);
   const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
 
@@ -66,7 +63,7 @@ export default function OrderTable({
             <TableRow
               
               key={order.id}
-              className={`cursor-pointer ${isBarista && order.status === OrderStatus.TAKEN ? "opacity-50 text-gray-500" : ""}`}
+              className={`cursor-pointer ${order.status === OrderStatus.TAKEN ? "opacity-50 text-gray-500" : ""}`}
 
 
               onClick={(event) => handleRowClick(order, event)}
@@ -237,7 +234,6 @@ export default function OrderTable({
           <OrderDetailCard
             order={selectedItem}
             onClose={handleCloseCard}
-            userRole={userRole}
           />
         </div>
       )}

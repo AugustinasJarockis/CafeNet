@@ -12,5 +12,9 @@ namespace CafeNet.Data.Repositories
         public Task<bool> OrderExistsAsync(long id);
         public Task<Order> UpdateOrderStatusAsync(UpdateOrderStatusRequest request);
         public Task<Order> GetOrderByIdAsync(long orderId);
+        public Task<int> CountOrdersByLocationAsync(long locationId);
+        public Task<int> CountOrdersByUserAsync(long userId);
+        public Task<IEnumerable<Order>> GetOrdersByUserPagedAsync(long userId, int pageNumber, int pageSize);
+
     }
 }

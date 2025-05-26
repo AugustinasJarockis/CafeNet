@@ -33,12 +33,8 @@ export function ClientSidebar({
           url: '/orders/create',
         },
         {
-          title: 'Active orders',
-          url: '#',
-        },
-        {
-          title: 'Previous orders',
-          url: '#',
+          title: 'All orders',
+          url: '/orderList',
         },
       ],
     },

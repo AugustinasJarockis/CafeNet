@@ -23,7 +23,8 @@ import CartPage from '@/pages/manage orders/order-cart';
 import ClientLayout from '@/components/client-layout';
 import DiscountsPage from '@/pages/manage discounts/discount-list-page';
 import ProtectedRoute from '@/components/protected-route';
-import OrderistPage from '@/pages/manage orders/order-list-page';
+import OrderListPage from '@/pages/manage orders/order-list-page';
+import ClientOrderListPage from '@/pages/manage orders/order-list-client-page';
 
 export interface AppRoute {
   path: string;
@@ -115,7 +116,12 @@ export const routeConfig = [
   },
   {
     path: '/orders',
-    element: <OrderistPage />,
-    roles: BARISTA_ONLY,
+    element: <OrderListPage />, 
+    roles: BARISTA_ONLY 
+  },
+  { 
+    path: '/orderList',
+    element: <ClientOrderListPage />, 
+    roles: CLIENT_ONLY 
   },
 ];

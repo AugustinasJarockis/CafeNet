@@ -2,7 +2,6 @@
 using CafeNet.Business_Management.Exceptions;
 using CafeNet.Business_Management.Interceptors;
 using CafeNet.Business_Management.Interfaces;
-using CafeNet.Data.Enums;
 using CafeNet.Data.Mappers;
 using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
@@ -67,8 +66,6 @@ public class OrderService : IOrderService
         return order.Id;
     }
 
-<<<<<<< HEAD
-=======
     [Loggable]
     public async Task<PagedResult<OrderDTO>> GetOrdersByLocationAsync(long id, int pageNumber, int pageSize)
     {
@@ -107,6 +104,21 @@ public class OrderService : IOrderService
     {
         return await _paymentRepository.MarkPaymentAsPaidAsync(orderId);
     }
->>>>>>> main
+
+    public async Task<PagedResult<OrderDTO>> GetOrdersByUserAsync(long id, int pageNumber, int pageSize)
+    {
+        var totalCount = await _orderRepository.CountOrdersByLocationAsync(id);
+        var orders = await _orderRepository.GetOrdersByUserPagedAsync(id, pageNumber, pageSize);
+
+        var items = orders.Select(OrderMapper.ToOrderDTO).ToList();
+
+        return new PagedResult<OrderDTO>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
 }
 

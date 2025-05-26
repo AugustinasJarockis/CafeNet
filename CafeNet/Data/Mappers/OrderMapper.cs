@@ -18,6 +18,7 @@ namespace CafeNet.Data.Mappers
                 UserId = order.UserId,
                 Version = order.Version,
                 Discount = order.Discount?.ToDiscountDTO(),
+                Location = order.Location.ToLocationDTO(),
                 PaymentStatus = order.Payment?.Status ?? PaymentStatus.PENDING, 
                 OrderItems = (order.OrderItems?
                     .Select(oi => oi.ToOrderItemDTO())

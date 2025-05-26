@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { PagedResult } from '@/types/PagedResult';
 import { Tax } from '@/services/taxService';
 import { Discount } from '@/services/discountService';
+import { Location } from '@/services/locationService';
 
 export interface MenuItemOrderList {
   id: number;
@@ -31,6 +32,7 @@ export interface Order {
   orderItems: OrderItem[];
   discount?: Discount; 
   paymentStatus: PaymentStatus;
+  location: Location;
 }
 
 export enum PaymentStatus {
@@ -99,3 +101,15 @@ export async function confirmPayment(orderId: number): Promise<void> {
     throw err;
   }
 }
+
+export const getOrdersByClientId = async (
+  clientId: number,
+  pageNumber: number = 1,
+  pageSize: number = 10
+): Promise<PagedResult<Order>> => {
+  const response = await apiClient.get(`order/ordersUser/${clientId}`, {
+    params: { pageNumber, pageSize },
+  });
+
+  return response.data;
+};
