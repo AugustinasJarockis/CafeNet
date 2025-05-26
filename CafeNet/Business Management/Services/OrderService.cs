@@ -84,7 +84,7 @@ public class OrderService : IOrderService
     public async Task<OrderDTO> UpdateOrderStatusAsync(UpdateOrderStatusRequest request)
     {
         if (!(await _orderRepository.OrderExistsAsync(request.Id)))
-            throw new NotFoundException("Menu item was not found.");
+            throw new NotFoundException("Order was not found.");
 
         try
         {
