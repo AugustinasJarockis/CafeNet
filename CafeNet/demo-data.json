@@ -134,14 +134,14 @@
         "Username": "client2",
         "Password": "ilovetea",
         "Role": "CLIENT",
-        "PhoneNumber": null
+        "PhoneNumber": "null"
       },
       {
         "Name": "Client 3",
         "Username": "client3",
         "Password": "ilovetea",
         "Role": "CLIENT",
-        "PhoneNumber": null
+        "PhoneNumber": "null"
       }
     ],
     "Locations": [
