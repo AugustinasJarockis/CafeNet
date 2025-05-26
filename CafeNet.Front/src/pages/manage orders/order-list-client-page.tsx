@@ -1,7 +1,9 @@
-import { AdminSidebar } from '@/components/admin-sidebar';
-import { BaristaSidebar } from '@/components/barista-sidebar';
+import { useState } from 'react';
 
-import OrderTable from '@/components/manage orders/order-table';
+import ClientOrderTable from '@/components/manage orders/order-list-client';
+import { useOrdersClient } from '@/hooks/useOrdersClient';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,24 +19,27 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { Separator } from '@/components/ui/separator';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { useOrders } from '@/hooks/useOrders';
-import { useState } from 'react';
+import { Separator } from '@/components/ui/separator';
+import { ClientSidebar } from '@/components/client-sidebar';
 
-export default function OrderListPage() {
+export default function ClientOrderListPage() {
   const { data: user, isLoading: userLoading, isError: userError } = useCurrentUser();
   const [page, setPage] = useState(1);
   const pageSize = 8;
-  const { data, isLoading, error, refetch } = useOrders(page, pageSize, user?.locationId);
+
+  const {
+    data,
+    isLoading,
+    error,
+  } = useOrdersClient(user?.id, page, pageSize);
 
   if (userLoading) return <div>Loading user...</div>;
   if (userError || !user) return <div>Failed to load user.</div>;
-
+  if (user.role !== 'CLIENT') return <div>Unauthorized access</div>;
 
   const totalPages = data && data.totalCount !== 0 ? Math.ceil(data.totalCount / pageSize) : 1;
-  
+
   const renderPageNumbers = () => {
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -55,37 +60,29 @@ export default function OrderListPage() {
 
   return (
     <SidebarProvider>
-      {user.role === 'BARISTA' ? (
-        <BaristaSidebar />
-      ) : user.role === 'ADMIN' ? (
-        <AdminSidebar />
-      ) : (
-        <div>Unsupported role</div>
-      )}
+      <ClientSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height]">
           <div className="flex items-center gap-2 px-4">
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbPage>Orders</BreadcrumbPage>
+                  <BreadcrumbPage>My Orders</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
+
         <div className="p-6">
-          {isLoading && <p>Loading...</p>}
-          {error && <p>Error loading menu items</p>}
+          {isLoading && <p>Loading orders...</p>}
+          {error && <p>Error loading orders.</p>}
 
           {data && (
             <>
-              <OrderTable
-              orders={data.items}
-              onRefresh={refetch}
-            />
+              <ClientOrderTable orders={data.items} />
 
               <div className="mt-6">
                 <Pagination>
@@ -93,9 +90,7 @@ export default function OrderListPage() {
                     <PaginationItem className="cursor-pointer">
                       <PaginationPrevious
                         onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        className={
-                          page === 1 ? 'pointer-events-none opacity-50' : ''
-                        }
+                        className={page === 1 ? 'pointer-events-none opacity-50' : ''}
                       />
                     </PaginationItem>
 
@@ -103,13 +98,9 @@ export default function OrderListPage() {
 
                     <PaginationItem className="cursor-pointer">
                       <PaginationNext
-                        onClick={() =>
-                          setPage((prev) => Math.min(prev + 1, totalPages))
-                        }
+                        onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
                         className={
-                          page === totalPages
-                            ? 'pointer-events-none opacity-50'
-                            : ''
+                          page === totalPages ? 'pointer-events-none opacity-50' : ''
                         }
                       />
                     </PaginationItem>

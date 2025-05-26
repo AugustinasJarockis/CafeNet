@@ -19,7 +19,8 @@ import TaxListPage from '@/pages/manage taxes/tax-list';
 import DiscountsPage from '@/pages/manage discounts/discount-list-page';
 import CreateMenuItemPage from '@/pages/manage menu items/create-menu-item';
 import MenuItemListPage from '@/pages/manage menu items/menu-item-list-page';
-import OrderistPage from '@/pages/manage orders/order-list-page';
+import OrderListPage from '@/pages/manage orders/order-list-page';
+import ClientOrderListPage from '@/pages/manage orders/order-list-client-page';
 
 export interface AppRoute {
   path: string;
@@ -82,7 +83,12 @@ export const routeConfig: AppRoute[] = [
   },
   { 
     path: '/orders',
-    element: <OrderistPage />, 
+    element: <OrderListPage />, 
     roles: BARISTA_ONLY 
+  },
+  { 
+    path: '/orderList',
+    element: <ClientOrderListPage />, 
+    roles: CLIENT_ONLY 
   },
 ];
