@@ -19,11 +19,8 @@ export function OrderDetailCard({ order, onClose }: OrderDetailCardProps) {
     const itemSubtotal = basePrice + variationTotal;
 
     const taxRate = item.menuItem?.tax?.percent || 0;
-    const taxAmount = Math.round((itemSubtotal * taxRate) / 100 * 100) / 100;
-
-    const itemTotal = Math.round((itemSubtotal + taxAmount) * 100) / 100;
-
-    return orderSum + itemTotal;
+    const taxAmount = (itemSubtotal * taxRate) / 100;
+        return orderSum + itemSubtotal + taxAmount;
   }, 0);
 
   const discountAmount = order.discount

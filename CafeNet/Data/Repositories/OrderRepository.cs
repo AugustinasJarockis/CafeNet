@@ -148,9 +148,15 @@ namespace CafeNet.Data.Repositories
             {
                 var menuItem = item.MenuItem;
                 var basePrice = menuItem.Price;
-                var variationTotal = menuItem.MenuItemVariations.Sum(v => v.PriceChange);
-                var taxMultiplier = 1.0m + (menuItem.Tax.Percent / 100.0m);
-                return (basePrice + variationTotal) * taxMultiplier;
+
+                var selectedVariationIds = item.OrderItemVariations.Select(v => v.MenuItemVariationId).ToList();
+                var variationTotal = menuItem.MenuItemVariations
+                    .Where(v => selectedVariationIds.Contains(v.Id))
+                    .Sum(v => v.PriceChange);
+                var line = basePrice + variationTotal;
+
+                var itemTotal = Math.Round((line * (1 + menuItem.Tax.Percent / 100m)),2, MidpointRounding.AwayFromZero);
+                return itemTotal;
             });
 
             if (order.Discount == null)

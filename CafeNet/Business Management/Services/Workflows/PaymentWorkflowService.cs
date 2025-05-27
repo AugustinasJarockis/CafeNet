@@ -4,6 +4,9 @@ using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Interfaces.Workflows;
 using CafeNet.Data.Database;
 using CafeNet.Data.Enums;
+using CafeNet.Data.Models;
+using Stripe;
+using PaymentMethod = CafeNet.Data.Enums.PaymentMethod;
 
 namespace CafeNet.Business_Management.Services.Workflows
 {
@@ -46,9 +49,8 @@ namespace CafeNet.Business_Management.Services.Workflows
                     TotalPrice = request.TotalPrice,
                     UsedCredits = request.UsedCredits,
                     Method = request.Method,
-                    Status = PaymentStatus.PENDING
+                    Status = request.Method == PaymentMethod.CASH ? PaymentStatus.PENDING : PaymentStatus.DONE
                 });
-
                 await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitTransactionAsync();
 
