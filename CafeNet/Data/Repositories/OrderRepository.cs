@@ -154,9 +154,8 @@ namespace CafeNet.Data.Repositories
                     .Where(v => selectedVariationIds.Contains(v.Id))
                     .Sum(v => v.PriceChange);
                 var line = basePrice + variationTotal;
-                
-                var taxAmt = Math.Round((line * menuItem.Tax.Percent / 100m), 2);
-                var itemTotal = Math.Round(line + taxAmt, 2);
+
+                var itemTotal = Math.Round((line * (1 + menuItem.Tax.Percent / 100m)),2, MidpointRounding.AwayFromZero);
                 return itemTotal;
             });
 
