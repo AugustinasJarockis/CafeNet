@@ -7,6 +7,8 @@ using CafeNet.Data.Models;
 using CafeNet.Data.Repositories;
 using CafeNet.Infrastructure.Pagination;
 using Microsoft.EntityFrameworkCore;
+using CafeNet.BusinessManagement.Interfaces;
+using CafeNet.Data.Enums;
 
 namespace CafeNet.Business_Management.Services;
 
@@ -18,6 +20,7 @@ public class OrderService : IOrderService
     private readonly IMenuItemRepository _menuItemRepository;
     private readonly IMenuItemVariationRepository _menuItemVariationRepository;
     private readonly IPaymentRepository _paymentRepository;
+    private readonly INotificationSender _notificationSender;
 
     public OrderService(
         IOrderRepository orderRepository,
@@ -25,7 +28,8 @@ public class OrderService : IOrderService
         ILocationRepository locationRepository,
         IMenuItemRepository menuItemRepository,
         IMenuItemVariationRepository menuItemVariationRepository,
-        IPaymentRepository paymentRepository
+        IPaymentRepository paymentRepository,
+        INotificationSender notificationSender
     )
     {
         _orderRepository = orderRepository;
@@ -34,6 +38,7 @@ public class OrderService : IOrderService
         _menuItemRepository = menuItemRepository;
         _menuItemVariationRepository = menuItemVariationRepository;
         _paymentRepository = paymentRepository;
+        _notificationSender = notificationSender;
     }
 
     [Loggable]
@@ -116,12 +121,22 @@ public class OrderService : IOrderService
     [Loggable]
     public async Task<OrderDTO> UpdateOrderStatusAsync(UpdateOrderStatusRequest request)
     {
-        if (!(await _orderRepository.OrderExistsAsync(request.Id)))
+        if (!await _orderRepository.OrderExistsAsync(request.Id))
             throw new NotFoundException("Order was not found.");
 
         try
         {
             var updatedOrder = await _orderRepository.UpdateOrderStatusAsync(request);
+
+            if (request.Status == OrderStatus.DONE)
+            {
+                var orderWithUser = await _orderRepository.GetOrderByIdAsync(request.Id);
+                var message = $"Your order #{updatedOrder.Id} is ready for pickup";
+                if (orderWithUser?.User != null)
+                {
+                    await _notificationSender.SendAsync(orderWithUser.User, message);
+                }
+            }
             return updatedOrder.ToOrderDTO();
         }
         catch (DbUpdateConcurrencyException)

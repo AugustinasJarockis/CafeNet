@@ -99,6 +99,7 @@ namespace CafeNet.Data.Repositories
             return await _context.Orders
                 .Where(o => o.Id == orderId)
                 .Include(o => o.Location)
+                .Include(o => o.User)
                 .Include(o => o.Discount)
                 .Include(o => o.Payment)
                 .Include(o => o.OrderItems)

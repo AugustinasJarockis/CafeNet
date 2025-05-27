@@ -30,7 +30,7 @@ const data = {
       items: [
         {
           title: 'See the orders list',
-          url: '/orders',
+          url: '/orders-barista',
         },
       ],
     },
