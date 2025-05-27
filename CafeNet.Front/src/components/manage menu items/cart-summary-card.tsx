@@ -221,11 +221,11 @@ export function CartSummaryCard() {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value={PaymentMethod.Cash} id="cash" />
-              <Label htmlFor="cash">Cash</Label>
+              <Label htmlFor="cash">In the store</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value={PaymentMethod.Card} id="card" />
-              <Label htmlFor="card">Card</Label>
+              <Label htmlFor="card">Online</Label>
             </div>
           </RadioGroup>
         </div>
@@ -234,7 +234,7 @@ export function CartSummaryCard() {
           <>
             {!clientSecret && (
               <Button onClick={handleProceed} disabled={isProcessing}>
-                {isProcessing ? 'Processing…' : 'Proceed to Payment'}
+                {isProcessing ? 'Processing…' : 'Proceed'}
               </Button>
             )}
 
