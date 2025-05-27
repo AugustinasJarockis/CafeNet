@@ -20,6 +20,7 @@ using Amazon.SimpleNotificationService;
 using Amazon;
 using CafeNet.BusinessManagement.Interfaces;
 using CafeNet.BusinessManagement.Services;
+using Stripe;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -29,6 +30,8 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 builder.Host.UseSerilog();
 
@@ -128,10 +131,10 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 
 builder.Services.AddInterceptedService<IAuthService, AuthService>();
-builder.Services.AddInterceptedService<IDiscountService, DiscountService>();
+builder.Services.AddInterceptedService<IDiscountService, CafeNet.Business_Management.Services.DiscountService>();
 builder.Services.AddInterceptedService<ILocationService, LocationService>();
 builder.Services.AddInterceptedService<IMenuItemService, MenuItemService>();
-builder.Services.AddInterceptedService<ITaxService, TaxService>();
+builder.Services.AddInterceptedService<ITaxService, CafeNet.Business_Management.Services.TaxService>();
 builder.Services.AddInterceptedService<IUserService, UserService>();
 builder.Services.AddInterceptedService<IOrderService, OrderService>();
 builder.Services.AddInterceptedService<IPaymentService, PaymentService>();

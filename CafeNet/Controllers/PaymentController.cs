@@ -1,7 +1,9 @@
 ﻿using CafeNet.Business_Management.DTOs;
+using CafeNet.Business_Management.Interfaces;
 using CafeNet.Business_Management.Interfaces.Workflows;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 
 namespace CafeNet.Controllers;
 
@@ -10,14 +12,16 @@ namespace CafeNet.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly IPaymentWorkflowService _paymentWorkflowService;
+    private readonly IPaymentService _paymentService;
 
-    public PaymentController(IPaymentWorkflowService paymentWorkflowService)
+    public PaymentController(IPaymentWorkflowService paymentWorkflowService, IPaymentService paymentService)
     {
         _paymentWorkflowService = paymentWorkflowService;
+        _paymentService = paymentService;
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "CLIENT")]
     public async Task<ActionResult<CreatePaymentResult>> CreatePayment([FromBody] CreatePaymentRequest request)
     {
         var result = await _paymentWorkflowService.CreatePaymentWithOrderAsync(request);
@@ -27,4 +31,13 @@ public class PaymentController : ControllerBase
 
         return Created(string.Empty, result);
     }
+
+    [HttpPost("payments/process")]
+    [Authorize(Roles = "CLIENT")]
+    public async Task<IActionResult> GetPaymentIntent([FromBody] CreatePaymentRequest request)
+    {
+        var (clientSecret, paymentIntentId) = await _paymentService.ProcessStripePaymentAsync(request);
+        return Ok(new { clientSecret, paymentIntentId });
+    }
+
 }

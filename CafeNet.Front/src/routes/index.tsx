@@ -115,7 +115,7 @@ export const routeConfig = [
     ],
   },
   {
-    path: '/orders',
+    path: '/orders-barista',
     element: <OrderListPage />, 
     roles: BARISTA_ONLY 
   },
