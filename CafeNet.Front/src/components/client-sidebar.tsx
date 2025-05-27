@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { usePayment } from '@/context/payment-context';
 import { useNavigate } from 'react-router-dom';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 export function ClientSidebar({
   ...props
@@ -20,6 +21,7 @@ export function ClientSidebar({
   const { state } = usePayment();
   const cartCount = state.orderItems.length;
   const navigate = useNavigate();
+  const { data: user, isLoading, isError } = useCurrentUser();
 
   const navItems = [
     {
@@ -39,11 +41,17 @@ export function ClientSidebar({
     },
   ];
 
-  const user = {
-    name: 'John',
-    email: 'john@customer.com',
-    avatar: '/avatars/shadcn.jpg',
-  };
+  const navUser = user
+    ? {
+        name: user.name,
+        email: user.username,
+        avatar: '/avatars/shadcn.jpg',
+      }
+    : {
+        name: '',
+        email: '',
+        avatar: '/avatars/shadcn.jpg',
+      };
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -69,7 +77,13 @@ export function ClientSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser user={user} />
+        {isLoading ? (
+          <div className="px-4 py-2 text-muted-foreground">Loading...</div>
+        ) : isError ? (
+          <div className="px-4 py-2 text-red-500">Failed to load user</div>
+        ) : (
+          <NavUser user={navUser} />
+        )}
       </SidebarFooter>
 
       <SidebarRail />
