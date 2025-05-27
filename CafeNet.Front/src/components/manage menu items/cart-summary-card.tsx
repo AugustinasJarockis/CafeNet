@@ -22,7 +22,6 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import apiClient from '@/api/apiClient';
 import { CardPaymentForm } from './card-payment-form';
-import { AxiosError } from 'axios';
 
 export function CartSummaryCard() {
   const navigate = useNavigate();
