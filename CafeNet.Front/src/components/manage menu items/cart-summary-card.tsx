@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import apiClient from '@/api/apiClient';
 import { CardPaymentForm } from './card-payment-form';
-import { confirmPayment  } from '@/services/orderService';
+import { AxiosError } from 'axios';
 
 export function CartSummaryCard() {
   const navigate = useNavigate();
@@ -39,7 +39,6 @@ export function CartSummaryCard() {
 
   const [coupon, setCoupon] = useState('');
   const [appliedCode, setAppliedCode] = useState<string | null>(null);
-  const [cardError, setCardError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
@@ -132,7 +131,6 @@ export function CartSummaryCard() {
     if (state.method === PaymentMethod.Card) {
 
       setIsProcessing(true);
-      setCardError('');
 
       try {
         // Create PaymentIntent on backend and get clientSecret
@@ -144,10 +142,11 @@ export function CartSummaryCard() {
 
         setClientSecret(data.clientSecret);
         setIsProcessing(false);
-      } catch (err: any) {
-        setCardError(err.message || 'Payment failed. Try again.');
-        setIsProcessing(false);
-      }
+      } catch (err: unknown) {
+          const error = err as Error;
+          alert(error.message || 'Payment failed. Try again.');
+          setIsProcessing(false);
+        }
     } else {
       // Cash payment flow
       setIsProcessing(true);
