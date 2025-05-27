@@ -55,8 +55,9 @@ export function CartSummaryCard() {
         .filter((v) => o.menuItemVariationIds.includes(v.id))
         .reduce((s, v) => s + v.priceChange, 0);
       const line = (mi.price + varPrice) * o.quantity;
-      const taxAmt = line * (mi.tax.percent / 100);
-      return sum + line + taxAmt;
+      const taxAmt = Math.round((line * mi.tax.percent / 100) * 100) / 100;
+      const itemTotal = Math.round((line + taxAmt) * 100) / 100;
+      return sum + itemTotal;
     }, 0);
   }, [state.orderItems, menuItems, itemsLoading]);
 
