@@ -29,7 +29,7 @@ public class OrderService : IOrderService
             UserId = createOrderDTO.UserId,
             LocationId = createOrderDTO.LocationId,
             Status = createOrderDTO.OrderStatus,
-            DiscountId = createOrderDTO.DiscountId,
+            DiscountId = createOrderDTO.DiscountId != 0 ? createOrderDTO.DiscountId : null,
             OrderItems = new List<OrderItem>()
         };
 

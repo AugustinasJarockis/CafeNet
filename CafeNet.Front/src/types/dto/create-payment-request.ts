@@ -7,6 +7,6 @@ export interface CreatePaymentRequest {
   method: PaymentMethod;
   userId: number;
   locationId: number;
-  discountId: number;
+  discountId?: number;
   orderItems: CreateOrderItemRequest[];
 }

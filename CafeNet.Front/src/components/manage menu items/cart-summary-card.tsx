@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import apiClient from '@/api/apiClient';
 import { CardPaymentForm } from './card-payment-form';
+import { confirmPayment  } from '@/services/orderService';
 
 export function CartSummaryCard() {
   const navigate = useNavigate();
@@ -115,18 +116,19 @@ export function CartSummaryCard() {
     }
 
     const baseRequest = {
-      totalPrice: finalTotal,
-      usedCredits: state.usedCredits,
-      method: state.method,
-      userId: user.id,
-      orderItems: state.orderItems,
-      locationId: user.locationId,
-      ...(state.discountId > 0 && { discountId: state.discountId }),
-    };
+    totalPrice: finalTotal,
+    usedCredits: state.usedCredits,
+    method: state.method,
+    userId: user.id,
+    orderItems: state.orderItems,
+    locationId: user.locationId,
+    ...(typeof state.discountId === 'number' && state.discountId > 0 && {
+      discountId: state.discountId,
+    }),
+  };
 
-    const request: CreatePaymentRequest = {
+  const request: CreatePaymentRequest = {
     ...baseRequest,
-    ...(state.discountId > 0 && { discountId: state.discountId }),
   } as CreatePaymentRequest;
 
     if (state.method === PaymentMethod.Card) {
@@ -260,7 +262,7 @@ export function CartSummaryCard() {
                     userId: user.id,
                     orderItems: state.orderItems,
                     locationId: user.locationId!,
-                    discountId: state.discountId > 0 ? state.discountId : 0,
+                    discountId: state.discountId,
                   };
 
                   createPaymentMutation.mutate(request, {
