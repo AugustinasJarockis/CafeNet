@@ -22,6 +22,9 @@ namespace CafeNet.Data.Repositories
         public async Task<bool> MenuItemExistsAsync(long id) {
             return await _context.MenuItems.AnyAsync(item => item.Id == id);
         }
+        public async Task<bool> AvailableMenuItemExistsAsync(long id) {
+            return await _context.MenuItems.AnyAsync(item => item.Id == id && item.Available);
+        }
 
         public async Task<MenuItem?> GetByIdAsync(long id)
         {

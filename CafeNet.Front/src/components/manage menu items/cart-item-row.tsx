@@ -39,7 +39,7 @@ export function CartItemRow({
 
   const { price: basePrice, title, tax, menuItemVariations } = menuItem;
   const selectedVariations = menuItemVariations.filter((v) =>
-    orderItem.variationIds.includes(v.id)
+    orderItem.menuItemVariationIds.includes(v.id)
   );
   const variationPrice = selectedVariations.reduce(
     (sum, v) => sum + v.priceChange,

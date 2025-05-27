@@ -28,6 +28,10 @@ namespace CafeNet.Data.Repositories
             return await _context.Discounts.AnyAsync(d => d.Code == code);
         }
 
+        public async Task<bool> DiscountExistsAsync(long id) {
+            return await _context.Discounts.AnyAsync(discount => discount.Id == id);
+        }
+
         public async Task<string?> GetCodeById(long id) {
             return await _context.Discounts
                 .AsNoTracking()

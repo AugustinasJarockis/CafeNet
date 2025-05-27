@@ -1,7 +1,6 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Data.Enums;
 using CafeNet.Data.Models;
-using System.Linq;
 
 namespace CafeNet.Data.Mappers
 {
@@ -19,7 +18,7 @@ namespace CafeNet.Data.Mappers
                 Version = order.Version,
                 Discount = order.Discount?.ToDiscountDTO(),
                 Location = order.Location.ToLocationDTO(),
-                PaymentStatus = order.Payment?.Status ?? PaymentStatus.PENDING, 
+                PaymentStatus = order.Payment?.Status ?? PaymentStatus.PENDING,
                 OrderItems = (order.OrderItems?
                     .Select(oi => oi.ToOrderItemDTO())
                     .ToList() ?? new List<OrderItemDTO>())
@@ -39,7 +38,7 @@ namespace CafeNet.Data.Mappers
                 OrderItemVariations = (orderItem.OrderItemVariations?
                     .Select(oiv => oiv.ToOrderItemVariationDTO())
                     .ToList() ?? new List<OrderItemVariationDTO>())
-                
+
             };
         }
 
