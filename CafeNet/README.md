@@ -44,8 +44,11 @@ CafeNet is a modern, full-featured café management system designed to streamlin
    dotnet run
    ```
 5. **Access the API**
-   - By default, the API will be available at `https://localhost:5001` or `http://localhost:5000`.
+   - The API will be available at `https://localhost:7153`.
    - Swagger UI is available at `/swagger` for API exploration.
+6. **Access the UI**
+   - Run Vite application in CafeNet.Front folder's integrated terminal.
+   - It is available at `https://localhost:5173`
 
 ## Development
 - Use the provided DTOs and repository patterns to extend business logic.
