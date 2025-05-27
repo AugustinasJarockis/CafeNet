@@ -53,12 +53,17 @@ const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
       return { isSuccess: false, message: response.data.message };
     }
   } catch (error) {
+    let message = 'An unexpected error occurred.';
+
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+
     return {
       isSuccess: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred.',
+      message,
     };
   }
 };
