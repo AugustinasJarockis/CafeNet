@@ -52,18 +52,17 @@ public class PaymentService : IPaymentService
     {
         var options = new PaymentIntentCreateOptions
         {
-            Amount = (long)(createPaymentRequest.TotalPrice * 100), // cents
+            Amount = (long)(createPaymentRequest.TotalPrice * 100), 
             Currency = "eur",
             PaymentMethodTypes = new List<string> { "card" },
 
-            // Optional: add metadata for traceability
             Metadata = new Dictionary<string, string>
-        {
-            { "UserId", createPaymentRequest.UserId.ToString() },
-            { "LocationId", createPaymentRequest.LocationId.ToString() },
-            { "DiscountId", createPaymentRequest.DiscountId?.ToString() ?? "none" }
-        }
-        };
+            {
+                { "UserId", createPaymentRequest.UserId.ToString() },
+                { "LocationId", createPaymentRequest.LocationId.ToString() },
+                { "DiscountId", createPaymentRequest.DiscountId?.ToString() ?? "none" }
+            }
+            };
 
         var service = new PaymentIntentService();
         var paymentIntent = await service.CreateAsync(options);

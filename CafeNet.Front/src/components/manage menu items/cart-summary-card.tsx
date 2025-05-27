@@ -52,7 +52,6 @@ export function CartSummaryCard() {
     error: discountErrorObj,
   } = useDiscountByCode(appliedCode || '', { enabled: !!appliedCode });
 
-  // Calculate subtotal with taxes and variations
   const subtotal = useMemo(() => {
     if (itemsLoading) return 0;
     return state.orderItems.reduce((sum, o) => {
@@ -99,7 +98,6 @@ export function CartSummaryCard() {
     navigate('/orders/create');
   };
 
-  // First step: create PaymentIntent & get clientSecret
   const handleProceed = async () => {
     if (userLoading || userError || !user) {
       console.error('User not ready');
@@ -107,7 +105,6 @@ export function CartSummaryCard() {
     }
 
     if (state.method === PaymentMethod.Card && clientSecret) {
-      // clientSecret already exists, do nothing
       return;
     }
 
@@ -132,7 +129,6 @@ export function CartSummaryCard() {
       setIsProcessing(true);
 
       try {
-        // Create PaymentIntent on backend and get clientSecret
         const res = await apiClient.post('payment/payments/process', request);
         const data = res.data;
 
@@ -147,7 +143,6 @@ export function CartSummaryCard() {
           setIsProcessing(false);
         }
     } else {
-      // Cash payment flow
       setIsProcessing(true);
       createPaymentMutation.mutate(request, {
         onSuccess: (res) => {
