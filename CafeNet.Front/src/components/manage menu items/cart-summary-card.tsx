@@ -115,13 +115,12 @@ export function CartSummaryCard() {
     userId: user.id,
     orderItems: state.orderItems,
     locationId: user.locationId,
-    ...(typeof state.discountId === 'number' && state.discountId > 0 && {
-      discountId: state.discountId,
-    }),
+    ...((state.discountId ?? 0) > 0 && { discountId: state.discountId ?? 0 }),
   };
 
   const request: CreatePaymentRequest = {
     ...baseRequest,
+    ...((state.discountId ?? 0) > 0 && { discountId: state.discountId ?? 0 }),
   } as CreatePaymentRequest;
 
     if (state.method === PaymentMethod.Card) {
