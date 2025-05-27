@@ -246,15 +246,21 @@ export function CartSummaryCard() {
                 onSuccess={() => {
                   if (!user) return;
 
-                  const request: CreatePaymentRequest = {
-                    totalPrice: finalTotal,
-                    usedCredits: state.usedCredits,
-                    method: state.method,
-                    userId: user.id,
-                    orderItems: state.orderItems,
-                    locationId: user.locationId!,
+                  const baseRequest = {
+                  totalPrice: finalTotal,
+                  usedCredits: state.usedCredits,
+                  method: state.method,
+                  userId: user.id,
+                  orderItems: state.orderItems,
+                  locationId: user.locationId,
+                  ...(typeof state.discountId === 'number' && state.discountId > 0 && {
                     discountId: state.discountId,
-                  };
+                  }),
+                };
+
+                const request: CreatePaymentRequest = {
+                  ...baseRequest,
+                } as CreatePaymentRequest;
 
                   createPaymentMutation.mutate(request, {
                     onSuccess: (res) => {
