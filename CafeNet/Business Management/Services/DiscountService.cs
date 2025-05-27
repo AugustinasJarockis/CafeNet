@@ -25,6 +25,9 @@ namespace CafeNet.Business_Management.Services
             if (request.Percent != null && request.Percent > 100)
                 throw new BadRequestException("Discount percentage can not exceed 100%");
 
+            if (request.Percent != null && request.Percent < 0)
+                throw new BadRequestException("Discount percentage can not be lower than 0%");
+
             if (await _discountRepository.CodeExistsAsync(request.Code))
                 throw new ConflictException("Discount with specified code already exists");
 
