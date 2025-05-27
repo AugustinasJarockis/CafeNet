@@ -13,6 +13,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 // This is sample data.
 const data = {
@@ -49,6 +50,20 @@ const data = {
 };
 
 export function BaristaSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: user, isLoading, isError } = useCurrentUser();
+
+  const navUser = user
+    ? {
+        name: user.name,
+        email: user.username,
+        avatar: '/avatars/shadcn.jpg',
+      }
+    : {
+        name: '',
+        email: '',
+        avatar: '/avatars/shadcn.jpg',
+      };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -58,7 +73,13 @@ export function BaristaSidebar({ ...props }: React.ComponentProps<typeof Sidebar
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {isLoading ? (
+          <div className="px-4 py-2 text-muted-foreground">Loading...</div>
+        ) : isError ? (
+          <div className="px-4 py-2 text-red-500">Failed to load user</div>
+        ) : (
+          <NavUser user={navUser} />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
