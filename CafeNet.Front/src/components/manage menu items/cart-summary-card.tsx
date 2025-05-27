@@ -57,19 +57,19 @@ export function CartSummaryCard() {
   // Calculate subtotal with taxes and variations
   const subtotal = useMemo(() => {
     if (itemsLoading) return 0;
-
     return state.orderItems.reduce((sum, o) => {
       const mi = menuItems[o.menuItemId];
       if (!mi) return sum;
-
       const varPrice = mi.menuItemVariations
-        .filter((v) => o.variationIds.includes(v.id))
+        .filter((v) => o.menuItemVariationIds.includes(v.id))
         .reduce((s, v) => s + v.priceChange, 0);
       const line = (mi.price + varPrice) * o.quantity;
-      const taxAmt = line * (mi.tax.percent / 100);
-      return sum + line + taxAmt;
+      const taxAmt = Math.round((line * mi.tax.percent / 100) * 100) / 100;
+      const itemTotal = Math.round((line + taxAmt) * 100) / 100;
+      return sum + itemTotal;
     }, 0);
   }, [state.orderItems, menuItems, itemsLoading]);
+
 
   const finalTotal = useMemo(() => {
     if (!discount) return subtotal;
