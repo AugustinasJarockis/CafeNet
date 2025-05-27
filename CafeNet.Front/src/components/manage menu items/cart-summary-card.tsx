@@ -52,7 +52,7 @@ export function CartSummaryCard() {
       const mi = menuItems[o.menuItemId];
       if (!mi) return sum;
       const varPrice = mi.menuItemVariations
-        .filter((v) => o.variationIds.includes(v.id))
+        .filter((v) => o.menuItemVariationIds.includes(v.id))
         .reduce((s, v) => s + v.priceChange, 0);
       const line = (mi.price + varPrice) * o.quantity;
       const taxAmt = line * (mi.tax.percent / 100);

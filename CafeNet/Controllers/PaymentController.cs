@@ -1,5 +1,6 @@
 ﻿using CafeNet.Business_Management.DTOs;
 using CafeNet.Business_Management.Interfaces.Workflows;
+using CafeNet.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ public class PaymentController : ControllerBase
     [Authorize]
     public async Task<ActionResult<CreatePaymentResult>> CreatePayment([FromBody] CreatePaymentRequest request)
     {
+        request.UserId = HttpContext.GetUserId();
         var result = await _paymentWorkflowService.CreatePaymentWithOrderAsync(request);
 
         if (!result.IsSuccess)

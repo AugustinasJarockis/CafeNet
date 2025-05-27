@@ -15,12 +15,28 @@ namespace CafeNet.Business_Management.Services;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IDiscountRepository _discountRepository;
+    private readonly ILocationRepository _locationRepository;
+    private readonly IMenuItemRepository _menuItemRepository;
+    private readonly IMenuItemVariationRepository _menuItemVariationRepository;
     private readonly IPaymentRepository _paymentRepository;
     private readonly INotificationSender _notificationSender;
 
-    public OrderService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, INotificationSender notificationSender)
+    public OrderService(
+        IOrderRepository orderRepository,
+        IDiscountRepository discountRepository,
+        ILocationRepository locationRepository,
+        IMenuItemRepository menuItemRepository,
+        IMenuItemVariationRepository menuItemVariationRepository,
+        IPaymentRepository paymentRepository,
+        INotificationSender notificationSender
+    )
     {
         _orderRepository = orderRepository;
+        _discountRepository = discountRepository;
+        _locationRepository = locationRepository;
+        _menuItemRepository = menuItemRepository;
+        _menuItemVariationRepository = menuItemVariationRepository;
         _paymentRepository = paymentRepository;
         _notificationSender = notificationSender;
     }
@@ -28,8 +44,23 @@ public class OrderService : IOrderService
     [Loggable]
     public async Task<long> CreateOrderAsync(CreateOrderDTO createOrderDTO)
     {
-        var order = new Order
-        {
+        if (createOrderDTO.DiscountId != null && !(await _discountRepository.DiscountExistsAsync(createOrderDTO.DiscountId ?? 0)))
+            throw new NotFoundException("The specified order discount was not found");
+
+        if (!(await _locationRepository.LocationExistsAsync(createOrderDTO.LocationId)))
+            throw new NotFoundException("The specified order location was not found");
+
+        foreach (var orderItem in createOrderDTO.OrderItems) {
+            if (!(await _menuItemRepository.AvailableMenuItemExistsAsync(orderItem.MenuItemId)))
+                throw new NotFoundException($"The menu item with id {orderItem.MenuItemId} was not found");
+
+            foreach (var variationId in orderItem.MenuItemVariationIds) {
+                if (!(await _menuItemVariationRepository.MenuItemVariationExistsAsync(variationId)))
+                    throw new NotFoundException($"The menu item variation with id {variationId} was not found");
+            }
+        }
+
+        var order = new Order {
             UserId = createOrderDTO.UserId,
             LocationId = createOrderDTO.LocationId,
             Status = createOrderDTO.OrderStatus,
@@ -112,9 +143,6 @@ public class OrderService : IOrderService
         {
             throw new ConflictException("Order status was modified in another session.");
         }
-        catch (Exception ex) {
-            throw;
-        }
     }
 
     [Loggable]
@@ -138,6 +166,9 @@ public class OrderService : IOrderService
             PageNumber = pageNumber,
             PageSize = pageSize
         };
+    }
+    public async Task<decimal> CalculateTotalPrice(long orderId) {
+        return await _orderRepository.CalculateTotalPrice(orderId);
     }
 }
 

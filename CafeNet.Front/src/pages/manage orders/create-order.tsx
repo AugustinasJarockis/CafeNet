@@ -38,7 +38,7 @@ export default function CreateOrderPage() {
     const orderItem: CreateOrderItemRequest = {
       menuItemId: menuItem.id,
       quantity: 1,
-      variationIds: variations.map((v) => v.id),
+      menuItemVariationIds: variations.map((v) => v.id),
     };
 
     dispatch({ type: 'ADD_ORDER_ITEM', item: orderItem });
