@@ -14,6 +14,6 @@ namespace CafeNet.Data.Repositories
         public Task<int> CountOrdersByLocationAsync(long locationId);
         public Task<int> CountOrdersByUserAsync(long userId);
         public Task<IEnumerable<Order>> GetOrdersByUserPagedAsync(long userId, int pageNumber, int pageSize);
-
+        public Task<decimal> CalculateTotalPrice(long orderId);
     }
 }

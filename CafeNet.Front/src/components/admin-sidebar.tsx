@@ -85,7 +85,6 @@ const data = {
 };
 
 export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: user } = useCurrentUser();
   const {
     data: locations,
     isLoading: isLocationLoading,
@@ -94,6 +93,7 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
     queryKey: ['locations'],
     queryFn: getLocations,
   });
+  const { data: user, isLoading, isError: isUserError } = useCurrentUser();
 
   const mapped_locations =
     locations?.map((loc) => ({
@@ -101,6 +101,18 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
       logo: Command,
       plan: loc.address,
     })) ?? [];
+
+  const navUser = user
+    ? {
+        name: user.name,
+        email: user.username,
+        avatar: '/avatars/shadcn.jpg',
+      }
+    : {
+        name: '',
+        email: '',
+        avatar: '/avatars/shadcn.jpg',
+      };
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -121,13 +133,13 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser
-          user={{
-            name: user?.name ?? '',
-            email: user?.username ?? '',
-            avatar: '/avatars/shadcn.jpg',
-          }}
-        />
+        {isLoading ? (
+          <div className="px-4 py-2 text-muted-foreground">Loading...</div>
+        ) : isUserError ? (
+          <div className="px-4 py-2 text-red-500">Failed to load user</div>
+        ) : (
+          <NavUser user={navUser} />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

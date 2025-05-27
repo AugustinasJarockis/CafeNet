@@ -1,5 +1,6 @@
 ﻿using CafeNet.Data.Database;
 using CafeNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeNet.Data.Repositories
 {
@@ -15,6 +16,10 @@ namespace CafeNet.Data.Repositories
             await _context.MenuItemVariations.AddRangeAsync(variation);
             await _context.SaveChangesAsync();
             return variation;
+        }
+
+        public async Task<bool> MenuItemVariationExistsAsync(long id) {
+            return await _context.MenuItemVariations.AnyAsync(variation => variation.Id == id);
         }
     }
 }

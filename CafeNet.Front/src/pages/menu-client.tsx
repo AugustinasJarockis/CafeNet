@@ -1,5 +1,4 @@
 import { ClientSidebar } from '@/components/client-sidebar';
-import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 export default function ClientMenu() {
@@ -7,20 +6,17 @@ export default function ClientMenu() {
     <SidebarProvider>
       <ClientSidebar />
       <SidebarInset>
-        <div className="flex flex-1 flex-col items-center justify-start gap-4 p-4 pt-0">
-          <div className="mb-6 w-full max-w-xl text-center">
-            <h1 className="text-2xl font-bold">Welcome to CafeNet!</h1>
-            <p className="text-muted-foreground mt-2">
-              Explore our menu and order your favorite items.
-            </p>
-            <Separator className="my-4" />
-          </div>
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3 w-full max-w-4xl">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min w-full max-w-4xl" />
+        <div className="p-8 text-center">
+          <h1 className="text-3xl font-bold mb-2">Welcome to CafeNet!</h1>
+          <p className="text-muted-foreground text-lg">
+            Explore our menu, place your order, and enjoy your coffee just like we enjoy making it.
+          </p>
+          <button
+            className="mt-6 px-6 py-3 rounded-lg bg-black text-white font-semibold hover:bg-gray-900 transition-colors"
+            onClick={() => window.location.href = '/orders/create'}
+          >
+            Click here to to order!
+          </button>
         </div>
       </SidebarInset>
     </SidebarProvider>

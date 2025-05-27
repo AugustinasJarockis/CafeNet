@@ -61,15 +61,10 @@ namespace CafeNet.Business_Management.Services.Workflows
                     OrderId = orderId
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await _unitOfWork.RollbackTransactionAsync();
-
-                return new CreatePaymentResult
-                {
-                    IsSuccess = false,
-                    ErrorMessage = "An error occurred while processing the payment"
-                };
+                throw;
             }
         }
 

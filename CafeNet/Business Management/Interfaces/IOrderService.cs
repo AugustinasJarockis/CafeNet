@@ -10,4 +10,5 @@ public interface IOrderService
     public Task<OrderDTO> UpdateOrderStatusAsync(UpdateOrderStatusRequest request);
     public Task<bool> MarkPaymentAsPaidAsync(long orderId);
     public Task<PagedResult<OrderDTO>> GetOrdersByUserAsync(long id, int pageNumber, int pageSize);
+    public Task<decimal> CalculateTotalPrice(long orderId);
 }

@@ -99,6 +99,7 @@ namespace CafeNet.Data.Repositories
             return await _context.Orders
                 .Where(o => o.Id == orderId)
                 .Include(o => o.Location)
+                .Include(o => o.User)
                 .Include(o => o.Discount)
                 .Include(o => o.Payment)
                 .Include(o => o.OrderItems)
@@ -129,5 +130,38 @@ namespace CafeNet.Data.Repositories
             return (await GetOrderByIdAsync(request.Id))!;
         }
 
+        public async Task<decimal> CalculateTotalPrice(long orderId) {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.MenuItem)
+                        .ThenInclude(mi => mi.MenuItemVariations)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.MenuItem)
+                        .ThenInclude(mi => mi.Tax)
+                .Include(o => o.Discount)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null) 
+                return 0m;
+
+            decimal priceBeforeDiscount = order.OrderItems.Sum(item =>
+            {
+                var menuItem = item.MenuItem;
+                var basePrice = menuItem.Price;
+                var variationTotal = menuItem.MenuItemVariations.Sum(v => v.PriceChange);
+                var taxMultiplier = 1.0m + (menuItem.Tax.Percent / 100.0m);
+                return (basePrice + variationTotal) * taxMultiplier;
+            });
+
+            if (order.Discount == null)
+                return priceBeforeDiscount;
+
+            if (order.Discount.Amount != null)
+                return Math.Max(0m, (decimal)(priceBeforeDiscount - (order.Discount.Amount)));
+
+            if (order.Discount.Percent != null)
+                return (decimal)(priceBeforeDiscount * (1 - (order.Discount.Percent! / 100)));
+            return 0m;
+        }
     }
 }
